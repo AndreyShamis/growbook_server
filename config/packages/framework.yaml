@@ -10,6 +10,8 @@ framework:
         handler_id: ~
         cookie_secure: auto
         cookie_samesite: lax
+        gc_divisor:           1000
+        gc_probability:       1
 
     #esi: true
     #fragments: true
