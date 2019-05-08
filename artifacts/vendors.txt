@@ -14,7 +14,9 @@ doctrine/migrations                 v2.0.2  PHP Doctrine Migrations project offe
 doctrine/orm                        v2.6.3  Object-Relational-Mapper for PHP
 doctrine/persistence                1.1.1   The Doctrine Persistence project is a set of shared interfaces and functionality that the different Doctrine object mappers share.
 doctrine/reflection                 v1.0.0  Doctrine Reflection component
+egulias/email-validator             2.1.7   A library for validating emails against several RFCs
 jdorn/sql-formatter                 v1.2.17 a PHP SQL highlighting library
+monolog/monolog                     1.24.0  Sends your logs to files, sockets, inboxes, databases and various web services
 nikic/php-parser                    v4.2.1  A PHP parser written in PHP
 ocramius/package-versions           1.4.0   Composer plugin that provides efficient querying for installed package versions (no runtime IO)
 ocramius/proxy-manager              2.2.2   A library providing utilities to generate, instantiate and generally operate with Object Proxies
@@ -22,14 +24,18 @@ psr/cache                           1.0.1   Common interface for caching librari
 psr/container                       1.0.0   Common Container Interface (PHP FIG PSR-11)
 psr/log                             1.1.0   Common interface for logging libraries
 psr/simple-cache                    1.0.1   Common interfaces for simple caching
+swiftmailer/swiftmailer             v6.2.1  Swiftmailer, free feature-rich PHP mailer
 symfony/asset                       v4.2.8  Symfony Asset Component
+symfony/browser-kit                 v4.2.8  Symfony BrowserKit Component
 symfony/cache                       v4.2.8  Symfony Cache component with PSR-6, PSR-16, and tags
 symfony/config                      v4.2.8  Symfony Config Component
 symfony/console                     v4.2.8  Symfony Console Component
 symfony/contracts                   v1.0.2  A set of abstractions extracted out of the Symfony components
+symfony/css-selector                v4.2.8  Symfony CssSelector Component
 symfony/debug                       v4.2.8  Symfony Debug Component
 symfony/dependency-injection        v4.2.8  Symfony DependencyInjection Component
 symfony/doctrine-bridge             v4.2.8  Symfony Doctrine Bridge
+symfony/dom-crawler                 v4.2.8  Symfony DomCrawler Component
 symfony/dotenv                      v4.2.8  Registers environment variables from a .env file
 symfony/event-dispatcher            v4.2.8  Symfony EventDispatcher Component
 symfony/filesystem                  v4.2.8  Symfony Filesystem Component
@@ -42,10 +48,15 @@ symfony/http-kernel                 v4.2.8  Symfony HttpKernel Component
 symfony/inflector                   v4.2.8  Symfony Inflector Component
 symfony/intl                        v4.2.8  A PHP replacement layer for the C intl extension that includes additional data from the ICU library.
 symfony/maker-bundle                v1.11.6 Symfony Maker helps you create empty commands, controllers, form classes, tests and more so you can forget about writing boilerplate code.
+symfony/monolog-bridge              v4.2.8  Symfony Monolog Bridge
+symfony/monolog-bundle              v3.3.1  Symfony MonologBundle
 symfony/options-resolver            v4.2.8  Symfony OptionsResolver Component
 symfony/orm-pack                    v1.0.6  A pack for the Doctrine ORM
+symfony/phpunit-bridge              v4.2.8  Symfony PHPUnit Bridge
 symfony/polyfill-intl-icu           v1.11.0 Symfony polyfill for intl's ICU-related data and classes
+symfony/polyfill-intl-idn           v1.11.0 Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions
 symfony/polyfill-mbstring           v1.11.0 Symfony polyfill for the Mbstring extension
+symfony/polyfill-php72              v1.11.0 Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions
 symfony/process                     v4.2.8  Symfony Process Component
 symfony/property-access             v4.2.8  Symfony PropertyAccess Component
 symfony/routing                     v4.2.8  Symfony Routing Component
@@ -55,8 +66,11 @@ symfony/security-csrf               v4.2.8  Symfony Security Component - CSRF Li
 symfony/security-guard              v4.2.8  Symfony Security Component - Guard
 symfony/security-http               v4.2.8  Symfony Security Component - HTTP Integration
 symfony/stopwatch                   v4.2.8  Symfony Stopwatch Component
+symfony/swiftmailer-bundle          v3.2.6  Symfony SwiftmailerBundle
+symfony/test-pack                   v1.0.2  A pack for functional testing within a Symfony app
 symfony/twig-bridge                 v4.2.8  Symfony Twig Bridge
 symfony/twig-bundle                 v4.2.8  Symfony TwigBundle
+symfony/validator                   v4.2.8  Symfony Validator Component
 symfony/var-exporter                v4.2.8  A blend of var_export() + serialize() to turn any serializable data structure to plain PHP code
 symfony/web-server-bundle           v4.2.8  Symfony WebServerBundle
 symfony/yaml                        v4.2.8  Symfony Yaml Component
