@@ -20,14 +20,13 @@
         <tbody>
         {% for plant in plants %}
             <tr>
-                <td>{{ plant.id }}</td>
-                <td>{{ plant.name }}</td>
+                <td><a href="{{ path('plant_show', {'id': plant.id}) }}">{{ plant.id }}</a></td>
+                <td><a href="{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a></td>
                 <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('plant_show', {'id': plant.id}) }}">show</a>
                     <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
                 </td>
             </tr>
