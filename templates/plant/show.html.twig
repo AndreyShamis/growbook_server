@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Plant{% endblock %}
+{% block title %}Plants{% endblock %}
 
 {% block body %}
-    <h1>Plant</h1>
+    <h1>Plants</h1>
 
     <table class="table">
         <tbody>
@@ -33,7 +33,25 @@
             </tr>
         </tbody>
     </table>
-
+    <hr/>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>UniqID</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sensor in plant.sensors %}
+            <tr>
+                <td>{{ sensor.id }}</td>
+                <td>{{ sensor.name }}</td>
+                <td>{{ sensor.uniqId }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     <a href="{{ path('plant_index') }}">back to list</a>
 
     <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>

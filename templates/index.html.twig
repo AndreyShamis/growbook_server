@@ -25,33 +25,34 @@
     </ul>
 </nav>
 
-
+{% set route = app.request.get('_route') %}
+{% set url = app.request.scheme ~'://' ~  app.request.httpHost %}
 <div class="container-fluid">
     <div class="row">
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">
+                        <a class="nav-link {% if route starts with 'cycle_' %}active{% endif %}" href="#">
                             <span data-feather="home"></span>
                             Dashboard <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('events_index') }}">
+                        <a class="nav-link {% if route starts with 'event' %}active{% endif %}" href="{{ path('events_index') }}">
                             <span data-feather="file"></span>
                             Events
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('plant_index') }}">
+                        <a class="nav-link {% if route starts with 'plant_' %}active{% endif %}" href="{{ path('plant_index') }}">
                             <span data-feather="shopping-cart"></span>
                             Plants
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ path('sensor_index') }}">
-                            <span data-feather="users"></span>
+                        <a class="nav-link {% if route starts with 'sensor' %}active{% endif %}" href="{{ path('sensor_index') }}">
+                            <span data-feather="sensors"></span>
                             Sensors
                         </a>
                     </li>
@@ -107,8 +108,7 @@
                 </div>
             </div>
 
-
-            <h2>Section title</h2>
+            
             <div class="table-responsive">
                 {% block body %}
 
