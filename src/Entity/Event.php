@@ -55,6 +55,11 @@ class Event
      */
     private $plant;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Sensor", inversedBy="events")
+     */
+    private $sensor;
+
     public function __construct()
     {
         try {
@@ -153,6 +158,18 @@ class Event
     public function setPlant(?Plant $plant): self
     {
         $this->plant = $plant;
+
+        return $this;
+    }
+
+    public function getSensor(): ?Sensor
+    {
+        return $this->sensor;
+    }
+
+    public function setSensor(?Sensor $sensor): self
+    {
+        $this->sensor = $sensor;
 
         return $this;
     }
