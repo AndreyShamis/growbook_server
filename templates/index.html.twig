@@ -39,12 +39,6 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {% if route starts with 'event' %}active{% endif %}" href="{{ path('events_index') }}">
-                            <span data-feather="file"></span>
-                            Events
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link {% if route starts with 'plant_' %}active{% endif %}" href="{{ path('plant_index') }}">
                             <span data-feather="shopping-cart"></span>
                             Plants
@@ -56,6 +50,13 @@
                             Sensors
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if route starts with 'event' %}active{% endif %}" href="{{ path('events_index') }}">
+                            <span data-feather="file"></span>
+                            Events
+                        </a>
+                    </li>
+
                     {#<li class="nav-item">#}
                         {#<a class="nav-link" href="#">#}
                             {#<span data-feather="bar-chart-2"></span>#}

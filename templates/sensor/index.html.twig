@@ -18,10 +18,10 @@
         {% for sensor in sensors %}
             <tr>
                 <td>{{ sensor.id }}</td>
-                <td>{{ sensor.name }}</td>
+                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
                 <td>{{ sensor.uniqId }}</td>
                 <td>
-                    <a href="{{ path('sensor_show', {'id': sensor.id}) }}">show</a>
+
                     <a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a>
                 </td>
             </tr>

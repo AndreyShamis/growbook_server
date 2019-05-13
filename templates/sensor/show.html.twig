@@ -21,10 +21,33 @@
             </tr>
         </tbody>
     </table>
+    <hr/>
+    {#<table class="table">#}
+        {#<thead>#}
+        {#<tr>#}
+            {#<th>ID</th>#}
+            {#<th>Name</th>#}
+            {#<th>Type</th>#}
+            {#<th>Value</th>#}
+            {#<th>Time</th>#}
+        {#</tr>#}
+        {#</thead>#}
+        {#<tbody>#}
+        {#{% for event in sensor.events %}#}
+            {#<tr>#}
 
+                {#<td>{{ event.id }}</td>#}
+                {#<td>{{ event.name }}</td>#}
+                {#<td>{{ event.type }}</td>#}
+                {#<td>{{ event.value }}</td>#}
+                {#<td>{{ event.updatedAt |date('Ymd H:i:s')}}</td>#}
+            {#</tr>#}
+        {#{% endfor %}#}
+        {#</tbody>#}
+    {#</table>#}
     <a href="{{ path('sensor_index') }}">back to list</a>
 
     <a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a>
 
-    {{ include('sensor/_delete_form.html.twig') }}
+    {#{{ include('sensor/_delete_form.html.twig') }}#}
 {% endblock %}
