@@ -49,6 +49,11 @@ class Plant
      */
     private $events;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Sensor", mappedBy="Plant")
+     */
+    private $sensors;
+
 
     public function __construct()
     {
@@ -59,6 +64,7 @@ class Plant
         } catch (\Exception $e) {
         }
         $this->events = new ArrayCollection();
+        $this->sensors = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -157,6 +163,37 @@ class Plant
             // set the owning side to null (unless already changed)
             if ($event->getPlant() === $this) {
                 $event->setPlant(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Sensor[]
+     */
+    public function getSensors(): Collection
+    {
+        return $this->sensors;
+    }
+
+    public function addSensor(Sensor $sensor): self
+    {
+        if (!$this->sensors->contains($sensor)) {
+            $this->sensors[] = $sensor;
+            $sensor->setPlant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSensor(Sensor $sensor): self
+    {
+        if ($this->sensors->contains($sensor)) {
+            $this->sensors->removeElement($sensor);
+            // set the owning side to null (unless already changed)
+            if ($sensor->getPlant() === $this) {
+                $sensor->setPlant(null);
             }
         }
 
