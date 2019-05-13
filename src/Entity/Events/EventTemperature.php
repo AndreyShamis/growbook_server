@@ -37,7 +37,11 @@ class EventTemperature extends Event
      */
     public function setTemperature(float $temperature): self
     {
-        $this->temperature = $temperature;
+        if ($temperature >= -276 && $temperature < 1000) {
+            $this->temperature = $temperature;
+        } else {
+            $this->temperature = 0.12345;
+        }
 
         return $this;
     }
@@ -45,5 +49,12 @@ class EventTemperature extends Event
     public function getValue()
     {
         return $this->getTemperature();
+    }
+
+    public function setValue($value)
+    {
+        $this->setTemperature((float)$value);
+
+        return $this;
     }
 }

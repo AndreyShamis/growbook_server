@@ -4,11 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ApiResource()
- * @ORM\MappedSuperclass(repositoryClass="App\Repository\EventRepository")
- * @ORM\InheritanceType(value="NONE")
+ * @ORM\Entity()
+ * @ ORM\Map pedSuperclass(repositoryClass="App\Repository\EventRepository")
+ * @ORM\DiscriminatorColumn(name = "andrey_type", type = "string", fieldName="")
+ * @ORM\InheritanceType(value="SINGLE_TABLE")
+ * @ ORM\DiscriminatorMap({"EventHumidity" = "ParentEntity", "child_entity" = "AppBundle\Entity\ChildEntity"})
+ * @ORM\Table(name="events", indexes={
+ *     @Index(name="index_type", columns={"type"}),
+ *     @Index(name="fulltext_type", columns={"type"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_note", columns={"note"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_type_note", columns={"type", "note"}, flags={"fulltext"}),
+ *     })
  * @ORM\HasLifecycleCallbacks()
  */
 class Event
@@ -36,9 +46,9 @@ class Event
     protected $updatedAt;
 
     /**
-     * @ORM\Column(type="object", nullable=true)
+     * @ORM\Column(type="string")
      */
-    protected $type;
+    protected $type = '';
 
     /**
      * @ORM\Column(type="text", options={"default"=""})
@@ -142,7 +152,7 @@ class Event
         return $this->value;
     }
 
-    public function setValue($value): self
+    public function setValue($value)
     {
         $this->value = $value;
 
