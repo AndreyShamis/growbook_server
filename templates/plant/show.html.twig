@@ -3,7 +3,7 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    <h1>Plants</h1>
+    <h3>Plants</h3>
 
     <table class="table">
         <tbody>
@@ -34,6 +34,8 @@
         </tbody>
     </table>
     <hr/>
+    <h5>Sensors</h5>
+    <hr/>
     <table class="table">
         <thead>
             <tr>
@@ -46,12 +48,40 @@
         {% for sensor in plant.sensors %}
             <tr>
                 <td>{{ sensor.id }}</td>
-                <td>{{ sensor.name }}</td>
+                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
                 <td>{{ sensor.uniqId }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <hr/>
+    <h5>Events without sensor</h5>
+    <hr/>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for event in plant.events %}
+            {% if event.sensor is none %}
+            <tr>
+                <td>{{ event.id }}</td>
+                <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.name }}</a></td>
+                <td>{{ event.type | parseType }}</td>
+                <td>{{ event.value }}</td>
+            </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+    <hr/>
+    <h5>Other</h5>
+    <hr/>
     <a href="{{ path('plant_index') }}">back to list</a>
 
     <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>

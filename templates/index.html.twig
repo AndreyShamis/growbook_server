@@ -79,15 +79,15 @@
                 </h6>
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ path('event_new') }}">
                             <span data-feather="file-text"></span>
-                            Current month
+                            New Event
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ path('event_new', { type: 'App\\Entity\\Events\\EventTemperature'}) }}">
                             <span data-feather="file-text"></span>
-                            Last quarter
+                            Add Temperature
                         </a>
                     </li>
                 </ul>
