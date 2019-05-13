@@ -20,6 +20,7 @@ class AppExtension extends AbstractExtension
     public function getFilters(): array
     {
         return array(
+            new TwigFilter('parseType', array($this, 'parseType')),
             new TwigFilter('ExecutionTimeInHours', array($this, 'ExecutionTimeInHours')),
             new TwigFilter('ExecutionTimeGeneric', array($this, 'ExecutionTimeGeneric')),
             new TwigFilter('executionTimeGenericShort', array($this, 'executionTimeGenericShort')),
@@ -49,6 +50,11 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getPercentage', [$this, 'getPercentage']),
             new TwigFunction('inarray', array($this, 'inArray')),
         ];
+    }
+
+    public function parseType(string $typeFull): string
+    {
+        return str_replace('App\Entity\Events\Event', '', $typeFull);
     }
 
     /**

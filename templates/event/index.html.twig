@@ -1,37 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}EventTemperature index{% endblock %}
+{% block title %}Events index{% endblock %}
 
 {% block body %}
-    <h1>EventTemperature index</h1>
-
+    <h1 class="h2">GrowBook Events</h1>
     <table class="table">
         <thead>
         <tr>
             <th>Id</th>
-            <th>Name</th>
-            <th>CreatedAt</th>
-            <th>UpdatedAt</th>
             <th>Type</th>
+            <th>Name</th>
             <th>Value</th>
             <th>Note</th>
             <th>actions</th>
+            <th>CreatedAt</th>
+            <th>UpdatedAt</th>
         </tr>
         </thead>
         <tbody>
         {% for event in events %}
             <tr>
                 <td>{{ event.id }}</td>
-                <td>{{ event.name }}</td>
-                <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ event.type }}</td>
+                <td>{{ event.type | parseType }}</td>
+                {% if event.sensor.id is defined %}
+                    <td>S|{{ event.sensor.name }}</td>
+                {% else %}
+                    <td>{{ event.name }}</td>
+                {% endif %}
                 <td>{{ event.value }}</td>
                 <td>{{ event.note }}</td>
                 <td>
                     <a href="{{ path('event_show', {'id': event.id, 'type': event.type}) }}">show</a>
                     {#<a href="{{ path('events_event_temperature_edit', {'id': event.id}) }}">edit</a>#}
                 </td>
+                <td>{{ event.createdAt ? event.createdAt|date('Ymd H:i:s') : '' }}</td>
+                <td>{{ event.updatedAt ? event.updatedAt|date('Ymd H:i:s') : '' }}</td>
             </tr>
         {% else %}
             <tr>
