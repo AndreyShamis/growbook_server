@@ -21,7 +21,8 @@
         {% for event in events %}
             <tr>
                 <td>{{ event.id }}</td>
-                <td>{{ event.type | parseType }}</td>
+                {#<td>{{ event.type | parseType }}</td>#}
+                <td>{{ event.type  }}</td>
                 {% if event.sensor.id is defined %}
                     <td>S|{{ event.sensor.name }}</td>
                 {% else %}
@@ -30,7 +31,7 @@
                 <td>{{ event.value }}</td>
                 <td>{{ event.note }}</td>
                 <td>
-                    <a href="{{ path('event_show', {'id': event.id, 'type': event.type}) }}">show</a>
+                    <a href="{{ path('event_show', {'id': event.id, 'type': event.type }) }}">show</a>
                     {#<a href="{{ path('events_event_temperature_edit', {'id': event.id}) }}">edit</a>#}
                 </td>
                 <td>{{ event.createdAt ? event.createdAt|date('Ymd H:i:s') : '' }}</td>
@@ -44,5 +45,6 @@
         </tbody>
     </table>
 
+    <a href="{{ path('event_new') }}">Create new</a>
     <a href="{{ path('event_new') }}">Create new</a>
 {% endblock %}

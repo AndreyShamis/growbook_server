@@ -5,9 +5,11 @@ namespace App\Controller;
 //use App\Entity\Events\EventTemperature;
 //use App\Form\Events\EventTemperatureType;
 use App\Entity\Event;
+use App\Entity\Events\EventTemperature;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\Events\EventTemperatureRepository;
+use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +29,8 @@ class EventController extends AbstractController
     public function index(EventRepository $eventRepository): Response
     {
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAllTypes(),
+            //'events' => $eventRepository->findAllTypes(),
+            'events' => $eventRepository->findAll(),
         ]);
     }
 
@@ -35,20 +38,32 @@ class EventController extends AbstractController
     /**
      * @Route("/new", name="event_new", methods={"GET","POST"})
      * @param Request $request
+     * @param LoggerInterface $logger
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, LoggerInterface $logger): Response
     {
         $event = new Event();
+        $eventFound = false;
+        try {
+            $ev_arr = $request->request->get('event');
+            $ev_type = $ev_arr['type'];
+            $event = new $ev_type();
+            $eventFound = true;
+        } catch (\Throwable $ex) {
+            $logger->critical('ERROR :' . $ex->getMessage());
+        }
+
         $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($eventFound && $form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($event);
             $entityManager->flush();
 
-            return $this->redirectToRoute('events_event_temperature_index');
+            return $this->redirectToRoute('events_index');
+            //return $this->redirectToRoute('events_event_temperature_index');
         }
 
         return $this->render('events/event_temperature/new.html.twig', [
@@ -71,7 +86,7 @@ class EventController extends AbstractController
 //
     /**
      * @Route("/{id}/{type}", name="event_show", methods={"GET"}, options={})
-     * @Entity(name="event", class="App\Entity\Event", expr="repository.findByIdAndType(id, type)")
+     * @ Entity(name="event", class="App\Entity\Event", expr="repository.findByIdAndType(id, type)")
      * @param Event $event
      * @param string $type
      * @return Response

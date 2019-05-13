@@ -21,16 +21,6 @@ class EventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name', TextType::class, [
-//                'widget' => 'single_text',
-                'data' => '',
-                'empty_data' => '',
-                'required' => false
-            ])
-            //->add('createdAt')
-            //->add('updatedAt')
-                ;
         $nulTransformer = new CallbackTransformer(
             function ($input)
             {
@@ -38,36 +28,58 @@ class EventType extends AbstractType
             },
             function ($input)
             {
-                return null;
+                return $input; //null;
             }
         );
-        if (get_class($builder->getData()) === Event::class) {
-            $builder
-                ->add('type', ChoiceType::class, [
+
+//        $builder
+//            ->add('andrey_type');
+        $builder
+            ->add('type', ChoiceType::class, [
 //                'widget' => 'single_text',
-                    'required' => true,
-                    'attr'=>array(
-                        'style'=>'font: 10px;'
-                    ),
-                    'choices' => $this->buildTypeChoices(),
-                ]);
-            $builder->get('type')->addModelTransformer($nulTransformer);
-        } else {
-            $builder
-                ->add('type', HiddenType::class, [
-//                'widget' => 'single_text',
-                    'data' => get_class($builder->getData()),
-                    'empty_data' => get_class($builder->getData()),
-                    'required' => false,
-                    'attr'=>array('style'=>'display:none;')
-                ]);
-        }
+                'required' => true,
+                'attr'=>array(
+                    'style'=>'font: 10px;'
+                ),
+                'choices' => $this->buildTypeChoices(),
+            ]);
+//        if (get_class($builder->getData()) === Event::class) {
+//            $builder
+//                ->add('type', ChoiceType::class, [
+////                'widget' => 'single_text',
+//                    'required' => true,
+//                    'attr'=>array(
+//                        'style'=>'font: 10px;'
+//                    ),
+//                    'choices' => $this->buildTypeChoices(),
+//                ]);
+//            //$builder->get('type')->addModelTransformer($nulTransformer);
+//        } else {
+//            $builder
+//                ->add('type', HiddenType::class, [
+////                'widget' => 'single_text',
+//                    'data' => get_class($builder->getData()),
+//                    'empty_data' => get_class($builder->getData()),
+//                    'required' => false,
+//                    'attr'=>array('style'=>'display:none;')
+//                ]);
+//        }
         $builder
             ->add('value')
             ->add('note')
             ->add('plant')
             ->add('sensor')
         ;
+//        $builder
+//            ->add('name', TextType::class, [
+////                'widget' => 'single_text',
+//                'data' => '',
+//                'empty_data' => '',
+//                'required' => false
+//            ])
+//            //->add('createdAt')
+//            //->add('updatedAt')
+//        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
