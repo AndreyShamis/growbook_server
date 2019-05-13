@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EventHumidity{% endblock %}
+
+{% block body %}
+    <h1>Edit EventHumidity</h1>
+
+    {{ include('events_event_humidity/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('events_event_humidity_index') }}">back to list</a>
+
+    {{ include('events_event_humidity/_delete_form.html.twig') }}
+{% endblock %}

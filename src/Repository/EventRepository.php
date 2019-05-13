@@ -3,6 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Event;
+use App\Entity\Events\EventHumidity;
+use App\Entity\Events\EventTemperature;
+use App\Repository\Events\EventTemperatureRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -18,6 +21,33 @@ class EventRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Event::class);
     }
+
+    public function findAllTypes()
+    {
+        $ret = array();
+        $em = $this->getEntityManager();
+
+        $tmps = $em->getRepository(EventTemperature::class);
+        $hums = $em->getRepository(EventHumidity::class);
+        $res1 = $tmps->findAll();
+        $res2 = $hums->findAll();
+        $ret = array_merge($res1, $res2);
+        return $ret;
+    }
+//
+//    public function find($id, $lockMode = null, $lockVersion = null)
+//    {
+//        $em = $this->getEntityManager();
+//
+//        $logRepo = $em->getRepository(EventTemperature::class);
+//        $res = $logRepo->find($id);
+////        $res = $this->createQueryBuilder('e')
+////            ->setMaxResults(10);
+////
+////
+////        $res = $res->getQuery()->getResult();
+//        return $res;
+//    }
 
     // /**
     //  * @return Event[] Returns an array of Event objects

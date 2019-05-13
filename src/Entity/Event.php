@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 /**
  * @ApiResource()
  * @ORM\MappedSuperclass(repositoryClass="App\Repository\EventRepository")
+ * @ORM\InheritanceType(value="NONE")
  * @ORM\HasLifecycleCallbacks()
  */
 class Event
@@ -20,9 +21,9 @@ class Event
     protected $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"default"=""})
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,9 +41,9 @@ class Event
     protected $type;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", options={"default"=""})
      */
-    protected $value;
+    protected $value = '';
 
     /**
      * @ORM\Column(type="text", nullable=true)
@@ -75,11 +76,21 @@ class Event
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
+        if ($this->name === null) {
+            return '';
+        }
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Event
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -172,5 +183,13 @@ class Event
         $this->sensor = $sensor;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

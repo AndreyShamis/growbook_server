@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New EventTemperature{% endblock %}
+
+{% block body %}
+    <h1>Create new EventTemperature</h1>
+
+    {{ include('/events/event_temperature/_form.html.twig') }}
+
+    <a href="{{ path('events_event_temperature_index') }}">back to list</a>
+{% endblock %}

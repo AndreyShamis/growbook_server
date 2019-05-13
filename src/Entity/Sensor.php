@@ -50,11 +50,21 @@ class Sensor
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
+        if ($this->name === null) {
+            return '';
+        }
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Sensor
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -115,5 +125,13 @@ class Sensor
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

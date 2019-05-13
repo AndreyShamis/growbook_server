@@ -72,8 +72,14 @@ class Plant
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @return string
+     */
+    public function getName(): string
     {
+        if ($this->name === null) {
+            return '';
+        }
         return $this->name;
     }
 
@@ -198,5 +204,13 @@ class Plant
         }
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

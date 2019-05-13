@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventHumidity index{% endblock %}
+
+{% block body %}
+    <h1>EventHumidity index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Humidity</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_humidity in event_humidities %}
+            <tr>
+                <td>{{ event_humidity.humidity }}</td>
+                <td>{{ event_humidity.id }}</td>
+                <td>{{ event_humidity.name }}</td>
+                <td>{{ event_humidity.createdAt ? event_humidity.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_humidity.updatedAt ? event_humidity.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_humidity.type }}</td>
+                <td>{{ event_humidity.value }}</td>
+                <td>{{ event_humidity.note }}</td>
+                <td>
+                    <a href="{{ path('events_event_humidity_show', {'id': event_humidity.id}) }}">show</a>
+                    <a href="{{ path('events_event_humidity_edit', {'id': event_humidity.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('events_event_humidity_new') }}">Create new</a>
+{% endblock %}

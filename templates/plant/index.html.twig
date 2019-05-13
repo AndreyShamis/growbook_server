@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plant index{% endblock %}
+
+{% block body %}
+    <h1>Plant index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>StartedAt</th>
+                <th>FinishedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for plant in plants %}
+            <tr>
+                <td>{{ plant.id }}</td>
+                <td>{{ plant.name }}</td>
+                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('plant_show', {'id': plant.id}) }}">show</a>
+                    <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('plant_new') }}">Create new</a>
+{% endblock %}

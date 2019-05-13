@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventTemperature index{% endblock %}
+
+{% block body %}
+    <h1>EventTemperature index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Temperature</th>
+                <th>Id</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Note</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_temperature in event_temperatures %}
+            <tr>
+                <td>{{ event_temperature.temperature }}</td>
+                <td>{{ event_temperature.id }}</td>
+                <td>{{ event_temperature.name }}</td>
+                <td>{{ event_temperature.createdAt ? event_temperature.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_temperature.updatedAt ? event_temperature.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_temperature.type }}</td>
+                <td>{{ event_temperature.value }}</td>
+                <td>{{ event_temperature.note }}</td>
+                <td>
+                    <a href="{{ path('events_event_temperature_show', {'id': event_temperature.id}) }}">show</a>
+                    <a href="{{ path('events_event_temperature_edit', {'id': event_temperature.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('events_event_temperature_new') }}">Create new</a>
+{% endblock %}
