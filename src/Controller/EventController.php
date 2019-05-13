@@ -8,6 +8,7 @@ use App\Entity\Event;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\Events\EventTemperatureRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,17 +57,30 @@ class EventController extends AbstractController
         ]);
     }
 
-
+//    /**
+//     * @Route("/{id}/{type}", name="event_show", methods={"GET"}, options={})
+//     * @return Response
+//     */
+//    public function show($id, $type): Response
+//    {
+//        $event = $this->getDoctrine()->getManager()->find($type, $id);
+//        return $this->render('event/show.html.twig', [
+//            'event' => $event,
+//        ]);
+//    }
+//
     /**
      * @Route("/{id}/{type}", name="event_show", methods={"GET"}, options={})
+     * @Entity(name="event", class="App\Entity\Event", expr="repository.findByIdAndType(id, type)")
+     * @param Event $event
+     * @param string $type
      * @return Response
      */
-    public function show($id, $type): Response
+    public function show(Event $event, string $type): Response
     {
-        $event = $this->getDoctrine()->getManager()->find($type, $id);
         return $this->render('event/show.html.twig', [
             'event' => $event,
+            'type' => $type
         ]);
     }
-
 }

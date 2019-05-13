@@ -34,20 +34,21 @@ class EventRepository extends ServiceEntityRepository
         $ret = array_merge($res1, $res2);
         return $ret;
     }
+
+    public function findByIdAndType($id, $type)
+    {
+        $em = $this->getEntityManager();
+
+        $logRepo = $em->getRepository($type);
+        $res = $logRepo->find($id);
+//        $res = $this->createQueryBuilder('e')
+//            ->setMaxResults(10);
 //
-//    public function find($id, $lockMode = null, $lockVersion = null)
-//    {
-//        $em = $this->getEntityManager();
 //
-//        $logRepo = $em->getRepository(EventTemperature::class);
-//        $res = $logRepo->find($id);
-////        $res = $this->createQueryBuilder('e')
-////            ->setMaxResults(10);
-////
-////
-////        $res = $res->getQuery()->getResult();
-//        return $res;
-//    }
+//        $res = $res->getQuery()->getResult();
+        return $res;
+        return array($res);
+    }
 
     // /**
     //  * @return Event[] Returns an array of Event objects
