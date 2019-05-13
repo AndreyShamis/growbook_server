@@ -22,32 +22,11 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-    public function findAllTypes()
-    {
-        $ret = array();
-        $em = $this->getEntityManager();
-
-        $tmps = $em->getRepository(EventTemperature::class);
-        $hums = $em->getRepository(EventHumidity::class);
-        $res1 = $tmps->findAll();
-        $res2 = $hums->findAll();
-        $ret = array_merge($res1, $res2);
-        return $ret;
-    }
-
     public function findByIdAndType($id, $type)
     {
         $em = $this->getEntityManager();
-
         $logRepo = $em->getRepository($type);
-        $res = $logRepo->find($id);
-//        $res = $this->createQueryBuilder('e')
-//            ->setMaxResults(10);
-//
-//
-//        $res = $res->getQuery()->getResult();
-        return $res;
-        return array($res);
+        return $logRepo->find($id);
     }
 
     // /**

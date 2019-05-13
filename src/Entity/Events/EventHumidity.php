@@ -22,13 +22,23 @@ class EventHumidity extends Event
 
     public function setHumidity(float $humidity): self
     {
-        $this->humidity = $humidity;
-
+        if ($humidity >= 0 && $humidity <= 100) {
+            $this->humidity = $humidity;
+        } else {
+            $humidity = 0.01;
+        }
         return $this;
     }
 
     public function getValue()
     {
         return $this->getHumidity();
+    }
+
+    public function setValue($value)
+    {
+        $this->setHumidity((float)$value);
+
+        return $this;
     }
 }
