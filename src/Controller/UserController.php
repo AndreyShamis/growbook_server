@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use Symfony\Component\DependencyInjection\ContainerInterface as Container;
 use App\Form\UserType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class UserController extends AbstractController
 {
+    /** @var \Doctrine\Common\Persistence\ObjectManager  */
+    protected $em;
+
+    /**
+     * @param Container $container
+     * @throws \LogicException
+     */
+    public function __construct(Container $container)
+    {
+        $this->container = $container;
+        $this->em = $this->getDoctrine()->getManager();
+
+    }
 
     /**
      * @Route("/", name="user_index")
@@ -31,9 +45,8 @@ class UserController extends AbstractController
      * @Route("/{id}", name="user_show", methods={"GET"})
      * @param User $obj
      * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
-    public function showAction(User $obj): Response
+    public function show(User $obj): Response
     {
         // check for "edit" access: calls all voters
         $this->denyAccessUnlessGranted('view', $obj);
@@ -45,7 +58,7 @@ class UserController extends AbstractController
     /**
      * Displays a form to edit an existing User entity.
      *
-     * @Route("/{id}/edit", name="user_edit", methods={"GET|POST"})
+     * @Route("/{id}/edit", name="user_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param User $obj
      * @param UserPasswordEncoderInterface $passwordEncoder
@@ -55,7 +68,7 @@ class UserController extends AbstractController
      * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \LogicException
      */
-    public function editAction(Request $request, User $obj, UserPasswordEncoderInterface $passwordEncoder)
+    public function edit(Request $request, User $obj, UserPasswordEncoderInterface $passwordEncoder)
     {
         // check for "edit" access: calls all voters
         $this->denyAccessUnlessGranted('edit', $obj);
