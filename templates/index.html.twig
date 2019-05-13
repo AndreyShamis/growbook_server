@@ -1,0 +1,22 @@
+{% set url = app.request.scheme ~'://' ~  app.request.httpHost ~  app.request.getBaseURL %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="utf-8" />
+    <title>{% block title %}GrowBook{% endblock %}</title>
+    <meta name="description" content="overview &amp; stats" />
+</head>
+<body class="no-skin">
+{% block body %}
+
+{% endblock %}
+{% block content %}
+
+{% endblock %}
+{% block javascripts %}
+
+{% endblock %}
+
+</body>
+</html>
