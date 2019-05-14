@@ -162,6 +162,7 @@ class EventController extends AbstractController
                             if ($sensor !== null) {
                                 $sensor->setLastEvent($event);
                             }
+                            $entityManager->detach($lastEvent);
                             $entityManager->persist($event);
                             $entityManager->flush();
                             $status = 301;
