@@ -52,7 +52,7 @@ class AppExtension extends AbstractExtension
         ];
     }
 
-    public function parseType(string $typeFull): string
+    public function parseType(string $typeFull=null): string
     {
         return str_replace(array('App\Entity\Events\Event', 'App\Entity\\'), '', $typeFull);
     }

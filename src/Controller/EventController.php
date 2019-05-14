@@ -120,17 +120,40 @@ class EventController extends AbstractController
             }
             $entityManager = $this->getDoctrine()->getManager();
             if ($lastEvent === null) {
-
+                $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
                 $entityManager->persist($event);
                 $entityManager->flush();
             } else {
                 // Need to check if last event have same value?
                 if ($lastEvent->getValue() !== $event->getValue()) {
-                    if ($event->getType() === 'App\Entity\Events\EventHumidity'){
-                        $a = 1;
+                    $needUpdate = true;
+                    if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
+                        if ($event->getType() === EventHumidity::class){
+                            /** @var EventHumidity $event */
+                            if (!$event->humDiff($lastEvent)) {
+                                $needUpdate = false;
+                            }
+                        }
+                        if ($event->getType() === EventTemperature::class){
+                            /** @var EventTemperature $event */
+                            if (!$event->tempDiff($lastEvent)) {
+                                $needUpdate = false;
+                            }
+                        }
                     }
-                    $entityManager->persist($event);
-                    $entityManager->flush();
+
+                    $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
+                    $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
+                    if ($seconds <= 60) {
+                        $message = 'Ignore diff less then 1 minute';
+                    } else {
+                        if ($needUpdate){
+                            $entityManager->persist($event);
+                            $entityManager->flush();
+                        }
+
+                    }
+
                 }
             }
             return $this->redirectToRoute('events_index');

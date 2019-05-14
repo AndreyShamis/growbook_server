@@ -37,8 +37,52 @@ class EventHumidity extends Event
 
     public function setValue($value)
     {
-        $this->setHumidity((float)$value);
+        if ($value !== null && $value === 'nan') {
+            $this->setHumidity(1);
+            $this->addNote('NaN_FOUND::' . $value . ';;');
+        } else {
+            $this->setHumidity((float)$value);
+        }
+
 
         return $this;
+    }
+
+    public function calculateThreshHold(): int
+    {
+        $diffThreshHold = 1;
+        if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
+            $val = (float)$this->getSensor()->getDiffThreshold();
+            if ($val >= 1 && $val <= 100) {
+                $diffThreshHold = (int)$this->getSensor()->getDiffThreshold();
+            }
+        }
+        return $diffThreshHold;
+    }
+
+    /**
+     * @param EventHumidity $otherEvent
+     * @param bool $abs
+     * @return float
+     */
+    public function diff(EventHumidity $otherEvent, bool $abs=false): float
+    {
+        $currentTmp = $this->getHumidity();
+        $ot = $otherEvent->getHumidity();
+        $td = $currentTmp - $ot;
+        if ($abs) {
+            $td = abs($td);
+        }
+        return $td;
+    }
+
+    public function humDiff(EventHumidity $otherEvent): bool
+    {
+        $td = $this->diff($otherEvent, true);
+        if ($td < $this->calculateThreshHold()) {
+            return false;
+        }
+        $this->addNote('DIFF_FOUND::' . $td . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;OLD_VALUE::' . $otherEvent->getHumidity() . ';;');
+        return true;
     }
 }

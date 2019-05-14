@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Events\EventTemperature;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\Index;
@@ -108,7 +109,7 @@ class Event
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -159,14 +160,21 @@ class Event
         return $this;
     }
 
-    public function getNote(): ?string
+    public function getNote(): string
     {
+        if ($this->note === null) {
+            return '';
+        }
         return $this->note;
     }
 
     public function setNote(?string $note): self
     {
-        $this->note = $note;
+        if ($note === null && $this->note !== null) {
+            $note = '';
+        } else {
+            $this->note = $note;
+        }
 
         return $this;
     }
@@ -209,5 +217,18 @@ class Event
             $obj->$key = $name;
         }
         return $obj;
+    }
+
+    public function addNote(string $newNote): self
+    {
+        if ($this->getNote() === null) {
+            $this->setNote('');
+        }
+        if ($this->getNote() === '') {
+            $this->setNote($newNote);
+        } else {
+            $this->setNote($this->getNote() . "\n" . $newNote);
+        }
+        return $this;
     }
 }

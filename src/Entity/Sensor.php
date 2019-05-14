@@ -49,8 +49,43 @@ class Sensor
      */
     private $events;
 
+    /**
+     * @ORM\Column(type="integer", options={"unsigned"=true, "default"="1000"})
+     */
+    private $writeForceEveryXseconds = 1000;
+
+    /**
+     * @ORM\Column(type="string", length=255, options={"default"=""})
+     */
+    private $diffThreshold = '';
+
+    /**
+     * @ORM\Column(type="boolean", options={"default"="0"})
+     */
+    private $supportEvents = false;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $eventType;
+
+    /**
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     */
+    protected $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", options={"default"="CURRENT_TIMESTAMP"})
+     */
+    protected $updatedAt;
+
     public function __construct()
     {
+        try {
+            $this->setUpdatedAt();
+            $this->setCreatedAt();
+        } catch (\Exception $e) {
+        }
         $this->events = new ArrayCollection();
     }
 
@@ -143,4 +178,83 @@ class Sensor
     {
         return $this->getName();
     }
+
+    public function getWriteForceEveryXseconds(): ?int
+    {
+        return $this->writeForceEveryXseconds;
+    }
+
+    public function setWriteForceEveryXseconds(int $writeForceEveryXseconds): self
+    {
+        $this->writeForceEveryXseconds = $writeForceEveryXseconds;
+
+        return $this;
+    }
+
+    public function getDiffThreshold(): ?string
+    {
+        return $this->diffThreshold;
+    }
+
+    public function setDiffThreshold(string $diffThreshold): self
+    {
+        $this->diffThreshold = $diffThreshold;
+
+        return $this;
+    }
+
+    public function getSupportEvents(): ?bool
+    {
+        return $this->supportEvents;
+    }
+
+    public function setSupportEvents(bool $supportEvents): self
+    {
+        $this->supportEvents = $supportEvents;
+
+        return $this;
+    }
+
+    public function getEventType(): ?string
+    {
+        return $this->eventType;
+    }
+
+    public function setEventType(?string $eventType): self
+    {
+        $this->eventType = $eventType;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTimeInterface
+     */
+    public function getCreatedAt(): \DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public function setCreatedAt(): void
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * @ORM\PreFlush()
+     * @throws \Exception
+     */
+    public function setUpdatedAt(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
+
 }
