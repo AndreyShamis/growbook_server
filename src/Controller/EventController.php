@@ -59,6 +59,8 @@ class EventController extends AbstractController
         $eventRequest = $request->request->get('event');
         $sensor = $plant = null;
         $automatic = false;
+        $status = 200;
+        $message = 'OK';
         try {
             if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
                 $sensorId = trim($eventRequest['sensor_id']);
@@ -130,6 +132,8 @@ class EventController extends AbstractController
                 $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
                 $entityManager->persist($event);
                 $entityManager->flush();
+                $status = 301;
+                $message = 'Created ID:' . $event->getId();
             } else {
                 // Need to check if last event have same value?
                 if ($lastEvent->getValue() !== $event->getValue()) {
@@ -160,11 +164,16 @@ class EventController extends AbstractController
                             }
                             $entityManager->persist($event);
                             $entityManager->flush();
+                            $status = 301;
+                            $message = 'Created ID:' . $event->getId();
                         }
 
                     }
 
                 }
+            }
+            if ($automatic) {
+                return new Response($message, $status);
             }
             return $this->redirectToRoute('events_index');
             //return $this->redirectToRoute('events_event_temperature_index');
