@@ -42,6 +42,9 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Type</th>
+                <th>Count</th>
+                <th>TH</th>
+                <th>Force sec</th>
                 <th>UniqID</th>
             </tr>
         </thead>
@@ -57,6 +60,9 @@
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
                 <td>{{ sensor.eventType | parseType }}</td>
+                <td>{{ sensor.events | length }}</td>
+                <td>{{ sensor.diffThreshold }}</td>
+                <td>{{ sensor.writeForceEveryXseconds }}</td>
                 <td>{{ sensor.uniqId }}</td>
             </tr>
         {% endfor %}
