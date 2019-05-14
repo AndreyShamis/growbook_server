@@ -37,6 +37,7 @@ class EventRepository extends ServiceEntityRepository
     public function findLast($type, Plant $plant, Sensor $sensor): ?Event
     {
         $ret = null;
+        $sec = $sensor->getWriteForceEveryXseconds();
         try {
             $ret = $this->createQueryBuilder('e')
                 ->where('e.createdAt >= :timeVal')
@@ -46,7 +47,7 @@ class EventRepository extends ServiceEntityRepository
                 ->setParameters([
                     'plant' => $plant,
                     'sensor' => $sensor,
-                    'timeVal'=> new \DateTime('-5 minutes'),
+                    'timeVal'=> new \DateTime('-'. $sec . ' seconds'),
                     'type' => $type
                 ])
                 ->orderBy('e.createdAt', 'DESC')
@@ -60,7 +61,6 @@ class EventRepository extends ServiceEntityRepository
                 $ret = null;
             }
         } catch (\Throwable $ex) {
-
         }
 
         return $ret;

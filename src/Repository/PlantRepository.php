@@ -24,6 +24,8 @@ class PlantRepository extends ServiceEntityRepository
     {
         if (array_key_exists('id', $criteria)) {
             $entity = $this->find($criteria['id']);
+        } else if (array_key_exists('uniqId', $criteria)) {
+            $entity = $this->findOneBy(['uniqId' => $criteria['uniqId']]);
         } else {
             $entity = $this->findOneBy($criteria);
         }
@@ -34,6 +36,11 @@ class PlantRepository extends ServiceEntityRepository
                 $entity->setName($criteria['name']);
             } else {
                 $entity->setName(RandomName::getRandomTerm());
+            }
+            if (array_key_exists('uniqId', $criteria)) {
+                $entity->setUniqId($criteria['uniqId']);
+            } else {
+                $entity->setUniqId($entity->getName());
             }
         }
         return $entity;

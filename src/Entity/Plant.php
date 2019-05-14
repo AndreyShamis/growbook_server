@@ -5,9 +5,17 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlantRepository")
+ * @ORM\Table(name="plants", uniqueConstraints={@ORM\UniqueConstraint(name="unique_uniqId", columns={"uniq_id"})},
+ *     indexes={
+ *     @Index(name="index_name", columns={"name"}),
+ *     @Index(name="fulltext_name", columns={"name"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_uniq_id", columns={"uniq_id"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_name_uniq_id", columns={"name", "uniq_id"}, flags={"fulltext"}),
+ *     })
  * @ORM\HasLifecycleCallbacks()
  */
 class Plant
@@ -56,6 +64,10 @@ class Plant
      */
     private $sensors;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $uniqId;
 
     public function __construct()
     {
@@ -204,6 +216,18 @@ class Plant
                 $sensor->setPlant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUniqId(): string
+    {
+        return $this->uniqId;
+    }
+
+    public function setUniqId(string $uniqId): self
+    {
+        $this->uniqId = $uniqId;
 
         return $this;
     }

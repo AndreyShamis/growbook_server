@@ -13,6 +13,7 @@ use App\Repository\Events\EventTemperatureRepository;
 use App\Repository\PlantRepository;
 use App\Repository\SensorRepository;
 use App\Twig\AppExtension;
+use App\Utils\RandomName;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,9 +62,15 @@ class EventController extends AbstractController
         try {
             if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
                 $sensorId = trim($eventRequest['sensor_id']);
-                $plantId = trim($eventRequest['plant']);
-                if ($plantId !== null && strlen($plantId) > 0) {
-                    $plant = $plants->findOrCreate(['id' => $plantId]);
+                $plantUniqId = '';
+                if (array_key_exists('plant_id', $eventRequest)) {
+                    $plantUniqId = trim($eventRequest['plant_id']);
+                }
+                if ($plant === null && strlen($plantUniqId) > 3) {
+                    $plant = $plants->findOrCreate([
+                        'name' => RandomName::getRandomTerm() . '__' . $plantUniqId,
+                        'uniqId' => $plantUniqId,
+                    ]);
                 }
 
                 $sensor = $sensors->findOrCreateByUniqId(array(
@@ -73,7 +80,7 @@ class EventController extends AbstractController
                 ));
                 if ($sensor !== null) {
                     $eventRequest['sensor'] = $sensor->getId();
-                    unset($eventRequest['sensor_id']);
+                    unset($eventRequest['sensor_id'], $eventRequest['plant_id']);
                     $request->request->set('event', $eventRequest);
                     $automatic = true;
                 }
@@ -120,17 +127,43 @@ class EventController extends AbstractController
             }
             $entityManager = $this->getDoctrine()->getManager();
             if ($lastEvent === null) {
-
+                $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
                 $entityManager->persist($event);
                 $entityManager->flush();
             } else {
                 // Need to check if last event have same value?
                 if ($lastEvent->getValue() !== $event->getValue()) {
-                    if ($event->getType() === 'App\Entity\Events\EventHumidity'){
-                        $a = 1;
+                    $needUpdate = true;
+                    if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
+                        if ($event->getType() === EventHumidity::class){
+                            /** @var EventHumidity $event */
+                            if (!$event->humDiff($lastEvent)) {
+                                $needUpdate = false;
+                            }
+                        }
+                        if ($event->getType() === EventTemperature::class){
+                            /** @var EventTemperature $event */
+                            if (!$event->tempDiff($lastEvent)) {
+                                $needUpdate = false;
+                            }
+                        }
                     }
-                    $entityManager->persist($event);
-                    $entityManager->flush();
+
+                    $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
+                    $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
+                    if ($seconds <= 60) {
+                        $message = 'Ignore diff less then 1 minute';
+                    } else {
+                        if ($needUpdate){
+                            if ($sensor !== null) {
+                                $sensor->setLastEvent($event);
+                            }
+                            $entityManager->persist($event);
+                            $entityManager->flush();
+                        }
+
+                    }
+
                 }
             }
             return $this->redirectToRoute('events_index');
