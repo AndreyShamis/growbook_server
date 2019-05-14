@@ -3,9 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Event;
-use App\Entity\Events\EventHumidity;
-use App\Entity\Events\EventTemperature;
-use App\Repository\Events\EventTemperatureRepository;
+use App\Entity\Plant;
+use App\Entity\Sensor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -29,6 +28,44 @@ class EventRepository extends ServiceEntityRepository
         return $logRepo->find($id);
     }
 
+    /**
+     * @param $type
+     * @param Plant $plant
+     * @param Sensor $sensor
+     * @return mixed
+     */
+    public function findLast($type, Plant $plant, Sensor $sensor): ?Event
+    {
+        $ret = null;
+        try {
+            $ret = $this->createQueryBuilder('e')
+                ->where('e.createdAt >= :timeVal')
+                ->andWhere('e.plant = :plant')
+                ->andWhere('e.sensor = :sensor')
+                ->andWhere('e.type = :type')
+                ->setParameters([
+                    'plant' => $plant,
+                    'sensor' => $sensor,
+                    'timeVal'=> new \DateTime('-5 minutes'),
+                    'type' => $type
+                ])
+                ->orderBy('e.createdAt', 'DESC')
+                ->setMaxResults(1)
+                ->getQuery()
+                ->getResult()
+            ;
+            if (count($ret)) {
+                $ret = $ret[0];
+            } else {
+                $ret = null;
+            }
+        } catch (\Throwable $ex) {
+
+        }
+
+        return $ret;
+        // new \DateTime('now')
+    }
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */

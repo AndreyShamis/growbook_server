@@ -45,20 +45,23 @@ class EventController extends AbstractController
      * @Route("/new", name="event_new", methods={"GET","POST"})
      * @param Request $request
      * @param LoggerInterface $logger
+     * @param SensorRepository $sensors
+     * @param PlantRepository $plants
+     * @param EventRepository $events
      * @return Response
      */
-    public function new(Request $request, LoggerInterface $logger, SensorRepository $sensors, PlantRepository $plants): Response
+    public function new(Request $request, LoggerInterface $logger, SensorRepository $sensors, PlantRepository $plants, EventRepository $events): Response
     {
         $event = new Event();
         $ev_req_type = array();
         $eventFound = $eventReqFound = false;
         $eventRequest = $request->request->get('event');
-        $sensor = null;
+        $sensor = $plant = null;
+        $automatic = false;
         try {
             if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
                 $sensorId = trim($eventRequest['sensor_id']);
                 $plantId = trim($eventRequest['plant']);
-                $plant = null;
                 if ($plantId !== null && strlen($plantId) > 0) {
                     $plant = $plants->findOrCreate(['id' => $plantId]);
                 }
@@ -72,6 +75,7 @@ class EventController extends AbstractController
                     $eventRequest['sensor'] = $sensor->getId();
                     unset($eventRequest['sensor_id']);
                     $request->request->set('event', $eventRequest);
+                    $automatic = true;
                 }
             }
         } catch (\Throwable $ex) {
@@ -110,10 +114,25 @@ class EventController extends AbstractController
         $form->handleRequest($request);
 
         if ($eventFound && $form->isSubmitted() && $form->isValid()) {
+            $lastEvent = null;
+            if ($automatic && $sensor !== null && $plant !== null) {
+                $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
+            }
             $entityManager = $this->getDoctrine()->getManager();
-            //$entityManager->persist($event);
-            //$entityManager->flush();
+            if ($lastEvent === null) {
 
+                $entityManager->persist($event);
+                $entityManager->flush();
+            } else {
+                // Need to check if last event have same value?
+                if ($lastEvent->getValue() !== $event->getValue()) {
+                    if ($event->getType() === 'App\Entity\Events\EventHumidity'){
+                        $a = 1;
+                    }
+                    $entityManager->persist($event);
+                    $entityManager->flush();
+                }
+            }
             return $this->redirectToRoute('events_index');
             //return $this->redirectToRoute('events_event_temperature_index');
         }
