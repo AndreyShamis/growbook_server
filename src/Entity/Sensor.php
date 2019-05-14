@@ -6,10 +6,18 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\SensorRepository")
+ * @ORM\Table(name="sensors", uniqueConstraints={@ORM\UniqueConstraint(name="unique_uniqId", columns={"uniq_id"})},
+ *     indexes={
+ *     @Index(name="index_name", columns={"name"}),
+ *     @Index(name="fulltext_name", columns={"name"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_uniq_id", columns={"uniq_id"}, flags={"fulltext"}),
+ *     @Index(name="fulltext_name_uniq_id", columns={"name", "uniq_id"}, flags={"fulltext"}),
+ *     })
  */
 class Sensor
 {
@@ -36,7 +44,8 @@ class Sensor
     private $Plant;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="sensor")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="sensor", fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"updatedAt" = "DESC"})
      */
     private $events;
 

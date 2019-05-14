@@ -10,11 +10,14 @@ use App\Entity\Events\EventTemperature;
 use App\Form\EventType;
 use App\Repository\EventRepository;
 use App\Repository\Events\EventTemperatureRepository;
+use App\Repository\PlantRepository;
+use App\Repository\SensorRepository;
 use App\Twig\AppExtension;
 use Psr\Log\LoggerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -33,7 +36,7 @@ class EventController extends AbstractController
     {
         return $this->render('event/index.html.twig', [
             //'events' => $eventRepository->findAllTypes(),
-            'events' => $eventRepository->findAll(),
+            'events' => $eventRepository->findBy(array(), ['updatedAt' => 'DESC']),
         ]);
     }
 
@@ -44,26 +47,51 @@ class EventController extends AbstractController
      * @param LoggerInterface $logger
      * @return Response
      */
-    public function new(Request $request, LoggerInterface $logger): Response
+    public function new(Request $request, LoggerInterface $logger, SensorRepository $sensors, PlantRepository $plants): Response
     {
         $event = new Event();
         $ev_req_type = array();
         $eventFound = $eventReqFound = false;
+        $eventRequest = $request->request->get('event');
+        $sensor = null;
+        try {
+            if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
+                $sensorId = trim($eventRequest['sensor_id']);
+                $plantId = trim($eventRequest['plant']);
+                $plant = null;
+                if ($plantId !== null && strlen($plantId) > 0) {
+                    $plant = $plants->findOrCreate(['id' => $plantId]);
+                }
+
+                $sensor = $sensors->findOrCreateByUniqId(array(
+                    'uniqId' => $sensorId,
+                    'name' => $sensorId,
+                    'plant' => $plant,
+                ));
+                if ($sensor !== null) {
+                    $eventRequest['sensor'] = $sensor->getId();
+                    unset($eventRequest['sensor_id']);
+                    $request->request->set('event', $eventRequest);
+                }
+            }
+        } catch (\Throwable $ex) {
+            $logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
+        }
         try {
             $ev_req_arr = $request->query->all();
             $ev_req_type = $ev_req_arr['type'];
             $event = new $ev_req_type();
             $eventReqFound = true;
         } catch (\Throwable $ex) {
-            $logger->critical('ERROR :' . $ex->getMessage());
+            $logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
         }
         try {
-            $ev_arr = $request->request->get('event');
-            $ev_type = $ev_arr['type'];
+            //$ev_arr = $request->request->get('event');
+            $ev_type = $eventRequest['type'];
             $event = new $ev_type();
             $eventFound = true;
         } catch (\Throwable $ex) {
-            $logger->critical('ERROR :' . $ex->getMessage());
+            $logger->critical('ERROR in ev_type:' . $ex->getMessage() . ' Got:' . $ev_type);
         }
 
         $form = $this->createForm(EventType::class, $event);
@@ -75,7 +103,7 @@ class EventController extends AbstractController
                 'attr'=>array(
                     'style'=>'font: 10px;'
                 ),
-                'choices' => $this->buildTypeChoices(),
+                'choices' => self::buildTypeChoices(),
             ]);
         }
 
@@ -83,13 +111,25 @@ class EventController extends AbstractController
 
         if ($eventFound && $form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($event);
-            $entityManager->flush();
+            //$entityManager->persist($event);
+            //$entityManager->flush();
 
             return $this->redirectToRoute('events_index');
             //return $this->redirectToRoute('events_event_temperature_index');
         }
 
+        if ($eventFound && $form->isSubmitted() && !$form->isValid()) {
+            $errors = $form->getErrors();
+            if (count($errors) > 0) {
+                /** @var FormError $error */
+                $error = $errors[0];
+
+                $logger->critical('ERROR in event_new:' . $error->getMessage());
+            } else {
+                $logger->critical('ERROR in event_new - no error found');
+            }
+
+        }
         return $this->render('event/new.html.twig', [
             'event' => $event,
             'form' => $form->createView(),

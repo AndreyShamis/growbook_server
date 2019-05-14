@@ -3,26 +3,31 @@
     <tr>
         <td>{{ form_label(form.type, 'Select Event Type') }}</td>
         <td>{{ form_widget(form.type) }}</td>
+        <td>{{ form_help(form.type) }}</td>
         <td style="width: 40%;">{{ form_errors(form.type) }}</td>
     </tr>
     <tr>
         <td>{{ form_label(form.value, 'Value') }}</td>
         <td>{{ form_widget(form.value) }}</td>
+        <td>{{ form_help(form.value) }}</td>
         <td>{{ form_errors(form.value) }}</td>
     </tr>
     <tr>
         <td>{{ form_label(form.plant) }}</td>
         <td>{{ form_widget(form.plant) }}</td>
+        <td>{{ form_help(form.plant) }}</td>
         <td>{{ form_errors(form.plant) }}</td>
     </tr>
     <tr>
         <td>{{ form_label(form.sensor) }}</td>
         <td>{{ form_widget(form.sensor) }}</td>
+        <td>{{ form_help(form.sensor) }}</td>
         <td>{{ form_errors(form.sensor) }}</td>
     </tr>
     <tr>
         <td>{{ form_label(form.note) }}</td>
         <td>{{ form_widget(form.note) }}</td>
+        <td>{{ form_help(form.note) }}</td>
         <td>{{ form_errors(form.note) }}</td>
     </tr>
 </table>

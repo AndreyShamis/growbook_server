@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Plant;
+use App\Utils\RandomName;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,6 +20,24 @@ class PlantRepository extends ServiceEntityRepository
         parent::__construct($registry, Plant::class);
     }
 
+    public function findOrCreate($criteria)
+    {
+        if (array_key_exists('id', $criteria)) {
+            $entity = $this->find($criteria['id']);
+        } else {
+            $entity = $this->findOneBy($criteria);
+        }
+
+        if ($entity === null) {
+            $entity = new Plant();
+            if (array_key_exists('name', $criteria)) {
+                $entity->setName($criteria['name']);
+            } else {
+                $entity->setName(RandomName::getRandomTerm());
+            }
+        }
+        return $entity;
+    }
     // /**
     //  * @return Plant[] Returns an array of Plant objects
     //  */

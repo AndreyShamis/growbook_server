@@ -33,7 +33,13 @@
         </tr>
         </thead>
         <tbody>
-        {% for event in sensor.events %}
+        {% set break = false %}
+        {% set counter = 0 %}
+        {% for event in sensor.events  if not break%}
+            {% if counter == 100 %}
+                {% set break = true %}
+            {% endif %}
+            {% set counter = counter+1 %}
             <tr>
 
                 <td>{{ event.id }}</td>

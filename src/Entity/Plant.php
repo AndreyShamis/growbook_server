@@ -45,12 +45,14 @@ class Plant
     private $finishedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="plant", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="plant", orphanRemoval=true, fetch="EXTRA_LAZY")
+     * @ORM\OrderBy({"updatedAt" = "DESC"})
      */
     private $events;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sensor", mappedBy="Plant")
+     * @ORM\OrderBy({"id" = "DESC"})
      */
     private $sensors;
 

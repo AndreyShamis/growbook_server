@@ -13,6 +13,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use App\Twig\AppExtension;
@@ -22,6 +24,7 @@ class EventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
         $nulTransformer = new CallbackTransformer(
             function ($input)
             {
@@ -82,12 +85,19 @@ class EventType extends AbstractType
 //            //->add('createdAt')
 //            //->add('updatedAt')
 //        ;
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+            // ... adding the name field if needed
+            if ('a' === 'a' && true) {
+                $a = 1;
+            }
+        });
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Event::class,
+            'csrf_protection' => false,
         ]);
         $resolver->setDefaults(array(
             'name' => ''

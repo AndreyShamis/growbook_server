@@ -3,7 +3,8 @@
 {% block title %}Events index{% endblock %}
 
 {% block body %}
-    <h3 class="h2"> Events</h3>
+    <h3>Events {{ events | length }}</h3>
+    <a href="{{ path('event_new') }}">Create new</a>
     <table class="table">
         <thead>
         <tr>
@@ -51,5 +52,5 @@
     </table>
 
     <a href="{{ path('event_new') }}">Create new</a>
-    <a href="{{ path('event_new') }}">Create new</a>
+
 {% endblock %}
