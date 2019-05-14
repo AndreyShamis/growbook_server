@@ -3,31 +3,20 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    <h3>Plants</h3>
+    <h5>Plant [{{ plant.name }}] / {{ plant.id }} / ({{ plant.uniqId }})</h5>
 
     <table class="table">
         <tbody>
             <tr>
-                <th>Id</th>
-                <td>{{ plant.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ plant.name }}</td>
-            </tr>
-            <tr>
                 <th>CreatedAt</th>
                 <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <th>StartedAt</th>
+                <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+
             </tr>
             <tr>
                 <th>UpdatedAt</th>
                 <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>StartedAt</th>
-                <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
                 <th>FinishedAt</th>
                 <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
             </tr>

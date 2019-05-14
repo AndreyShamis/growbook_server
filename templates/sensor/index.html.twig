@@ -3,7 +3,7 @@
 {% block title %}Sensors list{% endblock %}
 
 {% block body %}
-    <h3>Sensors</h3>
+    <h4>Sensors</h4>
 
     <table class="table">
         <thead>
@@ -11,6 +11,9 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>Type</th>
+                <th>Events</th>
+                <th>TH</th>
+                <th>Force</th>
                 <th>UniqId</th>
                 <th>actions</th>
             </tr>
@@ -21,6 +24,9 @@
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
                 <td>{{ sensor.eventType | parseType }}</td>
+                <td>{{ sensor.events | length }}</td>
+                <td>{{ sensor.diffThreshold }}</td>
+                <td>{{ sensor.writeForceEveryXseconds }}</td>
                 <td>{{ sensor.uniqId }}</td>
                 <td>
 

@@ -20,7 +20,13 @@
         </tr>
         </thead>
         <tbody>
-        {% for event in events %}
+        {% set break = false %}
+        {% set counter = 0 %}
+        {% for event in events  if not break%}
+            {% if counter == 500 %}
+                {% set break = true %}
+            {% endif %}
+            {% set counter = counter+1 %}
             <tr>
                 <td>{{ event.id }}</td>
                 {#<td>{{ event.type | parseType }}</td>#}
