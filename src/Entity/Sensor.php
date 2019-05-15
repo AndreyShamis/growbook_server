@@ -95,6 +95,7 @@ class Sensor implements SensorInterface
         } catch (\Exception $e) {
         }
         $this->events = new ArrayCollection();
+
     }
 
     public function getId(): ?int
