@@ -79,7 +79,6 @@ class Plant
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
-        $this->setUniqId('');
     }
 
     public function getId(): ?int
@@ -223,6 +222,9 @@ class Plant
 
     public function getUniqId(): string
     {
+        if ($this->uniqId === null) {
+            return '';
+        }
         return $this->uniqId;
     }
 
