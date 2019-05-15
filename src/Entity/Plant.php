@@ -79,6 +79,7 @@ class Plant
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
+        $this->setUniqId('');
     }
 
     public function getId(): ?int
