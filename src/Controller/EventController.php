@@ -83,10 +83,14 @@ class EventController extends AbstractController
                 ));
                 if ($sensor !== null) {
                     $eventRequest['sensor'] = $sensor->getId();
+                    if ($plant !== null) {
+                        $eventRequest['plant'] = $plant->getId();
+                    }
                     unset($eventRequest['sensor_id'], $eventRequest['plant_id']);
                     $request->request->set('event', $eventRequest);
                     $automatic = true;
                 }
+
             }
         } catch (\Throwable $ex) {
             $logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
