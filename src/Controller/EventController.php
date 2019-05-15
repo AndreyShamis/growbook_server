@@ -7,6 +7,8 @@ namespace App\Controller;
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventTemperature;
+use App\Form\Events\EventHumidityType;
+use App\Form\Events\EventTemperatureType;
 use App\Form\EventType;
 use App\Model\TypeEvent;
 use App\Repository\EventRepository;
@@ -58,6 +60,11 @@ class EventController extends AbstractController
         $ev_req_type = array();
         $eventFound = $eventReqFound = false;
         $eventRequest = $request->request->get('event');
+        if ($eventRequest === null) {
+            $eventRequest = $request->request->all();
+            $eventRequest = array_pop($eventRequest);
+        }
+
         $sensor = $plant = null;
         $automatic = false;
         $status = 200;
@@ -118,7 +125,15 @@ class EventController extends AbstractController
                 $event->setType($ev_req_type);
             }
         }
-        $form = $this->createForm(EventType::class, $event);
+
+        if ($event instanceof EventTemperature) {
+            $form = $this->createForm(EventTemperatureType::class, $event);
+        } elseif ($event instanceof EventHumidity) {
+            $form = $this->createForm(EventHumidityType::class, $event);
+        } else {
+            $form = $this->createForm(EventType::class, $event);
+        }
+
 
         if ($eventReqFound) {
             $form->add('type', ChoiceType::class, TypeEvent::buildFormType(array($ev_req_type)));

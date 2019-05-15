@@ -6,12 +6,14 @@
         <td>{{ form_help(form.type) }}</td>
         <td style="width: 40%;">{{ form_errors(form.type) }}</td>
     </tr>
+    {% if form.value is defined %}
     <tr>
         <td>{{ form_label(form.value, 'Value') }}</td>
         <td>{{ form_widget(form.value) }}</td>
         <td>{{ form_help(form.value) }}</td>
         <td>{{ form_errors(form.value) }}</td>
     </tr>
+    {% endif %}
     <tr>
         <td>{{ form_label(form.plant) }}</td>
         <td>{{ form_widget(form.plant) }}</td>
