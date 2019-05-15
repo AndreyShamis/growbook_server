@@ -48,17 +48,17 @@ class EventTemperature extends Event implements SensorEventInterface
         return $this;
     }
 
-    public function getValue()
-    {
-        return $this->getTemperature();
-    }
-
-    public function setValue($value)
-    {
-        $this->setTemperature((float)$value);
-
-        return $this;
-    }
+//    public function getValue()
+//    {
+//        return $this->getTemperature();
+//    }
+//
+//    public function setValue($value)
+//    {
+//        $this->setTemperature((float)$value);
+//
+//        return $this;
+//    }
 
     public function calculateThreshHold(): float
     {

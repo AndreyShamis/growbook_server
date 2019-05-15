@@ -31,24 +31,24 @@ class EventHumidity extends Event implements SensorEventInterface
         }
         return $this;
     }
-
-    public function getValue()
-    {
-        return $this->getHumidity();
-    }
-
-    public function setValue($value)
-    {
-        if ($value !== null && $value === 'nan') {
-            $this->setHumidity(1);
-            $this->addNote('NaN_FOUND::' . $value . ';;');
-        } else {
-            $this->setHumidity((float)$value);
-        }
-
-
-        return $this;
-    }
+//
+//    public function getValue()
+//    {
+//        return $this->getHumidity();
+//    }
+//
+//    public function setValue($value)
+//    {
+//        if ($value !== null && $value === 'nan') {
+//            $this->setHumidity(1);
+//            $this->addNote('NaN_FOUND::' . $value . ';;');
+//        } else {
+//            $this->setHumidity((float)$value);
+//        }
+//
+//
+//        return $this;
+//    }
 
     public function calculateThreshHold(): int
     {
