@@ -9,24 +9,26 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EventTemperatureType extends EventType
 {
-//    public function buildForm(FormBuilderInterface $builder, array $options)
-//    {
-//        $builder
-//            ->add('temperature')
-////            ->add('plant')
-////            ->add('sensor')
-//        ;
-//        parent::buildForm($builder, $options);
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('temperature')
+//            ->add('plant')
+//            ->add('sensor')
+        ;
+
+        parent::buildForm($builder, $options);
+//        $builder->remove('value');
 //        $builder->remove('plant');
 //        $builder->remove('value');
-//        //$builder->remove('type');
-//
-//    }
+        //$builder->remove('type');
 
-//    public function configureOptions(OptionsResolver $resolver)
-//    {
-//        $resolver->setDefaults([
-//            'data_class' => EventTemperature::class,
-//        ]);
-//    }
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => EventTemperature::class,
+        ]);
+    }
 }
