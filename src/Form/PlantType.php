@@ -15,6 +15,7 @@ class PlantType extends AbstractType
             ->add('name')
             //->add('createdAt')
             //->add('updatedAt')
+            ->add('uniqId')
             ->add('startedAt')
             ->add('finishedAt')
         ;
