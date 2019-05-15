@@ -6,6 +6,7 @@ use App\Controller\EventController;
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventTemperature;
+use App\Model\TypeEvent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -38,43 +39,29 @@ class EventType extends AbstractType
 
 //        $builder
 //            ->add('andrey_type');
-        $builder
-            ->add('type', ChoiceType::class, [
-//                'widget' => 'single_text',
-                'required' => true,
-                'attr'=>array(
-                    'style'=>'font: 10px;'
-                ),
-                'choices' => EventController::buildTypeChoices(),
-            ]);
-//        if (get_class($builder->getData()) === Event::class) {
-//            $builder
-//                ->add('type', ChoiceType::class, [
+//        $builder
+//            ->add('type', ChoiceType::class, [
 ////                'widget' => 'single_text',
-//                    'required' => true,
-//                    'attr'=>array(
-//                        'style'=>'font: 10px;'
-//                    ),
-//                    'choices' => $this->buildTypeChoices(),
-//                ]);
-//            //$builder->get('type')->addModelTransformer($nulTransformer);
-//        } else {
-//            $builder
-//                ->add('type', HiddenType::class, [
-////                'widget' => 'single_text',
-//                    'data' => get_class($builder->getData()),
-//                    'empty_data' => get_class($builder->getData()),
-//                    'required' => false,
-//                    'attr'=>array('style'=>'display:none;')
-//                ]);
-//        }
+//                'required' => true,
+//                'attr'=>array(
+//                    'style'=>'font: 10px;'
+//                ),
+//                'choices' => EventController::buildTypeChoices(),
+//            ]);
         $builder
             ->add('value')
 
             ->add('plant')
             ->add('sensor')
             ->add('note')
+
         ;
+        $builder->add('type', ChoiceType::class , TypeEvent::buildFormType());
+//        if ($options['data'] !== null && $options['data']->getType() !== null) {
+//            $builder->add('type', ChoiceType::class , TypeEvent::buildFormType(array($options['data']->getType())));
+//        } else {
+//            $builder->add('type', ChoiceType::class , TypeEvent::buildFormType());
+//        }
 //        $builder
 //            ->add('name', TextType::class, [
 ////                'widget' => 'single_text',

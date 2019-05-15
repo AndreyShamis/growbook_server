@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Entity\Events\EventTemperature;
+use App\Model\EventInterface;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\Index;
+use App\Model\SensorInterface;
 
 /**
  * @ApiResource()
@@ -22,7 +23,7 @@ use Doctrine\ORM\Mapping\Index;
  *     })
  * @ORM\HasLifecycleCallbacks()
  */
-class Event
+class Event implements EventInterface
 {
     /**
      * @ORM\Id()
@@ -192,7 +193,7 @@ class Event
         return $this;
     }
 
-    public function getSensor(): ?Sensor
+    public function getSensor(): ?SensorInterface
     {
         return $this->sensor;
     }
@@ -232,4 +233,5 @@ class Event
         }
         return $this;
     }
+
 }

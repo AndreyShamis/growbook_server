@@ -4,13 +4,15 @@ namespace App\Entity\Events;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Event;
+use App\Model\EventInterface;
+use App\Model\SensorEventInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\Events\EventTemperatureRepository")
  */
-class EventTemperature extends Event
+class EventTemperature extends Event implements SensorEventInterface
 {
 
     /**
@@ -71,12 +73,13 @@ class EventTemperature extends Event
     }
 
     /**
-     * @param EventTemperature $otherEvent
+     * @param EventInterface $otherEvent
      * @param bool $abs
      * @return float
      */
-    public function diff(EventTemperature $otherEvent, bool $abs=false): float
+    public function diff(EventInterface $otherEvent, bool $abs=false): float
     {
+        /** @var EventTemperature $otherEvent */
         $currentTmp = $this->getTemperature();
         $ot = $otherEvent->getTemperature();
         $td = $currentTmp - $ot;

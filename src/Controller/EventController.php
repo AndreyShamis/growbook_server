@@ -192,9 +192,10 @@ class EventController extends AbstractController
             }
 
         }
+        $newForm = $form->createView();
         return $this->render('event/new.html.twig', [
             'event' => $event,
-            'form' => $form->createView(),
+            'form' => $newForm,
         ]);
     }
 
@@ -219,12 +220,11 @@ class EventController extends AbstractController
 
         try {
             /** Cast object to another class */
-            if (get_class($event) !== $request->request->get('event')['type']) {
+            $tmpType = $request->request->get('event')['type'];
+            if ($tmpType !== null && get_class($event) !== $tmpType) {
                 $event->setType($request->request->get('event')['type']);
                 /** @var Event $event */
                 $event = $event->castAs($request->request->get('event')['type']);
-
-
             }
         } catch (\Throwable $ex) { }
         $form = $this->createForm(EventType::class, $event);

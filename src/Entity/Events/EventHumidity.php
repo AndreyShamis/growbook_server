@@ -3,12 +3,14 @@
 namespace App\Entity\Events;
 
 use App\Entity\Event;
+use App\Model\EventInterface;
+use App\Model\SensorEventInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Events\EventHumidityRepository")
  */
-class EventHumidity extends Event
+class EventHumidity extends Event implements SensorEventInterface
 {
     /**
      * @ORM\Column(type="float")
@@ -61,12 +63,13 @@ class EventHumidity extends Event
     }
 
     /**
-     * @param EventHumidity $otherEvent
+     * @param EventInterface $otherEvent
      * @param bool $abs
      * @return float
      */
-    public function diff(EventHumidity $otherEvent, bool $abs=false): float
+    public function diff(EventInterface $otherEvent, bool $abs=false): float
     {
+        /** @var EventHumidity $otherEvent */
         $currentTmp = $this->getHumidity();
         $ot = $otherEvent->getHumidity();
         $td = $currentTmp - $ot;

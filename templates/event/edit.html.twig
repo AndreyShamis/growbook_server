@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit EventTemperature{% endblock %}
+{% block title %}Edit Event{% endblock %}
 
 {% block body %}
-    <h1>Edit Event</h1>
+    <h6>Edit Event {{ event.id }}</h6>
 
     {{ include('event/_form.html.twig', {'button_label': 'Update'}) }}
 
