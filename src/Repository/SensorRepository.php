@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Sensor;
+use App\Model\TypeEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -41,6 +42,21 @@ class SensorRepository extends ServiceEntityRepository
         if ($entity === null) {
             $entity = new Sensor();
             $entity->setUniqId($criteria['uniqId']);
+
+            //if (array_key_exists('eventType', $criteria)) {
+            $entity->setEventType($criteria['eventType']);
+            if ($entity->getEventType() === TypeEvent::Humidity) {
+                $entity->setDiffThreshold(2);
+                $entity->setSupportEvents(true);
+            } else if ($entity->getEventType() === TypeEvent::Temperature) {
+                $entity->setDiffThreshold(0.5);
+                $entity->setSupportEvents(true);
+            } else {
+                $entity->setDiffThreshold(10);
+            }
+            //}
+
+
             if (array_key_exists('plant', $criteria) && $criteria['plant'] !== null) {
                 $entity->setPlant($criteria['plant']);
             }

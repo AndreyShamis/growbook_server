@@ -84,6 +84,7 @@ class EventController extends AbstractController
                     'uniqId' => $sensorId,
                     'name' => $sensorId,
                     'plant' => $plant,
+                    'eventType' => $eventRequest['type'],
                 ));
                 if ($sensor !== null) {
                     $eventRequest['sensor'] = $sensor->getId();
