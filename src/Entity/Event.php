@@ -215,9 +215,13 @@ class Event implements EventInterface
 
     public function castAs($newClass) {
         $obj = new $newClass;
-        foreach (get_object_vars($this) as $key => $name) {
-            $obj->$key = $name;
-        }
+        $obj = clone $this;
+//        foreach (get_object_vars($this) as $key => $name) {
+//            $obj->$key = $name;
+//        }
+//        foreach (get_class_methods($this) as $key => $name) {
+//            $obj->$key = $name;
+//        }
         return $obj;
     }
 

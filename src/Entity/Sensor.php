@@ -83,6 +83,7 @@ class Sensor implements SensorInterface
 
     /**
      * @ORM\OneToOne(targetEntity="App\Entity\Event", cascade={"all"})
+     * @ORM\JoinColumn(name="last_event_id", onDelete="SET NULL")
      */
     private $lastEvent;
 

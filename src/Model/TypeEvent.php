@@ -102,9 +102,9 @@ abstract class TypeEvent
                 return self::getName($value);
             },
         );
-        if ($preferred !== null) {
-            $ret['preferred_choices'] = self::getShortName($preferred[0]);
-        }
+//        if ($preferred !== null) {
+//            $ret['preferred_choices'] = self::getShortName($preferred[0]);
+//        }
         return $ret;
         /**
          * The option "choices_as_values" does not exist.

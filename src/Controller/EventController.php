@@ -8,6 +8,7 @@ use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventTemperature;
 use App\Form\EventType;
+use App\Model\TypeEvent;
 use App\Repository\EventRepository;
 use App\Repository\Events\EventTemperatureRepository;
 use App\Repository\PlantRepository;
@@ -106,30 +107,45 @@ class EventController extends AbstractController
         } catch (\Throwable $ex) {
             $logger->critical('ERROR in ev_type:' . $ex->getMessage() . ' Got:' . $ev_type);
         }
-
-        $form = $this->createForm(EventType::class, $event);
         if ($eventReqFound) {
-            $form->add('type', ChoiceType::class, [
-//                'widget' => 'single_text',
-                'required' => true,
-                'preferred_choices' => array($ev_req_type),
-                'attr'=>array(
-                    'style'=>'font: 10px;'
-                ),
-                'choices' => self::buildTypeChoices(),
-            ]);
+            $tmpType = $ev_req_type;
+            if ($tmpType !== null && (get_class($event) !== $tmpType || $event->getType() !== get_class($event))) {
+                $event->setType($ev_req_type);
+            }
         }
+        $form = $this->createForm(EventType::class, $event);
 
+        if ($eventReqFound) {
+            $form->add('type', ChoiceType::class, TypeEvent::buildFormType(array($ev_req_type)));
+        }
         $form->handleRequest($request);
 
         if ($eventFound && $form->isSubmitted() && $form->isValid()) {
             $lastEvent = null;
+            try{
+                if ($sensor === null && $event !== null && $event->getSensor() !== null) {
+                    $sensor = $event->getSensor();
+                    if ($plant === null && $event->getPlant() !== null) {
+                        $plant = $event->getPlant();
+                    }
+                }
+            } catch (\Throwable $ex) {
+
+            }
             if ($automatic && $sensor !== null && $plant !== null) {
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
             $entityManager = $this->getDoctrine()->getManager();
             if ($lastEvent === null) {
-                $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
+                if ($automatic) {
+                    $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
+                } else {
+                    $event->addNote('MANUAL::'.$request->getClientIp(). ';;');
+                }
+
+                if ($sensor !== null) {
+                    $sensor->setLastEvent($event);
+                }
                 $entityManager->persist($event);
                 $entityManager->flush();
                 $status = 301;
@@ -192,6 +208,7 @@ class EventController extends AbstractController
             }
 
         }
+
         $newForm = $form->createView();
         return $this->render('event/new.html.twig', [
             'event' => $event,

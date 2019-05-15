@@ -26,16 +26,6 @@ class EventType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-        $nulTransformer = new CallbackTransformer(
-            function ($input)
-            {
-                return $input;
-            },
-            function ($input)
-            {
-                return $input; //null;
-            }
-        );
 
 //        $builder
 //            ->add('andrey_type');
@@ -57,6 +47,7 @@ class EventType extends AbstractType
 
         ;
         $builder->add('type', ChoiceType::class , TypeEvent::buildFormType());
+
 //        if ($options['data'] !== null && $options['data']->getType() !== null) {
 //            $builder->add('type', ChoiceType::class , TypeEvent::buildFormType(array($options['data']->getType())));
 //        } else {
