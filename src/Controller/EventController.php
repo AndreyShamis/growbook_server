@@ -74,6 +74,10 @@ class EventController extends AbstractController
                         'name' => RandomName::getRandomTerm() . '__' . $plantUniqId,
                         'uniqId' => $plantUniqId,
                     ]);
+
+                    if ($plant !== null) {
+                        $eventRequest['plant'] = $plant->getId();
+                    }
                 }
 
                 $sensor = $sensors->findOrCreateByUniqId(array(
@@ -130,8 +134,9 @@ class EventController extends AbstractController
                     }
                 }
             } catch (\Throwable $ex) {
-
+                $logger->critical('ERROR in looking for sensor:' . $ex->getMessage());
             }
+
             if ($automatic && $sensor !== null && $plant !== null) {
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
@@ -154,6 +159,7 @@ class EventController extends AbstractController
                 // Need to check if last event have same value?
                 if ($lastEvent->getValue() !== $event->getValue()) {
                     $needUpdate = true;
+
                     if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
                         if ($event->getType() === EventHumidity::class){
                             /** @var EventHumidity $event */
@@ -184,9 +190,7 @@ class EventController extends AbstractController
                             $status = 301;
                             $message = 'Created ID:' . $event->getId();
                         }
-
                     }
-
                 }
             }
             if ($automatic) {
@@ -209,10 +213,9 @@ class EventController extends AbstractController
 
         }
 
-        $newForm = $form->createView();
         return $this->render('event/new.html.twig', [
             'event' => $event,
-            'form' => $newForm,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -243,7 +246,7 @@ class EventController extends AbstractController
                 /** @var Event $event */
                 $event = $event->castAs($request->request->get('event')['type']);
             }
-        } catch (\Throwable $ex) { }
+        } catch (\Throwable $ex) {}
         $form = $this->createForm(EventType::class, $event);
 
         $form->handleRequest($request);

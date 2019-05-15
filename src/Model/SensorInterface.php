@@ -10,5 +10,5 @@ namespace App\Model;
 
 interface SensorInterface
 {
-
+    public function getSupportEvents(): bool;
 }

@@ -211,8 +211,14 @@ class Sensor implements SensorInterface
         return $this;
     }
 
-    public function getSupportEvents(): ?bool
+    /**
+     * @return bool
+     */
+    public function getSupportEvents(): bool
     {
+        if ($this->supportEvents === null) {
+            return false;
+        }
         return $this->supportEvents;
     }
 
