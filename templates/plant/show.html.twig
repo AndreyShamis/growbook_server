@@ -23,6 +23,156 @@
         </tbody>
     </table>
     <hr/>
+    <canvas id="myChart" width="400" height="100"></canvas>
+    <script>
+        var color = Chart.helpers.color;
+        var my_color = window.chartColors.red;
+        var fill_val = false;
+
+        var config = {
+            type: 'line',
+            data: {
+                datasets: [
+                    {% for sensor in plant.sensors%}
+                    {% set type = sensor.eventType | parseType %}
+                    {% set color = 'window.chartColors.red' %}
+                    {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
+                    {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
+                    {#{% if type == 'Humidity' %}#}
+                    {#my_color = window.chartColors.yellow;#}
+                    {#fill_val = true;#}
+                    {#{% endif %}#}
+                    {#{% if type == 'Temperature' %}#}
+                    {#my_color = window.chartColors.blue;#}
+                    {#{% endif %}#}
+                    {
+                    label: '{{ sensor.name }}',
+                    backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
+                    borderColor: {{ color }},
+                    fill: {{ type == 'Humidity' ? 'true' : 'false' }},
+                    pointRadius: 5,
+                    // lineTension: 0,
+                    borderWidth: 2,
+                    data:[
+                        {% set break = false %}
+                        {% set counter = 0 %}
+                        {% for event in sensor.events  if not break%}
+                        {% if counter == 300 %}
+                        {% set break = true %}
+                        {% endif %}
+                        {% set counter = counter+1 %}{x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},
+                        {% endfor %}
+                    ],
+
+                    },
+                    {% endfor %}
+                    // , {
+                    //     label: 'Dataset with date object point data',
+                    //     backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                    //     borderColor: window.chartColors.blue,
+                    //     fill: false,
+                    //     data: [{
+                    //         x: newDate(0),
+                    //         y: randomScalingFactor()
+                    //     }, {
+                    //         x: newDate(2),
+                    //         y: randomScalingFactor()
+                    //     }, {
+                    //         x: newDate(4),
+                    //         y: randomScalingFactor()
+                    //     }, {
+                    //         x: newDate(5),
+                    //         y: randomScalingFactor()
+                    //     }]
+                    // }
+                ]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: ' [{{ plant.name }}]'
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        display: true,
+                        // distribution: 'series',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        },
+                        ticks: {
+                            source: 'data',
+                            autoSkip: true,
+                            major: {
+                                fontStyle: 'bold',
+                                fontColor: '#FF0000'
+                            }
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        }
+                    }]
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'index',
+                    callbacks: {
+                        label: function(tooltipItem, myData) {
+                            var label = myData.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            label += parseFloat(tooltipItem.value).toFixed(2);
+                            return label;
+                        }
+                    }
+                }
+            }
+        };
+
+        window.onload = function() {
+            var ctx = $('#myChart');
+            window.myLine = new Chart(ctx, config);
+        };
+        //
+        // document.getElementById('randomizeData').addEventListener('click', function() {
+        //     config.data.datasets.forEach(function(dataset) {
+        //         dataset.data.forEach(function(dataObj) {
+        //             dataObj.y = randomScalingFactor();
+        //         });
+        //     });
+        //
+        //     window.myLine.update();
+        // });
+        // document.getElementById('addData').addEventListener('click', function() {
+        //     if (config.data.datasets.length > 0) {
+        //         config.data.datasets[0].data.push({
+        //             x: newDateString(config.data.datasets[0].data.length + 2),
+        //             y: randomScalingFactor()
+        //         });
+        //         config.data.datasets[1].data.push({
+        //             x: newDate(config.data.datasets[1].data.length + 2),
+        //             y: randomScalingFactor()
+        //         });
+        //
+        //         window.myLine.update();
+        //     }
+        // });
+        //
+        // document.getElementById('removeData').addEventListener('click', function() {
+        //     config.data.datasets.forEach(function(dataset) {
+        //         dataset.data.pop();
+        //     });
+        //
+        //     window.myLine.update();
+        // });
+    </script>
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
     <table class="table">
@@ -31,6 +181,7 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Type</th>
+                <th>Last Value</th>
                 <th>Count</th>
                 <th>TH</th>
                 <th>Force sec</th>
@@ -49,6 +200,11 @@
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
                 <td>{{ sensor.eventType | parseType }}</td>
+                <td>
+                    {% if sensor.supportEvents and sensor.lastEvent is defined %}
+                    {{ sensor.lastEvent.value }}
+                    {% endif %}
+                </td>
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.diffThreshold }}</td>
                 <td>{{ sensor.writeForceEveryXseconds }}</td>

@@ -45,8 +45,8 @@ class Sensor
     private $Plant;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="sensor", fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"updatedAt" = "DESC"})
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="sensor", fetch="EXTRA_LAZY", cascade={"all"})
+     * @ORM\OrderBy({"createdAt" = "DESC"})
      */
     private $events;
 
@@ -81,7 +81,7 @@ class Sensor
     protected $updatedAt;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Event", cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity="App\Entity\Event", cascade={"all"})
      */
     private $lastEvent;
 

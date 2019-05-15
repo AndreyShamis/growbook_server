@@ -69,6 +69,7 @@ class Event
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sensor", inversedBy="events")
+     * @ORM\JoinColumn(name="sensor_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $sensor;
 
