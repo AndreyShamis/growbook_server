@@ -53,19 +53,10 @@
                     pointRadius: 5,
                     // lineTension: 0,
                     borderWidth: 2,
-                    data:[
-                        {% set break = false %}
-                        {% set counter = 0 %}
-                        {% for event in sensor.events  if not break%}
-                        {% if counter == 300 %}
-                        {% set break = true %}
-                        {% endif %}
-                        {% set counter = counter+1 %}{x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},
-                        {% endfor %}
-                    ],
+                    data:[{% for event in sensor.events | slice(0, 300)%}
+                        {x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},{% endfor %}],
 
-                    },
-                    {% endfor %}
+                    },{% endfor %}
                     // , {
                     //     label: 'Dataset with date object point data',
                     //     backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
@@ -190,13 +181,7 @@
             </tr>
         </thead>
         <tbody>
-        {% set break = false %}
-        {% set counter = 0 %}
-        {% for sensor in plant.sensors if not break%}
-            {% if counter == 100 %}
-                {% set break = true %}
-            {% endif %}
-            {% set counter = counter+1 %}
+        {% for sensor in plant.sensors | slice(0, 100)%}
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
@@ -232,20 +217,19 @@
         </tr>
         </thead>
         <tbody>
-        {% set break = false %}
         {% set counter = 0 %}
-        {% for event in plant.events if not break %}
-            {% if counter == 100 %}
-                {% set break = true %}
-            {% endif %}
-            {% if event.sensor is none %}
-                {% set counter = counter+1 %}
-            <tr>
-                <td>{{ event.id }}</td>
-                <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.name }}</a></td>
-                <td>{{ event.type | parseType }}</td>
-                <td>{{ event.value }}</td>
-            </tr>
+        {% for event in plant.events %}
+            {% if counter > 1000 %}
+            {% else %}
+                {% if event.sensor is none %}
+                    {% set counter = counter+1 %}
+                    <tr>
+                        <td>{{ event.id }}</td>
+                        <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.name }}</a></td>
+                        <td>{{ event.type | parseType }}</td>
+                        <td>{{ event.value }}</td>
+                    </tr>
+                {% endif %}
             {% endif %}
         {% endfor %}
         </tbody>

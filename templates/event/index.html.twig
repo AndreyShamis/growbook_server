@@ -20,13 +20,8 @@
         </tr>
         </thead>
         <tbody>
-        {% set break = false %}
-        {% set counter = 0 %}
-        {% for event in events  if not break%}
-            {% if counter == 500 %}
-                {% set break = true %}
-            {% endif %}
-            {% set counter = counter+1 %}
+
+        {% for event in events | slice(0, 500)%}
             <tr>
                 <td>{{ event.id }}</td>
                 {#<td>{{ event.type | parseType }}</td>#}
@@ -34,9 +29,7 @@
                 <td>{{ event.name }}</td>
                 <td>
                 {% if event.sensor.id is defined %}
-
                         <a href="{{ path('sensor_show', {'id': event.sensor.id}) }}" target="_blank">->S|{{ event.sensor.name }}</a>
-                        </td>
                 {% else %}
                     No Sens
                 {% endif %}

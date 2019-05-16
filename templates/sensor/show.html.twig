@@ -52,20 +52,8 @@
                     pointRadius: 5,
                     // lineTension: 0,
                     borderWidth: 2,
-                    data: [
-                        {% set break = false %}
-                        {% set counter = 0 %}
-                        {% for event in sensor.events  if not break%}
-                        {% if counter == 2000 %}
-                        {% set break = true %}
-                        {% endif %}
-                        {% set counter = counter+1 %}
-                        {
-                            x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}',
-                            y: {{ event.value }},
-                        },
-                        {% endfor %}
-                    ],
+                    data: [{% for event in sensor.events | slice(0, 2000) %}
+                        {x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},{% endfor %}],
                 }
                 // , {
                 //     label: 'Dataset with date object point data',
@@ -190,15 +178,8 @@
         </tr>
         </thead>
         <tbody>
-        {% set break = false %}
-        {% set counter = 0 %}
-        {% for event in sensor.events  if not break%}
-            {% if counter == 100 %}
-                {% set break = true %}
-            {% endif %}
-            {% set counter = counter+1 %}
+        {% for event in sensor.events | slice(0, 100) %}
             <tr>
-
                 <td>{{ event.id }}</td>
                 <td>{{ event.name }}</td>
                 <td>{{ event.type }}</td>
