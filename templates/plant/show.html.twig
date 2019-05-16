@@ -182,6 +182,7 @@
                 <th>Name</th>
                 <th>Type</th>
                 <th>Last Value</th>
+                <th>Last Time</th>
                 <th>Count</th>
                 <th>TH</th>
                 <th>Force sec</th>
@@ -203,6 +204,11 @@
                 <td>
                     {% if sensor.supportEvents and sensor.lastEvent is defined %}
                     {{ sensor.lastEvent.value }}
+                    {% endif %}
+                </td>
+                <td title="{{ sensor.lastEvent.createdAt | date('Y-m-d H:i:s')}} ">
+                    {% if sensor.supportEvents and sensor.lastEvent is defined %}
+                        {{ sensor.lastEvent.createdAt | date('H:i:s')}} | {{ sensor.lastEvent.createdAt | time_diff}}
                     {% endif %}
                 </td>
                 <td>{{ sensor.events | length }}</td>
