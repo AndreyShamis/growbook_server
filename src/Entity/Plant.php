@@ -69,6 +69,16 @@ class Plant
      */
     private $uniqId;
 
+    /**
+     * @ORM\Column(type="string", length=50, columnDefinition="ENUM('unknown', 'soil', 'hydro', 'aero') NOT NULL DEFAULT 'soil'")
+     */
+    private $soilMedium = 'soil';
+
+    /**
+     * @ORM\Column(type="string", length=30, columnDefinition="ENUM('standart', 'felt', 'smart', 'air', 'hempty_bucket') NOT NULL DEFAULT 'standart'")
+     */
+    private $pot = 'standart';
+
     public function __construct()
     {
         try {
@@ -241,5 +251,29 @@ class Plant
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getSoilMedium(): ?string
+    {
+        return $this->soilMedium;
+    }
+
+    public function setSoilMedium(string $soilMedium): self
+    {
+        $this->soilMedium = $soilMedium;
+
+        return $this;
+    }
+
+    public function getPot(): ?string
+    {
+        return $this->pot;
+    }
+
+    public function setPot(string $pot): self
+    {
+        $this->pot = $pot;
+
+        return $this;
     }
 }

@@ -36,31 +36,28 @@
 {% set url = app.request.scheme ~'://' ~  app.request.httpHost %}
 <div class="container-fluid">
     <div class="row">
+        {% spaceless %}
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
                         <a class="nav-link {% if route starts with 'plant_' %}active{% endif %}" href="{{ path('plant_index') }}">
-                            <span data-feather="plants"></span>
-                            Plants
+                            <span data-feather="plants"></span>Plants
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if route starts with 'sensor' %}active{% endif %}" href="{{ path('sensor_index') }}">
-                            <span data-feather="sensors"></span>
-                            Sensors
+                            <span data-feather="sensors"></span>Sensors
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if route starts with 'event' %}active{% endif %}" href="{{ path('events_index') }}">
-                            <span data-feather="events"></span>
-                            Events
+                            <span data-feather="events"></span>Events
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link {% if route starts with 'cycle_' %}active{% endif %}" href="#">
-                            <span data-feather="home"></span>
-                            Dashboard (WIP)
+                            <span data-feather="home"></span>Dashboard (WIP)
                         </a>
                     </li>
                     {#<li class="nav-item">#}
@@ -86,20 +83,18 @@
                 <ul class="nav flex-column mb-2">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('event_new') }}">
-                            <span data-feather="file-text"></span>
-                            New Event
+                            <span data-feather="file-text"></span>New Event
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ path('event_new', { type: 'App\\Entity\\Events\\EventTemperature'}) }}">
-                            <span data-feather="file-text"></span>
-                            Add Temperature
+                            <span data-feather="file-text"></span>Add Temperature
                         </a>
                     </li>
                 </ul>
             </div>
         </nav>
-
+        {% endspaceless %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h6">GrowBook</h1>

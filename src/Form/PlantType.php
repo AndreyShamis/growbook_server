@@ -18,6 +18,7 @@ class PlantType extends AbstractType
             ->add('uniqId')
             ->add('startedAt')
             ->add('finishedAt')
+            ->add('soilMedium')
         ;
     }
 

@@ -4,29 +4,35 @@
 
 {% block body %}
     <h5>Plant [{{ plant.name }}] / {{ plant.id }} / ({{ plant.uniqId }})</h5>
-
+    {% spaceless %}
     <table class="table">
         <tbody>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <th>StartedAt</th>
-                <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
-
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <th>FinishedAt</th>
-                <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
+        <tr>
+            <th>Medium</th>
+            <td>{{ plant.soilMedium }}</td>
+            <th>Pot</th>
+            <td>{{ plant.pot }}</td>
+        </tr>
+        <tr>
+            <th>CreatedAt</th>
+            <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <th>StartedAt</th>
+            <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
+        <tr>
+            <th>UpdatedAt</th>
+            <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <th>FinishedAt</th>
+            <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
+        </tr>
         </tbody>
     </table>
+    {% endspaceless %}
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>
 
     <button id="toggleScale">Toggle Scale Type</button>
-
+    <a href="{{ path('event_new') }}">Create new</a>
     <script>
         var color = Chart.helpers.color;
         var my_color = window.chartColors.red;
@@ -53,6 +59,7 @@
                     {% set color = 'window.chartColors.red' %}
                     {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
                     {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
+                    {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
                     {#{% if type == 'Humidity' %}#}
                     {#my_color = window.chartColors.yellow;#}
                     {#fill_val = true;#}
@@ -65,11 +72,10 @@
                     backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
                     borderColor: {{ color }},
                     fill: {{ type == 'Humidity' ? 'true' : 'false' }},
-                    // lineTension: 0,
+                    lineTension: 0,
                     borderWidth: 2,
                     sensorType: '{{ sensor.eventType | parseType }}',
-                    data:[{% for event in sensor.events | slice(0, 300)%}
-                        {x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},{% endfor %}],
+                    data:[{% for event in sensor.events | slice(0, 300)%}{x:'{{ event.createdAt|date('Y-m-d H:i:s') }}',y:{{ event.value }},},{% endfor %}],
                     //pointStyle: 'rectRot',
                     pointRadius: 5,
                     //pointBorderColor: 'rgb(0, 0, 0)'
@@ -187,6 +193,7 @@
     </script>
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
+    {% spaceless %}
     <table class="table">
         <thead>
             <tr>
@@ -225,9 +232,11 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endspaceless %}
     <hr/>
     <h5>Events without sensor | All events count {{ plant.events | length }}</h5>
     <hr/>
+    {% spaceless %}
     <table class="table">
         <thead>
         <tr>
@@ -255,6 +264,7 @@
         {% endfor %}
         </tbody>
     </table>
+    {% endspaceless %}
     <hr/>
     <h5>Other</h5>
     <hr/>
