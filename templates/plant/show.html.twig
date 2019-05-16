@@ -24,10 +24,25 @@
     </table>
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>
+
+    <button id="toggleScale">Toggle Scale Type</button>
+
     <script>
         var color = Chart.helpers.color;
         var my_color = window.chartColors.red;
         var fill_val = false;
+
+        function CustomOnClickAction(e, legendItem) {
+            var index = legendItem.datasetIndex;
+            var ci = this.chart;
+            var meta = ci.getDatasetMeta(index);
+
+            // See controller.isDatasetVisible comment
+            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+
+            // We hid a dataset ... rerender the chart
+            ci.update();
+        }
 
         var config = {
             type: 'line',
@@ -50,35 +65,30 @@
                     backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
                     borderColor: {{ color }},
                     fill: {{ type == 'Humidity' ? 'true' : 'false' }},
-                    pointRadius: 5,
                     // lineTension: 0,
                     borderWidth: 2,
+                    sensorType: '{{ sensor.eventType | parseType }}',
                     data:[{% for event in sensor.events | slice(0, 300)%}
                         {x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},{% endfor %}],
-
+                    //pointStyle: 'rectRot',
+                    pointRadius: 5,
+                    //pointBorderColor: 'rgb(0, 0, 0)'
                     },{% endfor %}
-                    // , {
-                    //     label: 'Dataset with date object point data',
-                    //     backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                    //     borderColor: window.chartColors.blue,
-                    //     fill: false,
-                    //     data: [{
-                    //         x: newDate(0),
-                    //         y: randomScalingFactor()
-                    //     }, {
-                    //         x: newDate(2),
-                    //         y: randomScalingFactor()
-                    //     }, {
-                    //         x: newDate(4),
-                    //         y: randomScalingFactor()
-                    //     }, {
-                    //         x: newDate(5),
-                    //         y: randomScalingFactor()
-                    //     }]
-                    // }
                 ]
             },
             options: {
+                legend: {
+                    display: true,
+                    position: 'right',
+                    onClick: CustomOnClickAction,
+                    labels: {
+                        fontColor: 'rgb(255, 99, 132)',
+                        fontSize: 18,
+                        fontFamily: 'Helvetica',
+                        usePointStyle: true,
+                        fontStyle: 'normal'
+                    }
+                },
                 responsive: true,
                 title: {
                     display: true,
@@ -94,7 +104,7 @@
                             labelString: 'Date'
                         },
                         ticks: {
-                            source: 'data',
+                            source: 'data',  // add timeprint on bottom for each points
                             autoSkip: true,
                             major: {
                                 fontStyle: 'bold',
@@ -112,21 +122,22 @@
                 },
                 tooltips: {
                     intersect: false,
-                    mode: 'index',
+                    mode: 'point',
                     callbacks: {
                         label: function(tooltipItem, myData) {
-                            var label = myData.datasets[tooltipItem.datasetIndex].label || '';
+                            var obj = myData.datasets[tooltipItem.datasetIndex];
+                            var label = obj.label || '';
                             if (label) {
-                                label += ': ';
+                                label += '         ';
                             }
-                            label += parseFloat(tooltipItem.value).toFixed(2);
+                            label += obj['sensorType'] + ':' + parseFloat(tooltipItem.value); // .toFixed(4)
                             return label;
                         }
                     }
                 }
             }
         };
-
+        var scaleType = 'linear';
         window.onload = function() {
             var ctx = $('#myChart');
             window.myLine = new Chart(ctx, config);
@@ -163,6 +174,16 @@
         //
         //     window.myLine.update();
         // });
+        document.getElementById('toggleScale').addEventListener('click', function() {
+            scaleType = scaleType === 'linear' ? 'logarithmic' : 'linear';
+            //window.myLine.options.title.text = 'Chart.js Line Chart - ' + scaleType;
+            window.myLine.options.scales.yAxes[0] = {
+                display: true,
+                type: scaleType
+            };
+
+            window.myLine.update();
+        });
     </script>
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
