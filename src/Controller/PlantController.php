@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Plant;
 use App\Form\PlantType;
+use App\Repository\EventRepository;
 use App\Repository\PlantRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -51,10 +52,12 @@ class PlantController extends AbstractController
     /**
      * @Route("/{id}", name="plant_show", methods={"GET"})
      */
-    public function show(Plant $plant): Response
+    public function show(Plant $plant, EventRepository $eventsRepo): Response
     {
+        $events = $eventsRepo->findAllByPlantAndDay($plant, 1);
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
+            'events' => $events,
         ]);
     }
 
