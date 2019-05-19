@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\Plant;
 use App\Entity\Sensor;
+use App\Model\PlantInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -66,22 +67,27 @@ class EventRepository extends ServiceEntityRepository
         return $ret;
         // new \DateTime('now')
     }
-    // /**
-    //  * @return Event[] Returns an array of Event objects
-    //  */
-    /*
-    public function findByExampleField($value)
+
+    /**
+     * @param PlantInterface $plant
+     * @param int $days
+     * @return Event[] Returns an array of Event objects
+     * @throws \Exception
+     */
+    public function findAllByPlantAndDay(PlantInterface $plant, int $days)
     {
         return $this->createQueryBuilder('e')
-            ->andWhere('e.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('e.plant = :plant')
+            ->andWhere('e.createdAt >= :givenDate')
+            ->setParameter('plant', $plant->getId())
+            ->setParameter('givenDate', new \DateTime('-' . $days . ' days'))
             ->orderBy('e.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Event
