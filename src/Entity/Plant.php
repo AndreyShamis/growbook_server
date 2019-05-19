@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\PlantInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -18,7 +19,7 @@ use Doctrine\ORM\Mapping\Index;
  *     })
  * @ORM\HasLifecycleCallbacks()
  */
-class Plant
+class Plant implements PlantInterface
 {
     /**
      * @ORM\Id()
