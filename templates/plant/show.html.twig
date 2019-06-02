@@ -104,7 +104,13 @@
                     xAxes: [{
                         type: 'time',
                         display: true,
-                        // distribution: 'series',
+                        time: {
+                            unit: 'quarter',
+                            displayFormats: {
+                                quarter: 'D/M H:mm'  // https://www.chartjs.org/docs/latest/axes/cartesian/time.html
+                            }
+                        },
+                        distribution: 'series',
                         scaleLabel: {
                             display: true,
                             labelString: 'Date'
