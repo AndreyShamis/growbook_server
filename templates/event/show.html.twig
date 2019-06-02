@@ -3,50 +3,66 @@
 {% block title %}Event{% endblock %}
 
 {% block body %}
-    <h4>Event for {{ event.type | parseType }}</h4>
+    <h5>Event for  <span class="badge badge-pill badge-danger">{{ event.type | parseType }}</span></h5>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-8">
+                <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>ID</th>
+                        <td>{{ event.id }}</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ event.name }}</td>
+                    </tr>
+                    <tr>
+                        <th>Value</th>
+                        <td>{{ event.value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Note</th>
+                        <td>{{ event.note }}</td>
+                    </tr>
+                    <tr>
+                        <th>Options</th>
+                        <td>
+                            <a href="{{ path('events_index') }}">back to list</a>
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-4">
+                <table class="table table-bordered ">
+                    <tbody>
+                    <tr>
+                        <th>Sensor/ Sensor ID</th>
+                        <td>{{ event.sensor }} / <a href="{{ path('sensor_show', {'id': event.sensor.id}) }}">{{ event.sensor.id }}</a></td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ event.type }}</td>
+                    </tr>
+                    <tr>
+                        <th>CreatedAt</th>
+                        <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>UpdatedAt</th>
+                        <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Delete?</th>
+                        <td>{{ include('event/_delete_form.html.twig') }}</td>
+                    </tr>
 
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Id</th>
-            <td>{{ event.id }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ event.name }}</td>
-        </tr>
-        <tr>
-            <th>CreatedAt</th>
-            <td>{{ event.createdAt ? event.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        <tr>
-            <th>UpdatedAt</th>
-            <td>{{ event.updatedAt ? event.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-        </tr>
-        <tr>
-            <th>Type</th>
-            <td>{{ event.type }}</td>
-        </tr>
-        <tr>
-            <th>Value</th>
-            <td>{{ event.value }}</td>
-        </tr>
-        <tr>
-            <th>Note</th>
-            <td>{{ event.note }}</td>
-        </tr>
-        <tr>
-            <th>Options</th>
-            <td>
-                <a href="{{ path('events_index') }}">back to list</a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-
-
-
-    {{ include('event/_delete_form.html.twig') }}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

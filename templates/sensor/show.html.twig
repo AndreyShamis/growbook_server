@@ -180,7 +180,7 @@
         <tbody>
         {% for event in sensor.events | slice(0, 100) %}
             <tr>
-                <td>{{ event.id }}</td>
+                <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.id }}</td>
                 <td>{{ event.name }}</td>
                 <td>{{ event.type }}</td>
                 <td>{{ event.value }}</td>
