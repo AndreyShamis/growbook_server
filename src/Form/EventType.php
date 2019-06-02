@@ -68,6 +68,15 @@ class EventType extends AbstractType
             if ('a' === 'a' && true) {
                 $a = 1;
             }
+            $product = $event->getData();
+            $form = $event->getForm();
+
+            // checks if the Product object is "new"
+            // If no data is passed to the form, the data is "null".
+            // This should be considered a new "Product"
+            if (!$product || null === $product->getId()) {
+                $form->add('name', TextType::class);
+            }
         });
     }
 

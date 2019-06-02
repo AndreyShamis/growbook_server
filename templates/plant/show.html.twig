@@ -29,37 +29,141 @@
     </table>
     {% endspaceless %}
     <hr/>
-    <canvas id="myChart" width="400" height="100"></canvas>
-
-    <button id="toggleScale">Toggle Scale Type</button>
+    {#<button id="change-chart">Change to Classic</button>#}
+    <br><br>
+    <div class="sensorEventsGraph" id="chart_div" style="width: 100%;"></div>
+    {#<canvas id="myChart" width="400" height="100"></canvas>#}
+    {#<button id="toggleScale">Toggle Scale Type</button>#}
     <a href="{{ path('event_new') }}">Create new</a>
     <script>
-        var color = Chart.helpers.color;
-        var my_color = window.chartColors.red;
-        var fill_val = false;
 
-        function CustomOnClickAction(e, legendItem) {
-            var index = legendItem.datasetIndex;
-            var ci = this.chart;
-            var meta = ci.getDatasetMeta(index);
+        $(document).ready(function() {
+            google.charts.setOnLoadCallback(drawChart);
+            {%  set counter = 0  %}
+            function drawChart() {
+                var list_of_obj = [];
+                {% for sensor in plant.sensors %}
+                {%  set counter = counter + 1  %}
 
-            // See controller.isDatasetVisible comment
-            meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
+                var data{{ counter }} = new google.visualization.DataTable();
+                data{{ counter }}.addColumn('date', 'Month');
+                data{{ counter }}.addColumn('string', 'Name');
+                data{{ counter }}.addColumn('number', 'Temperature');
+                data{{ counter }}.addColumn('number', 'Humidity');
+                {% set type = sensor.eventType | parseType %}
+                {% set color = 'window.chartColors.red' %}
+                {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
+                {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
+                {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
+                data{{ counter }}.addRows([{% for event in sensor.events | slice(0, 300) %}
+                        {% if type == 'Humidity' %}[new Date('{{ event.createdAt|date('Y-m-d H:i:s') }}'), '{{ sensor.name }}', null, {{ event.value }}],{% endif %}
+                        {% if type == 'Temperature' %}[new Date('{{ event.createdAt|date('Y-m-d H:i:s') }}'), '{{ sensor.name }}', {{ event.value }}, null],{% endif %}
+                    {% endfor %}
+                ]);
+                list_of_obj.push(data{{ counter }});
+                {% endfor %}
+                console.log(data1);
+                console.log(list_of_obj);
+                var joinedData = google.visualization.data.join(data1, data2, 'full', [[0,0],[2,2]], [2, 3], [2, 3]);
+                //var joinedData = google.visualization.data.join(joinedData, data3, 'full', [[0,0],[2,2]], [2, 3], [2, 3]);
+                console.log(joinedData);
+                var chart = new google.visualization.LineChart(document.querySelector('#chart_div'));
+                chart.draw(joinedData, {
+                    height: 300,
+                    width: 600,
+                    interpolateNulls: true
+                });
+            }
 
-            // We hid a dataset ... rerender the chart
-            ci.update();
-        }
+            // var chartDiv = $('.sensorEventsGraph')[0];
+            // var chart = new google.visualization.LineChart(chartDiv);
+            // chart.draw(joinedData, {
+            //     height: 300,
+            //     width: 600,
+            //     interpolateNulls: true
+            // });
+            {#google.charts.setOnLoadCallback(drawChart);#}
 
-        var config = {
-            type: 'line',
-            data: {
-                datasets: [
-                    {% for sensor in plant.sensors%}
-                    {% set type = sensor.eventType | parseType %}
-                    {% set color = 'window.chartColors.red' %}
-                    {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
-                    {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
-                    {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
+            {#function drawChart() {#}
+
+                {#//var chartDiv = document.getElementById('chart_div');#}
+                {#var chartDiv = $('.sensorEventsGraph')[0];#}
+                {#var data = new google.visualization.DataTable();#}
+                {#data.addColumn('date', 'Month');#}
+                {#data.addColumn('string', 'Name');#}
+                {#data.addColumn('number', "Temperature");#}
+                {#data.addColumn('number', "Humidity");#}
+                {#{% for sensor in plant.sensors%}#}
+                {#{% set type = sensor.eventType | parseType %}#}
+                {#{% set color = 'window.chartColors.red' %}#}
+                {#{% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}#}
+                {#{% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}#}
+                {#{% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}#}
+                {#data.addRows([#}
+                    {#{% for event in sensor.events | slice(0, 300)%}#}
+                        {#{% if type == 'Humidity' %}[new Date('{{ event.createdAt|date('Y-m-d H:i:s') }}'), '{{ sensor.name }}', null, {{ event.value }}],{% endif %}#}
+                        {#{% if type == 'Temperature' %}[new Date('{{ event.createdAt|date('Y-m-d H:i:s') }}'), '{{ sensor.name }}', {{ event.value }}, null],{% endif %}#}
+                    {#{% endfor %}#}
+                {#]);#}
+                {#//console.log(data);#}
+                {#{% endfor %}#}
+
+                {#var materialOptions = {#}
+                    {#chart: {#}
+                        {#title: 'Temperatures and Humidity'#}
+                    {#},#}
+                    {#width: 1800,#}
+                    {#height: 500,#}
+                    {#series: {#}
+                        {#// Gives each series an axis name that matches the Y-axis below.#}
+                        {#0: {axis: 'Name'},#}
+                        {#1: {axis: 'Temps'},#}
+                        {#2: {axis: 'Humidity'}#}
+                    {#},#}
+                    {#axes: {#}
+                        {#// Adds labels to each axis; they don't have to match the axis names.#}
+                        {#y: {#}
+                            {#Name: {label: 'Name'},#}
+                            {#Temps: {label: 'Temps (C)'},#}
+                            {#Humidity: {label: 'Humidity %'}#}
+                        {#}#}
+                    {#}#}
+                {#};#}
+                {#//var materialChart = new google.visualization.Timeline(chartDiv);#}
+                {#var materialChart = new google.charts.Line(chartDiv);#}
+                {#materialChart.draw(data, materialOptions);#}
+            {#}#}
+
+        });
+
+    </script>
+    {#<script>#}
+        {#var color = Chart.helpers.color;#}
+        {#var my_color = window.chartColors.red;#}
+        {#var fill_val = false;#}
+
+        {#function CustomOnClickAction(e, legendItem) {#}
+            {#var index = legendItem.datasetIndex;#}
+            {#var ci = this.chart;#}
+            {#var meta = ci.getDatasetMeta(index);#}
+
+            {#// See controller.isDatasetVisible comment#}
+            {#meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;#}
+
+            {#// We hid a dataset ... rerender the chart#}
+            {#ci.update();#}
+        {#}#}
+
+        {#var config = {#}
+            {#type: 'line',#}
+            {#data: {#}
+                {#datasets: [#}
+                    {#{% for sensor in plant.sensors%}#}
+                    {#{% set type = sensor.eventType | parseType %}#}
+                    {#{% set color = 'window.chartColors.red' %}#}
+                    {#{% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}#}
+                    {#{% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}#}
+                    {#{% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}#}
                     {#{% if type == 'Humidity' %}#}
                     {#my_color = window.chartColors.yellow;#}
                     {#fill_val = true;#}
@@ -67,130 +171,130 @@
                     {#{% if type == 'Temperature' %}#}
                     {#my_color = window.chartColors.blue;#}
                     {#{% endif %}#}
-                    {
-                    label: '{{ sensor.name }}',
-                    backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
-                    borderColor: {{ color }},
-                    fill: {{ type == 'Humidity' ? 'true' : 'false' }},
-                    lineTension: 0,
-                    borderWidth: 2,
-                    sensorType: '{{ sensor.eventType | parseType }}',
-                    data:[{% for event in sensor.events | slice(0, 300)%}{x:'{{ event.createdAt|date('Y-m-d H:i:s') }}',y:{{ event.value }},},{% endfor %}],
-                    //pointStyle: 'rectRot',
-                    pointRadius: 5,
-                    //pointBorderColor: 'rgb(0, 0, 0)'
-                    },{% endfor %}
-                ]
-            },
-            options: {
-                legend: {
-                    display: true,
-                    position: 'right',
-                    onClick: CustomOnClickAction,
-                    labels: {
-                        fontColor: 'rgb(255, 99, 132)',
-                        fontSize: 18,
-                        fontFamily: 'Helvetica',
-                        usePointStyle: true,
-                        fontStyle: 'normal'
-                    }
-                },
-                responsive: true,
-                title: {
-                    display: true,
-                    text: ' [{{ plant.name }}]'
-                },
-                scales: {
-                    xAxes: [{
-                        type: 'time',
-                        display: true,
-                        // distribution: 'series',
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
-                        },
-                        ticks: {
-                            source: 'data',  // add timeprint on bottom for each points
-                            autoSkip: true,
-                            major: {
-                                fontStyle: 'bold',
-                                fontColor: '#FF0000'
-                            }
-                        }
-                    }],
-                    yAxes: [{
-                        display: true,
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'value'
-                        }
-                    }]
-                },
-                tooltips: {
-                    intersect: false,
-                    mode: 'point',
-                    callbacks: {
-                        label: function(tooltipItem, myData) {
-                            var obj = myData.datasets[tooltipItem.datasetIndex];
-                            var label = obj.label || '';
-                            if (label) {
-                                label += '         ';
-                            }
-                            label += obj['sensorType'] + ':' + parseFloat(tooltipItem.value); // .toFixed(4)
-                            return label;
-                        }
-                    }
-                }
-            }
-        };
-        var scaleType = 'linear';
-        window.onload = function() {
-            var ctx = $('#myChart');
-            window.myLine = new Chart(ctx, config);
-        };
-        //
-        // document.getElementById('randomizeData').addEventListener('click', function() {
-        //     config.data.datasets.forEach(function(dataset) {
-        //         dataset.data.forEach(function(dataObj) {
-        //             dataObj.y = randomScalingFactor();
-        //         });
-        //     });
-        //
-        //     window.myLine.update();
-        // });
-        // document.getElementById('addData').addEventListener('click', function() {
-        //     if (config.data.datasets.length > 0) {
-        //         config.data.datasets[0].data.push({
-        //             x: newDateString(config.data.datasets[0].data.length + 2),
-        //             y: randomScalingFactor()
-        //         });
-        //         config.data.datasets[1].data.push({
-        //             x: newDate(config.data.datasets[1].data.length + 2),
-        //             y: randomScalingFactor()
-        //         });
-        //
-        //         window.myLine.update();
-        //     }
-        // });
-        //
-        // document.getElementById('removeData').addEventListener('click', function() {
-        //     config.data.datasets.forEach(function(dataset) {
-        //         dataset.data.pop();
-        //     });
-        //
-        //     window.myLine.update();
-        // });
-        document.getElementById('toggleScale').addEventListener('click', function() {
-            scaleType = scaleType === 'linear' ? 'logarithmic' : 'linear';
-            //window.myLine.options.title.text = 'Chart.js Line Chart - ' + scaleType;
-            window.myLine.options.scales.yAxes[0] = {
-                display: true,
-                type: scaleType
-            };
+                    {#{#}
+                    {#label: '{{ sensor.name }}',#}
+                    {#backgroundColor: color({{ color }}).alpha(0.25).rgbString(),#}
+                    {#borderColor: {{ color }},#}
+                    {#fill: {{ type == 'Humidity' ? 'true' : 'false' }},#}
+                    {#lineTension: 0,#}
+                    {#borderWidth: 2,#}
+                    {#sensorType: '{{ sensor.eventType | parseType }}',#}
+                    {#data:[{% for event in sensor.events | slice(0, 300)%}{x:'{{ event.createdAt|date('Y-m-d H:i:s') }}',y:{{ event.value }},},{% endfor %}],#}
+                    {#//pointStyle: 'rectRot',#}
+                    {#pointRadius: 5,#}
+                    {#//pointBorderColor: 'rgb(0, 0, 0)'#}
+                    {#},{% endfor %}#}
+                {#]#}
+            {#},#}
+            {#options: {#}
+                {#legend: {#}
+                    {#display: true,#}
+                    {#position: 'right',#}
+                    {#onClick: CustomOnClickAction,#}
+                    {#labels: {#}
+                        {#fontColor: 'rgb(255, 99, 132)',#}
+                        {#fontSize: 18,#}
+                        {#fontFamily: 'Helvetica',#}
+                        {#usePointStyle: true,#}
+                        {#fontStyle: 'normal'#}
+                    {#}#}
+                {#},#}
+                {#responsive: true,#}
+                {#title: {#}
+                    {#display: true,#}
+                    {#text: ' [{{ plant.name }}]'#}
+                {#},#}
+                {#scales: {#}
+                    {#xAxes: [{#}
+                        {#type: 'time',#}
+                        {#display: true,#}
+                        {#// distribution: 'series',#}
+                        {#scaleLabel: {#}
+                            {#display: true,#}
+                            {#labelString: 'Date'#}
+                        {#},#}
+                        {#ticks: {#}
+                            {#source: 'data',  // add timeprint on bottom for each points#}
+                            {#autoSkip: true,#}
+                            {#major: {#}
+                                {#fontStyle: 'bold',#}
+                                {#fontColor: '#FF0000'#}
+                            {#}#}
+                        {#}#}
+                    {#}],#}
+                    {#yAxes: [{#}
+                        {#display: true,#}
+                        {#scaleLabel: {#}
+                            {#display: true,#}
+                            {#labelString: 'value'#}
+                        {#}#}
+                    {#}]#}
+                {#},#}
+                {#tooltips: {#}
+                    {#intersect: false,#}
+                    {#mode: 'point',#}
+                    {#callbacks: {#}
+                        {#label: function(tooltipItem, myData) {#}
+                            {#var obj = myData.datasets[tooltipItem.datasetIndex];#}
+                            {#var label = obj.label || '';#}
+                            {#if (label) {#}
+                                {#label += '         ';#}
+                            {#}#}
+                            {#label += obj['sensorType'] + ':' + parseFloat(tooltipItem.value); // .toFixed(4)#}
+                            {#return label;#}
+                        {#}#}
+                    {#}#}
+                {#}#}
+            {#}#}
+        {#};#}
+        {#var scaleType = 'linear';#}
+        {#window.onload = function() {#}
+            {#var ctx = $('#myChart');#}
+            {#window.myLine = new Chart(ctx, config);#}
+        {#};#}
+        {#//#}
+        {#// document.getElementById('randomizeData').addEventListener('click', function() {#}
+        {#//     config.data.datasets.forEach(function(dataset) {#}
+        {#//         dataset.data.forEach(function(dataObj) {#}
+        {#//             dataObj.y = randomScalingFactor();#}
+        {#//         });#}
+        {#//     });#}
+        {#//#}
+        {#//     window.myLine.update();#}
+        {#// });#}
+        {#// document.getElementById('addData').addEventListener('click', function() {#}
+        {#//     if (config.data.datasets.length > 0) {#}
+        {#//         config.data.datasets[0].data.push({#}
+        {#//             x: newDateString(config.data.datasets[0].data.length + 2),#}
+        {#//             y: randomScalingFactor()#}
+        {#//         });#}
+        {#//         config.data.datasets[1].data.push({#}
+        {#//             x: newDate(config.data.datasets[1].data.length + 2),#}
+        {#//             y: randomScalingFactor()#}
+        {#//         });#}
+        {#//#}
+        {#//         window.myLine.update();#}
+        {#//     }#}
+        {#// });#}
+        {#//#}
+        {#// document.getElementById('removeData').addEventListener('click', function() {#}
+        {#//     config.data.datasets.forEach(function(dataset) {#}
+        {#//         dataset.data.pop();#}
+        {#//     });#}
+        {#//#}
+        {#//     window.myLine.update();#}
+        {#// });#}
+        {#document.getElementById('toggleScale').addEventListener('click', function() {#}
+            {#scaleType = scaleType === 'linear' ? 'logarithmic' : 'linear';#}
+            {#//window.myLine.options.title.text = 'Chart.js Line Chart - ' + scaleType;#}
+            {#window.myLine.options.scales.yAxes[0] = {#}
+                {#display: true,#}
+                {#type: scaleType#}
+            {#};#}
 
-            window.myLine.update();
-        });
-    </script>
+            {#window.myLine.update();#}
+        {#});#}
+    {#</script>#}
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
     {% spaceless %}
