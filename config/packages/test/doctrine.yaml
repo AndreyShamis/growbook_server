@@ -1,7 +1,11 @@
-parameters:
-  env(DATABASE_URL): 'sqlite:///%kernel.project_dir%/var/data.db'
 
 doctrine:
   dbal:
+    driver:   pdo_sqlite
+#        memory:   true
+    charset:  UTF8
+    mapping_types:
+      enum: string
     logging: false
     profiling: false
+    url: "sqlite:///%kernel.project_dir%/var/data.db3"

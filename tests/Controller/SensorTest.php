@@ -31,18 +31,16 @@ class SensorTest extends GrowbookApplicationTestCase
         $this->setUp();
         self::$entityManager->clear();
     }
-//
-//    /**
-//     * @param Crawler $crawler
-//     */
-//    protected function checkIndex(Crawler $crawler): void
-//    {
-//        $this->assertSame(Response::HTTP_OK, self::getClient()->getResponse()->getStatusCode(), $this->getErrorMessage($crawler));
-//        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Events")')->count());
-//    }
-//
-//
-//
+
+    /**
+     * @param Crawler $crawler
+     */
+    protected function checkIndex(Crawler $crawler): void
+    {
+        $this->assertSame(Response::HTTP_OK, self::getClient()->getResponse()->getStatusCode(), $this->getErrorMessage($crawler));
+        $this->assertGreaterThan(0, $crawler->filter('h3:contains("Events")')->count());
+    }
+
 //    /**
 //     *
 //     * @throws \Exception
