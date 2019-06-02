@@ -4,7 +4,7 @@
 
 {% block body %}
     <h5>Plant [{{ plant.name }}] / {{ plant.id }} / ({{ plant.uniqId }})</h5>
-    {% spaceless %}
+    {% apply spaceless %}
     <table class="table">
         <tbody>
         <tr>
@@ -27,7 +27,7 @@
         </tr>
         </tbody>
     </table>
-    {% endspaceless %}
+    {% endapply %}
     <hr/>
     <canvas id="myChart" width="400" height="100"></canvas>
 
@@ -193,7 +193,7 @@
     </script>
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
-    {% spaceless %}
+    {% apply spaceless %}
     <table class="table">
         <thead>
             <tr>
@@ -232,11 +232,11 @@
         {% endfor %}
         </tbody>
     </table>
-    {% endspaceless %}
+    {% endapply %}
     <hr/>
     <h5>Events without sensor | All events count {{ plant.events | length }}</h5>
     <hr/>
-    {% spaceless %}
+    {% apply spaceless %}
     <table class="table">
         <thead>
         <tr>
@@ -264,7 +264,7 @@
         {% endfor %}
         </tbody>
     </table>
-    {% endspaceless %}
+    {% endapply %}
     <hr/>
     <h5>Other</h5>
     <hr/>

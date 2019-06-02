@@ -1,1 +1,9 @@
+App\Tests\Utils\RandomString
+ [x] Generate random string
+ [x] Generate random string with special
+ [x] Generate random string shuffle
+ [x] Generate random string shuffle with special
+ [x] Generate random string range
+ [x] Generate random string sha 1
+ [x] Generate random string md 5
 
