@@ -7,6 +7,7 @@ use App\Entity\Plant;
 use App\Entity\Sensor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use App\Model\PlantInterface;
 
 /**
  * @method Event|null find($id, $lockMode = null, $lockVersion = null)
@@ -66,6 +67,32 @@ class EventRepository extends ServiceEntityRepository
         return $ret;
         // new \DateTime('now')
     }
+
+    /**
+     * @param PlantInterface $plant
+     * @param int $hours
+     * @param null $limit
+     * @return Event[] Returns an array of Event objects
+     * @throws \Exception
+     */
+    public function findAllByPlant(PlantInterface $plant, int $hours=24, $limit=null): array
+    {
+        $q = $this->createQueryBuilder('e')
+            ->andWhere('e.plant = :plant')
+            ->andWhere('e.createdAt >= :givenDate')
+            ->setParameter('plant', $plant->getId())
+            ->setParameter('givenDate', new \DateTime('-' . $hours . ' hours'))
+            ->orderBy('e.id', 'DESC')
+            ->addOrderBy('e.sensor', 'ASC')
+//            ->orderBy('e.sensor', 'ASC')
+//            ->addOrderBy('e.id', 'DESC')
+            ;
+        if ($limit !== null && $limit > 0) {
+            $q->setMaxResults($limit);
+        }
+        return $q->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Event[] Returns an array of Event objects
     //  */

@@ -29,56 +29,94 @@
     </table>
     {% endapply %}
     <hr/>
-    <canvas id="myChart" width="400" height="100"></canvas>
+    <canvas id="graph_container" width="400" height="100"></canvas>
 
-    <button id="toggleScale">Toggle Scale Type</button>
-    <a href="{{ path('event_new') }}">Create new</a>
+    <table style="width: 99%">
+        <tr>
+            <td>
+                <button id="toggleScale">Toggle Scale Type</button>
+            </td>
+            <td style="text-align: center">
+                <div id="changeTime">
+                    <button class="button" type="button" value="1">1 Hour</button>
+                    <button class="button" type="button" value="3">3 H</button>
+                    <button class="button" type="button" value="6">6 H</button>
+                    <button class="button" type="button" value="12">12 H</button>
+                    <button class="button" type="button" value="24">24 H</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="36">36 Hours</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="48">2 Days</button>
+                    <button class="button" type="button" value="72">3 D</button>
+                    <button class="button" type="button" value="96">4 D</button>
+                    <button class="button" type="button" value="130">5 D</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="170">1 Week</button>
+                    <button class="button" type="button" value="340">2 W</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="750000">1 Month</button>
+                </div>
+            </td>
+            <td style="text-align: right;">
+                <a href="{{ path('event_new') }}">Create new Event</a>
+            </td>
+        </tr>
+    </table>
     <script>
-        var color = Chart.helpers.color;
-        var my_color = window.chartColors.red;
-        var fill_val = false;
+        var scaleType = 'linear';
+        window.onload = function() {
+            //var ctx = $('#myChart');
+            var graph_container = $('#graph_container');
+            //window.myLine = new Chart(ctx, config);
+            window.myLine = new Chart(graph_container, graph_config);
 
+        };
+        $( document ).ready(function() {
+            $('#changeTime').on('click','button', function (evt) {
+                // //-- do stuff
+                // console.log(evt);
+                // console.log(this);
+                // console.log(this.value);
+                window.location = '{{ path('plant_show', {'id': plant.id}) }}/hours/' + this.value;
+            });
+
+
+        });
+
+        var color = Chart.helpers.color;
         function CustomOnClickAction(e, legendItem) {
             var index = legendItem.datasetIndex;
             var ci = this.chart;
             var meta = ci.getDatasetMeta(index);
-
             // See controller.isDatasetVisible comment
             meta.hidden = meta.hidden === null ? !ci.data.datasets[index].hidden : null;
-
             // We hid a dataset ... rerender the chart
             ci.update();
         }
-
-        var config = {
+        var graph_config = {
             type: 'line',
             data: {
                 datasets: [
-                    {% for sensor in plant.sensors%}
+                    {% for id, sensor in sensorsObj %}
                     {% set type = sensor.eventType | parseType %}
                     {% set color = 'window.chartColors.red' %}
                     {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
                     {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
                     {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
-                    {#{% if type == 'Humidity' %}#}
-                    {#my_color = window.chartColors.yellow;#}
-                    {#fill_val = true;#}
-                    {#{% endif %}#}
-                    {#{% if type == 'Temperature' %}#}
-                    {#my_color = window.chartColors.blue;#}
-                    {#{% endif %}#}
                     {
-                    label: '{{ sensor.name }}',
-                    backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
-                    borderColor: {{ color }},
-                    fill: {{ type == 'Humidity' ? 'true' : 'false' }},
-                    lineTension: 0,
-                    borderWidth: 2,
-                    sensorType: '{{ sensor.eventType | parseType }}',
-                    data:[{% for event in sensor.events | slice(0, 300)%}{x:'{{ event.createdAt|date('Y-m-d H:i:s') }}',y:{{ event.value }},},{% endfor %}],
-                    //pointStyle: 'rectRot',
-                    pointRadius: 5,
-                    //pointBorderColor: 'rgb(0, 0, 0)'
+                        sensorId: {{ id }},
+                        sensorType: '{{ type }}',
+                        sensorName: '{{ sensor.name}}',
+                        label: '{{ sensor.name }}',
+                        backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
+                        borderColor: {{ color }},
+                        fill: {{ type == 'Humidity' ? 'true' : 'false' }},
+                        lineTension: 0,
+                        borderWidth: 2,
+                        data:[{% for event in sensors[id] | slice(0, 10000)%}{x:'{{ event.createdAt|date('Y-m-d H:i') }}',y:{{ event.value }},},{% endfor %}],
+                        //pointStyle: 'rectRot',
+                        pointRadius: 5,
+                        //pointBorderColor: 'rgb(0, 0, 0)'
                     },{% endfor %}
                 ]
             },
@@ -149,11 +187,14 @@
                 }
             }
         };
-        var scaleType = 'linear';
-        window.onload = function() {
-            var ctx = $('#myChart');
-            window.myLine = new Chart(ctx, config);
-        };
+        // var scaleType = 'linear';
+        // window.onload = function() {
+        //     //var ctx = $('#myChart');
+        //     var graph_container = $('#graph_container');
+        //     //window.myLine = new Chart(ctx, config);
+        //     window.myLine = new Chart(graph_container, graph_config);
+        //
+        // };
         //
         // document.getElementById('randomizeData').addEventListener('click', function() {
         //     config.data.datasets.forEach(function(dataset) {

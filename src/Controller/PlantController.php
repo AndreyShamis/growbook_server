@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Plant;
+use App\Entity\Sensor;
 use App\Form\PlantType;
+use App\Repository\EventRepository;
 use App\Repository\PlantRepository;
+use SplObjectStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -50,11 +53,42 @@ class PlantController extends AbstractController
 
     /**
      * @Route("/{id}", name="plant_show", methods={"GET"})
+     * @Route("/{id}/hours/{hours}", name="plant_show_hours", methods={"GET"})
+     * @param Plant $plant
+     * @param EventRepository $eventsRepo
+     * @param int $hours
+     * @return Response
      */
-    public function show(Plant $plant): Response
+    public function show(Plant $plant, EventRepository $eventsRepo, int $hours=84): Response
     {
+        $events = array();
+        try {
+            $events = $eventsRepo->findAllByPlant($plant, $hours);
+        } catch (\Throwable $ex) {
+
+        }
+        $sensors = array();
+        $sensorsObj = array();
+        foreach ($events as $event) {
+            /** @var Sensor $sensor */
+            $sensor = $event->getSensor();
+            if ($sensor !== null) {
+                $id = $sensor->getId();
+                if (array_key_exists($id, $sensors)) {
+                    $sensors[$id][] = $event;
+                } else {
+                    $sensors[$id] = array();
+                    $sensors[$id][] = $event;
+                    $sensorsObj[$id] = $sensor;
+                }
+            }
+
+        }
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
+            'events' => $events,
+            'sensors' => $sensors,
+            'sensorsObj' => $sensorsObj,
         ]);
     }
 
