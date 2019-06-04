@@ -18,18 +18,71 @@
                 <th>Name</th>
                 <th>UniqId</th>
                 <th>Type</th>
+                <th>Plant</th>
+                <th>Events found</th>
                 <th>Options</th>
             </tr>
             <tr>
                 <td>{{ sensor.name }}</td>
                 <td>{{ sensor.uniqId }}</td>
                 <td>{{ sensor.eventType }}</td>
+                <td><a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}}</a></td>
+                <td>{{ sensor.events | length }}</td>
                 <td><a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a></td>
             </tr>
         </tbody>
     </table>
     <canvas id="myChart" width="400" height="100"></canvas>
+    <table style="width: 99%">
+        <tr>
+            <td>
+                <button id="toggleScale">Toggle Scale Type</button>
+            </td>
+            <td style="text-align: center">
+                <div id="changeTime">
+                    <button class="button" type="button" value="1">1 Hour</button>
+                    <button class="button" type="button" value="3">3 H</button>
+                    <button class="button" type="button" value="6">6 H</button>
+                    <button class="button" type="button" value="12">12 H</button>
+                    <button class="button" type="button" value="24">24 H</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="36">36 Hours</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="48">2 Days</button>
+                    <button class="button" type="button" value="72">3 D</button>
+                    <button class="button" type="button" value="96">4 D</button>
+                    <button class="button" type="button" value="130">5 D</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="170">1 Week</button>
+                    <button class="button" type="button" value="340">2 W</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="731">1 Month</button>
+                    <button class="button" type="button" value="1461">2 Month</button>
+                    <button class="button" type="button" value="2191">3 Month</button>
+                    <button class="button" type="button" value="2921">4 Month</button>
+                    <button class="button" type="button" value="4381">6 Month</button>
+                    &nbsp;| &nbsp;
+                    <button class="button" type="button" value="8761">1 Year</button>
+                </div>
+            </td>
+            <td style="text-align: right;">
+                <a href="{{ path('event_new') }}">Create new Event</a>
+            </td>
+        </tr>
+    </table>
     <script>
+        $( document ).ready(function() {
+            $('#changeTime').on('click','button', function (evt) {
+                // //-- do stuff
+                // console.log(evt);
+                // console.log(this);
+                // console.log(this.value);
+                window.location = '{{ path('sensor_show', {'id': sensor.id}) }}/hours/' + this.value;
+            });
+            var ctx = $('#myChart');
+            window.myLine = new Chart(ctx, config);
+        });
+
         var color = Chart.helpers.color;
         var my_color = window.chartColors.red;
         var fill_val = false;
@@ -52,28 +105,9 @@
                     pointRadius: 5,
                     // lineTension: 0,
                     borderWidth: 2,
-                    data: [{% for event in sensor.events | slice(0, 2000) %}
-                        {x: '{{ event.createdAt|date('Y-m-d H:i:s+03:00') }}', y: {{ event.value }},},{% endfor %}],
+                    data: [{% for event in events | slice(0, 2000) %}
+                        {x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value }},},{% endfor %}],
                 }
-                // , {
-                //     label: 'Dataset with date object point data',
-                //     backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                //     borderColor: window.chartColors.blue,
-                //     fill: false,
-                //     data: [{
-                //         x: newDate(0),
-                //         y: randomScalingFactor()
-                //     }, {
-                //         x: newDate(2),
-                //         y: randomScalingFactor()
-                //     }, {
-                //         x: newDate(4),
-                //         y: randomScalingFactor()
-                //     }, {
-                //         x: newDate(5),
-                //         y: randomScalingFactor()
-                //     }]
-                // }
                 ]
             },
             options: {
@@ -86,13 +120,19 @@
                     xAxes: [{
                         type: 'time',
                         display: true,
-                        // distribution: 'series',
+                        time: {
+                            unit: 'quarter',
+                            displayFormats: {
+                                quarter: 'D/M H:mm'  // https://www.chartjs.org/docs/latest/axes/cartesian/time.html
+                            }
+                        },
+                        distribution: 'linear',
                         scaleLabel: {
                             display: true,
                             labelString: 'Date'
                         },
                         ticks: {
-                            source: 'data',
+                            source: 'data',  // add timeprint on bottom for each points
                             autoSkip: true,
                             major: {
                                 fontStyle: 'bold',
@@ -124,47 +164,10 @@
                 }
             }
         };
-
-        window.onload = function() {
-            var ctx = $('#myChart');
-            window.myLine = new Chart(ctx, config);
-        };
-        //
-        // document.getElementById('randomizeData').addEventListener('click', function() {
-        //     config.data.datasets.forEach(function(dataset) {
-        //         dataset.data.forEach(function(dataObj) {
-        //             dataObj.y = randomScalingFactor();
-        //         });
-        //     });
-        //
-        //     window.myLine.update();
-        // });
-        // document.getElementById('addData').addEventListener('click', function() {
-        //     if (config.data.datasets.length > 0) {
-        //         config.data.datasets[0].data.push({
-        //             x: newDateString(config.data.datasets[0].data.length + 2),
-        //             y: randomScalingFactor()
-        //         });
-        //         config.data.datasets[1].data.push({
-        //             x: newDate(config.data.datasets[1].data.length + 2),
-        //             y: randomScalingFactor()
-        //         });
-        //
-        //         window.myLine.update();
-        //     }
-        // });
-        //
-        // document.getElementById('removeData').addEventListener('click', function() {
-        //     config.data.datasets.forEach(function(dataset) {
-        //         dataset.data.pop();
-        //     });
-        //
-        //     window.myLine.update();
-        // });
     </script>
     <hr/>
-    <h5>Events {{ sensor.events | length }}</h5>
-    <table class="table">
+    <h5>Events showed {{ events | length }} limit is 10000</h5>
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
         <tr>
             <th>ID</th>
@@ -175,10 +178,11 @@
             <th>When</th>
             <th>Created</th>
             <th>Updated</th>
+            <th>PlantID</th>
         </tr>
         </thead>
         <tbody>
-        {% for event in sensor.events | slice(0, 2000) %}
+        {% for event in events | slice(0, 10000) %}
             <tr>
                 <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.id }}</td>
                 <td>{{ event.name }}</td>
@@ -188,6 +192,7 @@
                 <td>{{ event.createdAt | time_diff }}</td>
                 <td>{{ event.createdAt |date('Ymd H:i:s')}}</td>
                 <td>{{ event.updatedAt |date('Ymd H:i:s')}}</td>
+                <td>{{ event.plant.id }}</td>
             </tr>
         {% endfor %}
         </tbody>

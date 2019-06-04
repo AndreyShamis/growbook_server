@@ -11,4 +11,5 @@ namespace App\Model;
 interface SensorInterface
 {
     public function getSupportEvents(): bool;
+    public function getId(): ?int;
 }

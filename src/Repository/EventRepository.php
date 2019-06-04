@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Event;
 use App\Entity\Plant;
 use App\Entity\Sensor;
+use App\Model\SensorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use App\Model\PlantInterface;
@@ -84,9 +85,30 @@ class EventRepository extends ServiceEntityRepository
             ->setParameter('givenDate', new \DateTime('-' . $hours . ' hours'))
             ->orderBy('e.id', 'DESC')
             ->addOrderBy('e.sensor', 'ASC')
-//            ->orderBy('e.sensor', 'ASC')
-//            ->addOrderBy('e.id', 'DESC')
             ;
+        if ($limit !== null && $limit > 0) {
+            $q->setMaxResults($limit);
+        }
+        return $q->getQuery()->getResult();
+    }
+
+    /**
+     * @param SensorInterface $sensor
+     * @param int $hours
+     * @param null $limit
+     * @return Event[] Returns an array of Event objects
+     * @throws \Exception
+     */
+    public function findAllBySensor(SensorInterface $sensor, int $hours=24, $limit=null): array
+    {
+        $q = $this->createQueryBuilder('e')
+            ->andWhere('e.sensor = :sensor')
+            ->andWhere('e.createdAt >= :givenDate')
+            ->setParameter('sensor', $sensor->getId())
+            ->setParameter('givenDate', new \DateTime('-' . $hours . ' hours'))
+            ->orderBy('e.id', 'DESC')
+            ->addOrderBy('e.sensor', 'ASC')
+        ;
         if ($limit !== null && $limit > 0) {
             $q->setMaxResults($limit);
         }

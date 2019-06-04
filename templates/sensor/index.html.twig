@@ -10,6 +10,7 @@
             <tr>
                 <th>Id</th>
                 <th>Name</th>
+                <th>Plant</th>
                 <th>Type</th>
                 <th>Events</th>
                 <th>TH</th>
@@ -23,6 +24,7 @@
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
+                <td><a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}}</a></td>
                 <td>{{ sensor.eventType | parseType }}</td>
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.diffThreshold }}</td>

@@ -85,8 +85,6 @@
                 // console.log(this.value);
                 window.location = '{{ path('plant_show', {'id': plant.id}) }}/hours/' + this.value;
             });
-
-
         });
 
         var color = Chart.helpers.color;
@@ -193,22 +191,12 @@
                 }
             }
         };
-        // var scaleType = 'linear';
-        // window.onload = function() {
-        //     //var ctx = $('#myChart');
-        //     var graph_container = $('#graph_container');
-        //     //window.myLine = new Chart(ctx, config);
-        //     window.myLine = new Chart(graph_container, graph_config);
-        //
-        // };
-        //
         // document.getElementById('randomizeData').addEventListener('click', function() {
         //     config.data.datasets.forEach(function(dataset) {
         //         dataset.data.forEach(function(dataObj) {
         //             dataObj.y = randomScalingFactor();
         //         });
         //     });
-        //
         //     window.myLine.update();
         // });
         // document.getElementById('addData').addEventListener('click', function() {
@@ -221,7 +209,6 @@
         //             x: newDate(config.data.datasets[1].data.length + 2),
         //             y: randomScalingFactor()
         //         });
-        //
         //         window.myLine.update();
         //     }
         // });
@@ -230,7 +217,6 @@
         //     config.data.datasets.forEach(function(dataset) {
         //         dataset.data.pop();
         //     });
-        //
         //     window.myLine.update();
         // });
         document.getElementById('toggleScale').addEventListener('click', function() {
@@ -240,7 +226,6 @@
                 display: true,
                 type: scaleType
             };
-
             window.myLine.update();
         });
     </script>

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Sensor;
 use App\Form\SensorType;
+use App\Repository\EventRepository;
 use App\Repository\SensorRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,11 +51,26 @@ class SensorController extends AbstractController
 
     /**
      * @Route("/{id}", name="sensor_show", methods={"GET"})
+     * @Route("/{id}/hours/{hours}", name="sensor_show_hours", methods={"GET"})
+     * @param Sensor $sensor
+     * @param EventRepository $eventsRepo
+     * @param int $hours
+     * @return Response
      */
-    public function show(Sensor $sensor): Response
+    public function show(Sensor $sensor, EventRepository $eventsRepo, int $hours=170): Response
     {
+        $events = array();
+        try {
+            if ($hours < 0) {
+                $hours = 170;
+            }
+            $events = $eventsRepo->findAllBySensor($sensor, $hours);
+        } catch (\Throwable $ex) {
+
+        }
         return $this->render('sensor/show.html.twig', [
             'sensor' => $sensor,
+            'events' => $events,
         ]);
     }
 
