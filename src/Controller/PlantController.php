@@ -63,6 +63,9 @@ class PlantController extends AbstractController
     {
         $events = array();
         try {
+            if ($hours < 0) {
+                $hours = 84;
+            }
             $events = $eventsRepo->findAllByPlant($plant, $hours);
         } catch (\Throwable $ex) {
 
@@ -86,7 +89,7 @@ class PlantController extends AbstractController
         }
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
-            'events' => $events,
+//            'events' => $events,
             'sensors' => $sensors,
             'sensorsObj' => $sensorsObj,
         ]);
