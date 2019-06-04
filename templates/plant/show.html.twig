@@ -3,15 +3,18 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    <h5>Plant [{{ plant.name }}] / {{ plant.id }} / ({{ plant.uniqId }})</h5>
+    <div class="alert alert-success" role="alert">
+        <h5>Plant [{{ plant.name }}]</h5>
+        <p class="mb-0">{{ plant.id }} / ({{ plant.uniqId }})</p>
+    </div>
     {% apply spaceless %}
-    <table class="table">
+    <table class="table table-hover table-condensed tasks-table table-bordered">
         <tbody>
         <tr>
             <th>Medium</th>
-            <td>{{ plant.soilMedium }}</td>
+            <td><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
             <th>Pot</th>
-            <td>{{ plant.pot }}</td>
+            <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
         </tr>
         <tr>
             <th>CreatedAt</th>
@@ -34,33 +37,40 @@
     <table style="width: 99%">
         <tr>
             <td>
-                <button id="toggleScale">Toggle Scale Type</button>
+                <button class="button btn btn-outline-warning btn-sm" type="button" id="toggleScale">Toggle Scale Type</button>
             </td>
             <td style="text-align: center">
-                <div id="changeTime">
-                    <button class="button" type="button" value="1">1 Hour</button>
-                    <button class="button" type="button" value="3">3 H</button>
-                    <button class="button" type="button" value="6">6 H</button>
-                    <button class="button" type="button" value="12">12 H</button>
-                    <button class="button" type="button" value="24">24 H</button>
-                    &nbsp;| &nbsp;
-                    <button class="button" type="button" value="36">36 Hours</button>
-                    &nbsp;| &nbsp;
-                    <button class="button" type="button" value="48">2 Days</button>
-                    <button class="button" type="button" value="72">3 D</button>
-                    <button class="button" type="button" value="96">4 D</button>
-                    <button class="button" type="button" value="130">5 D</button>
-                    &nbsp;| &nbsp;
-                    <button class="button" type="button" value="170">1 Week</button>
-                    <button class="button" type="button" value="340">2 W</button>
-                    &nbsp;| &nbsp;
-                    <button class="button" type="button" value="731">1 Month</button>
-                    <button class="button" type="button" value="1461">2 Month</button>
-                    <button class="button" type="button" value="2191">3 Month</button>
-                    <button class="button" type="button" value="2921">4 Month</button>
-                    <button class="button" type="button" value="4381">6 Month</button>
-                    &nbsp;| &nbsp;
-                    <button class="button" type="button" value="8761">1 Year</button>
+                <div id="changeTime" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="width: 100%">
+                    <div class="btn-group mr-2" role="group" aria-label="Time selection in day">
+                        <button class="button btn btn-outline-success btn-sm" type="button" value="1">1 Hour</button>
+                        <button class="button btn btn-outline-success btn-sm" type="button" value="3">3 H</button>
+                        <button class="button btn btn-outline-success btn-sm" type="button" value="6">6 H</button>
+                        <button class="button btn btn-outline-success btn-sm" type="button" value="12">12 H</button>
+                        <button class="button btn btn-outline-success btn-sm" type="button" value="24">24 H</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Time selection">
+                        <button class="button btn btn-outline-info btn-sm" type="button" value="36">36 Hours</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Time selection">
+                        <button class="button btn btn-outline-dark btn-sm" type="button" value="48">2 Days</button>
+                        <button class="button btn btn-outline-dark btn-sm" type="button" value="72">3 D</button>
+                        <button class="button btn btn-outline-dark btn-sm" type="button" value="96">4 D</button>
+                        <button class="button btn btn-outline-dark btn-sm" type="button" value="130">5 D</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Time selection">
+                        <button class="button btn btn-outline-info btn-sm" type="button" value="170">1 Week</button>
+                        <button class="button btn btn-outline-info btn-sm" type="button" value="340">2 W</button>
+                    </div>
+                    <div class="btn-group mr-2" role="group" aria-label="Time selection">
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="731">1 Month</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="1461">2 Month</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2191">3 Month</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2921">4 Month</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="4381">6 Month</button>
+                    </div>
+                    <div class="btn-group" role="group" aria-label="Time selection">
+                        <button class="button btn btn-outline-info btn-sm" type="button" value="8761">1 Year</button>
+                    </div>
                 </div>
             </td>
             <td style="text-align: right;">
@@ -232,7 +242,7 @@
     <h5>Sensors {{ plant.sensors | length }}</h5>
     <hr/>
     {% apply spaceless %}
-    <table class="table">
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
             <tr>
                 <th>ID</th>
@@ -275,7 +285,7 @@
     <h5>Events without sensor | All events count {{ plant.events | length }}</h5>
     <hr/>
     {% apply spaceless %}
-    <table class="table">
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
         <tr>
             <th>ID</th>
