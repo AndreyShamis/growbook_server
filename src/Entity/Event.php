@@ -4,12 +4,10 @@ namespace App\Entity;
 
 use App\Model\EventInterface;
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping\Index;
 use App\Model\SensorInterface;
 
 /**
- * @ApiResource()
  * @ORM\Entity()
  * @ ORM\Map pedSuperclass(repositoryClass="App\Repository\EventRepository")
  * @ORM\DiscriminatorColumn(name = "andrey_type", type = "string", fieldName="")

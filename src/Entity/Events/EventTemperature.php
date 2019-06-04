@@ -2,14 +2,12 @@
 
 namespace App\Entity\Events;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use App\Entity\Event;
 use App\Model\EventInterface;
 use App\Model\SensorEventInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\Events\EventTemperatureRepository")
  */
 class EventTemperature extends Event implements SensorEventInterface
