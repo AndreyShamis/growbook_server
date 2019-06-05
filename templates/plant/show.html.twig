@@ -32,7 +32,7 @@
     </table>
     {% endapply %}
     <hr/>
-    <canvas id="graph_container" width="400" height="100"></canvas>
+    <canvas id="graph_container" style="width: 100%;height: 400px !important;"></canvas>
 
     <table style="width: 99%">
         <tr>
@@ -63,13 +63,13 @@
                     </div>
                     <div class="btn-group mr-2" role="group" aria-label="Time selection">
                         <button class="button btn btn-outline-primary btn-sm" type="button" value="731">1 Month</button>
-                        <button class="button btn btn-outline-primary btn-sm" type="button" value="1461">2 Month</button>
-                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2191">3 Month</button>
-                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2921">4 Month</button>
-                        <button class="button btn btn-outline-primary btn-sm" type="button" value="4381">6 Month</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="1461">2 M</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2191">3 M</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="2921">4 M</button>
+                        <button class="button btn btn-outline-primary btn-sm" type="button" value="4381">6 M</button>
                     </div>
                     <div class="btn-group" role="group" aria-label="Time selection">
-                        <button class="button btn btn-outline-info btn-sm" type="button" value="8761">1 Year</button>
+                        <button class="button btn btn-outline-info btn-sm" type="button" value="8761">1 Y</button>
                     </div>
                 </div>
             </td>
@@ -141,7 +141,7 @@
                     onClick: CustomOnClickAction,
                     labels: {
                         fontColor: 'rgb(255, 99, 132)',
-                        fontSize: 18,
+                        fontSize: 10,
                         fontFamily: 'Helvetica',
                         usePointStyle: true,
                         fontStyle: 'normal'

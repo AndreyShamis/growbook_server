@@ -32,7 +32,7 @@
             </tr>
         </tbody>
     </table>
-    <canvas id="myChart" width="400" height="100"></canvas>
+    <canvas id="graph_container" style="width: 100%;height: 400px !important;"></canvas>
     <table style="width: 99%">
         <tr>
             <td>
@@ -57,12 +57,12 @@
                     <button class="button" type="button" value="340">2 W</button>
                     &nbsp;| &nbsp;
                     <button class="button" type="button" value="731">1 Month</button>
-                    <button class="button" type="button" value="1461">2 Month</button>
-                    <button class="button" type="button" value="2191">3 Month</button>
-                    <button class="button" type="button" value="2921">4 Month</button>
-                    <button class="button" type="button" value="4381">6 Month</button>
+                    <button class="button" type="button" value="1461">2 M</button>
+                    <button class="button" type="button" value="2191">3 M</button>
+                    <button class="button" type="button" value="2921">4 M</button>
+                    <button class="button" type="button" value="4381">6 M</button>
                     &nbsp;| &nbsp;
-                    <button class="button" type="button" value="8761">1 Year</button>
+                    <button class="button" type="button" value="8761">1 Y</button>
                 </div>
             </td>
             <td style="text-align: right;">
@@ -79,7 +79,7 @@
                 // console.log(this.value);
                 window.location = '{{ path('sensor_show', {'id': sensor.id}) }}/hours/' + this.value;
             });
-            var ctx = $('#myChart');
+            var ctx = $('#graph_container');
             window.myLine = new Chart(ctx, config);
         });
 
