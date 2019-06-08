@@ -264,13 +264,14 @@
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
                 <td>{{ type }}</td>
                 <td>
-                    {% if sensor.supportEvents and sensor.lastEvent is defined %}
+                    {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
+                        {% set _value = sensor.lastEvent.value %}
                         {% if type == 'Humidity' %}
-                            <span class="badge {{ humidityToBadge(sensor.lastEvent.value)}}">{{ sensor.lastEvent.value}} %</span>
+                            <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
                         {% elseif type == 'Temperature' %}
-                            <span class="badge badge-pill {{ temperatureToBadge(sensor.lastEvent.value)}}">{{ sensor.lastEvent.value}} &#8451;</span>
+                            <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
                         {% else %}
-                           {{ sensor.lastEvent.value }}
+                           {{ _value }}
                         {% endif %}
                     {% endif %}
                 </td>
