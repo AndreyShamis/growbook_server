@@ -259,12 +259,18 @@
         <tbody>
         {% for sensor in plant.sensors | slice(0, 100)%}
             {% set type = sensor.eventType | parseType  %}
+            {% set _have_last = false %}
+            {% set _created = '' %}
+            {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
+                {% set _have_last = true %}
+                {% set _created = sensor.lastEvent.createdAt %}
+            {% endif %}
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
                 <td>{{ type }}</td>
                 <td>
-                    {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
+                    {% if _have_last == true %}
                         {% set _value = sensor.lastEvent.value %}
                         {% if type == 'Humidity' %}
                             <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
@@ -275,9 +281,9 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td title="{{ sensor.lastEvent.createdAt | date('Y-m-d H:i:s')}} ">
-                    {% if sensor.supportEvents and sensor.lastEvent is defined %}
-                        {{ sensor.lastEvent.createdAt | date('H:i:s')}} | {{ sensor.lastEvent.createdAt | time_diff}}
+                <td title="{{ _created | date('Y-m-d H:i:s')}} ">
+                    {% if _have_last %}
+                        {{ _created | date('H:i:s')}} | {{ _created | time_diff}}
                     {% endif %}
                 </td>
                 <td>{{ sensor.events | length }}</td>
