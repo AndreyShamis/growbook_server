@@ -258,13 +258,20 @@
         </thead>
         <tbody>
         {% for sensor in plant.sensors | slice(0, 100)%}
+            {% set type = sensor.eventType | parseType  %}
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
-                <td>{{ sensor.eventType | parseType }}</td>
+                <td>{{ type }}</td>
                 <td>
                     {% if sensor.supportEvents and sensor.lastEvent is defined %}
-                    {{ sensor.lastEvent.value }}
+                        {% if type == 'Humidity' %}
+                            <span class="badge {{ humidityToBadge(sensor.lastEvent.value)}}">{{ sensor.lastEvent.value}} %</span>
+                        {% elseif type == 'Temperature' %}
+                            <span class="badge badge-pill {{ temperatureToBadge(sensor.lastEvent.value)}}">{{ sensor.lastEvent.value}} &#8451;</span>
+                        {% else %}
+                           {{ sensor.lastEvent.value }}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td title="{{ sensor.lastEvent.createdAt | date('Y-m-d H:i:s')}} ">

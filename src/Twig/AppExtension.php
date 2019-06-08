@@ -31,6 +31,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('md2html', array($this, 'markdownToHtml'), array('is_safe' => array('html'))),
             new TwigFilter('time_ago', function ($time) { return $this->ExecutionTimeInHours(time() - $time);}),
             new TwigFilter('filter_name', [$this, 'doSomething'], ['is_safe' => ['html']]),
+            new TwigFilter('humidityToBadge', [$this, 'humidityToBadge']),
+            new TwigFilter('temperatureToBadge', [$this, 'temperatureToBadge']),
         );
     }
 
@@ -49,8 +51,49 @@ class AppExtension extends AbstractExtension
             new TwigFunction('formatBytes', [$this, 'formatBytes']),
             new TwigFunction('getPercentage', [$this, 'getPercentage']),
             new TwigFunction('inarray', array($this, 'inArray')),
+            new TwigFunction('humidityToBadge', [$this, 'humidityToBadge']),
+            new TwigFunction('temperatureToBadge', [$this, 'temperatureToBadge']),
         ];
     }
+
+    /**
+     * @param int $value
+     * @return string
+     */
+    public function humidityToBadge(int $value=50): string
+    {
+        $ret = '';
+        if ($value >= 40 && $value <= 70) {
+            $ret = 'badge-success';
+        } elseif ($value < 15 || $value > 85) {
+            $ret = 'badge-warning';
+        } elseif ($value > 70) {
+            $ret = 'badge-info';
+        } elseif ($value < 40) {
+            $ret = 'badge-warning';
+        }
+        return $ret;
+    }
+
+    /**
+     * @param int $value
+     * @return string
+     */
+    public function temperatureToBadge(int $value=25): string
+    {
+        $ret = '';
+        if ($value >= 22 && $value <= 32) {
+            $ret = 'badge-success';
+        } elseif ($value > 35 || $value < 20) {
+            $ret = 'badge-danger';
+        } elseif ($value > 32 || $value < 22) {
+            $ret = 'badge-warning';
+        } else {
+            $ret = 'badge-info';
+        }
+        return $ret;
+    }
+
 
     public function parseType(string $typeFull=null): string
     {
