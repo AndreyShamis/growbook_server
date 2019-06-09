@@ -109,6 +109,9 @@ class EventController extends AbstractController
                     unset($eventRequest['sensor_id'], $eventRequest['plant_id']);
                     $request->request->set('event', $eventRequest);
                     $automatic = true;
+                    if ($sensor->getPlant()->getId() !== $plant->getId()) {
+                        $sensor->setPlant($plant);
+                    }
                 }
             }
         } catch (\Throwable $ex) {
