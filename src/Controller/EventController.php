@@ -54,10 +54,28 @@ class EventController extends AbstractController
      */
     public function new(Request $request, LoggerInterface $logger, SensorRepository $sensors, PlantRepository $plants, EventRepository $events): Response
     {
+        /** @var string $value3 */
+        $value1 = $value2 = $value3 = null;
         $event = new Event();
         $ev_req_type = array();
         $eventFound = $eventReqFound = false;
         $eventRequest = $request->request->get('event');
+        $all = $request->request->all();
+        if (count($all) > 1) {
+            $eventRequest = $all;
+            if(array_key_exists('value3', $eventRequest)) {
+                $value3 = $eventRequest['value3'];
+                unset($eventRequest['value3']);
+            }
+            if(array_key_exists('value2', $eventRequest)) {
+                $value2 = $eventRequest['value2'];
+                unset($eventRequest['value2']);
+            }
+            if(array_key_exists('value1', $eventRequest)) {
+                $value1 = $eventRequest['value1'];
+                unset($eventRequest['value1']);
+            }
+        }
         $sensor = $plant = null;
         $automatic = false;
         $status = 200;
@@ -142,6 +160,15 @@ class EventController extends AbstractController
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
             $entityManager = $this->getDoctrine()->getManager();
+            if ($value1 !== null) {
+                $event->setValue1($value1);
+            }
+            if ($value2 !== null) {
+                $event->setValue2($value2);
+            }
+            if ($value3 !== null) {
+                $event->setValue3($value3);
+            }
             if ($lastEvent === null) {
                 if ($automatic) {
                     $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
@@ -179,7 +206,7 @@ class EventController extends AbstractController
                     $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
                     $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
                     if ($seconds <= 60) {
-                        $message = 'Ignore diff less then 1 minute';
+                        $message = 'Ignore diff less then 1 minute  [' . (string)$lastEvent . ']';
                     } else {
                         if ($needUpdate){
                             if ($sensor !== null) {
@@ -207,7 +234,7 @@ class EventController extends AbstractController
                 /** @var FormError $error */
                 $error = $errors[0];
 
-                $logger->critical('ERROR in event_new:' . $error->getMessage());
+                $logger->critical('ERROR in event_new: submited form:' . $error->getMessage() . '-'. print_r($error->getMessageParameters(), true));
             } else {
                 $logger->critical('ERROR in event_new - no error found');
             }

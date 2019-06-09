@@ -64,13 +64,28 @@ class Event implements EventInterface
      * @ORM\ManyToOne(targetEntity="App\Entity\Plant", inversedBy="events")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $plant;
+    protected $plant;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Sensor", inversedBy="events")
      * @ORM\JoinColumn(name="sensor_id", referencedColumnName="id", onDelete="CASCADE")
      */
-    private $sensor;
+    protected $sensor;
+
+    /**
+     * @ORM\Column(type="string", length=250, nullable=true)
+     */
+    protected $value1;
+
+    /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     */
+    protected $value2;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    protected $value3;
 
     public function __construct()
     {
@@ -208,7 +223,7 @@ class Event implements EventInterface
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return $this->getId(). '-'. $this->getType() . '-' . $this->getValue() . '-' . $this->getName() . '';
     }
 
     public function castAs($newClass) {
@@ -233,6 +248,42 @@ class Event implements EventInterface
         } else {
             $this->setNote($this->getNote() . "\n" . $newNote);
         }
+        return $this;
+    }
+
+    public function getValue1(): ?string
+    {
+        return $this->value1;
+    }
+
+    public function setValue1(?string $value1): self
+    {
+        $this->value1 = $value1;
+
+        return $this;
+    }
+
+    public function getValue2(): ?string
+    {
+        return $this->value2;
+    }
+
+    public function setValue2(?string $value2): self
+    {
+        $this->value2 = $value2;
+
+        return $this;
+    }
+
+    public function getValue3(): ?float
+    {
+        return $this->value3;
+    }
+
+    public function setValue3(?float $value3): self
+    {
+        $this->value3 = $value3;
+
         return $this;
     }
 
