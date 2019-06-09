@@ -22,10 +22,10 @@
             <tr>
                 <td><a href="{{ path('plant_show', {'id': plant.id}) }}">{{ plant.id }}</a></td>
                 <td><a href="{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a></td>
-                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td title="{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}">{{ plant.createdAt ? plant.createdAt|time_diff : '' }}</td>
+                <td title="{{ plant.createdAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.updatedAt ? plant.updatedAt|time_diff : '' }}</td>
+                <td title="{{ plant.createdAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.startedAt ? plant.startedAt|time_diff : '' }}</td>
+                <td title="{{ plant.createdAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.finishedAt ? plant.finishedAt|time_diff : '' }}</td>
                 <td>
                     <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
                 </td>
