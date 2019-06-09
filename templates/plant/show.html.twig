@@ -117,6 +117,7 @@
                     {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
                     {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
                     {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
+                    {% if sensor.plant.id != plant.id %}{% set color = 'window.chartColors.grey' %}{% endif %}
                     {
                         sensorId: {{ id }},
                         sensorType: '{{ type }}',
@@ -126,10 +127,16 @@
                         borderColor: {{ color }},
                         fill: {{ type == 'Humidity' ? 'true' : 'false' }},
                         lineTension: 0,
+                        {% if sensor.plant.id != plant.id %}
+                        borderWidth: 1,
+                        pointRadius: 4,
+                        {% else %}
                         borderWidth: 2,
+                        pointRadius: 5,
+                        {% endif %}
                         data:[{% for event in sensors[id] | slice(0, 10000)%}{x:'{{ event.createdAt|date('Y-m-d H:i') }}',y:{{ event.value }},},{% endfor %}],
                         //pointStyle: 'rectRot',
-                        pointRadius: 5,
+
                         //pointBorderColor: 'rgb(0, 0, 0)'
                     },{% endfor %}
                 ]
