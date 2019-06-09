@@ -279,6 +279,13 @@
                         {% else %}
                            {{ _value }}
                         {% endif %}
+                        {% set _value3 = sensor.lastEvent.value3 %}
+                        {% if _value3 is not null %}
+                            <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
+                            {% if type == 'Humidity' %}
+                                Heat index
+                            {% endif %}
+                        {% endif %}
                     {% endif %}
                 </td>
                 <td title="{{ _created | date('Y-m-d H:i:s')}} ">

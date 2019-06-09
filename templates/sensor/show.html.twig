@@ -183,11 +183,28 @@
         </thead>
         <tbody>
         {% for event in events | slice(0, 10000) %}
+            {% set type = event.type| parseType  %}
             <tr>
                 <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.id }}</td>
                 <td>{{ event.name }}</td>
-                <td>{{ event.type }}</td>
-                <td>{{ event.value }}</td>
+                <td>{{ type }}</td>
+                <td>
+                    {% set _value = event.value %}
+                    {% if type == 'Humidity' %}
+                        <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
+                    {% elseif type == 'Temperature' %}
+                        <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
+                    {% else %}
+                        {{ _value }}
+                    {% endif %}
+                    {% set _value3 = event.value3 %}
+                    {% if _value3 is not null %}
+                        <span class="badge badge-pill badge-dark">{{ _value3 }} </span>
+                        {% if type == 'Humidity' %}
+                            Heat index
+                        {% endif %}
+                    {% endif %}
+                </td>
                 <td>{{ event.note }}</td>
                 <td>{{ event.createdAt | time_diff }}</td>
                 <td>{{ event.createdAt |date('Ymd H:i:s')}}</td>
@@ -197,7 +214,5 @@
         {% endfor %}
         </tbody>
     </table>
-
-
     {#{{ include('sensor/_delete_form.html.twig') }}#}
 {% endblock %}
