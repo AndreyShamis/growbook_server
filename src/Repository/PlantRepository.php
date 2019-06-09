@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Plant;
 use App\Utils\RandomName;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\ORMException;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
@@ -42,6 +43,13 @@ class PlantRepository extends ServiceEntityRepository
             } else {
                 $entity->setUniqId($entity->getName());
             }
+
+            try {
+                $this->_em->persist($entity);
+                $this->_em->flush($entity);
+            } catch (ORMException $e) {
+            }
+
         }
         return $entity;
     }
