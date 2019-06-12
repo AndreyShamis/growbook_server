@@ -11,5 +11,6 @@ namespace App\Model;
 interface SensorInterface
 {
     public function getSupportEvents(): bool;
+    public function getDiffThreshold(): ?string;
     public function getId(): ?int;
 }

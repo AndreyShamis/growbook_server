@@ -51,6 +51,9 @@ class SensorRepository extends ServiceEntityRepository
             } else if ($entity->getEventType() === TypeEvent::Temperature) {
                 $entity->setDiffThreshold(0.5);
                 $entity->setSupportEvents(true);
+            } else if ($entity->getEventType() === TypeEvent::SoilHydrometer) {
+                $entity->setDiffThreshold(3);
+                $entity->setSupportEvents(true);
             } else {
                 $entity->setDiffThreshold(10);
             }

@@ -6,6 +6,7 @@ namespace App\Controller;
 //use App\Form\Events\EventTemperatureType;
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
+use App\Entity\Events\EventSoilHydrometer;
 use App\Entity\Events\EventTemperature;
 use App\Form\EventType;
 use App\Model\TypeEvent;
@@ -201,6 +202,12 @@ class EventController extends AbstractController
                         if ($event->getType() === EventTemperature::class){
                             /** @var EventTemperature $event */
                             if (!$event->tempDiff($lastEvent)) {
+                                $needUpdate = false;
+                            }
+                        }
+                        if ($event->getType() === EventSoilHydrometer::class){
+                            /** @var EventSoilHydrometer $event */
+                            if (!$event->hydroDiff($lastEvent)) {
                                 $needUpdate = false;
                             }
                         }
