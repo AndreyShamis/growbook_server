@@ -1,16 +1,14 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: werd
  * Date: 15/05/19
  * Time: 14:20
  */
 
 namespace App\Model;
 
-
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
+use App\Entity\Events\EventSoilHydrometer;
 use App\Entity\Events\EventTemperature;
 
 abstract class TypeEvent
@@ -18,6 +16,7 @@ abstract class TypeEvent
     public const Event = Event::class;
     public const Humidity = EventHumidity::class;
     public const Temperature = EventTemperature::class;
+    public const SoilHydrometer = EventSoilHydrometer::class;
     public const UNKNOWN = 'unknown';
 
     /** @var array  */
@@ -25,6 +24,7 @@ abstract class TypeEvent
         self::Event => 'Event',
         self::Humidity => 'Humidity',
         self::Temperature => 'Temperature',
+        self::SoilHydrometer => 'SoilHydrometer',
         self::UNKNOWN => 'UNKNOWN',
     ];
 
