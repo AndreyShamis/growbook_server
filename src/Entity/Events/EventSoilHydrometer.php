@@ -57,7 +57,6 @@ class EventSoilHydrometer extends Event implements SensorEventInterface
         $this->hydrometer = $hydrometer;
     }
 
-
     /**
      * @param EventInterface $otherEvent
      * @param bool $abs
@@ -84,16 +83,5 @@ class EventSoilHydrometer extends Event implements SensorEventInterface
         $this->addNote('DIFF_FOUND::' . round($td, 0) . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;');
         return true;
     }
-
-    public function calculateThreshHold(): float
-    {
-        $diffThreshHold = 3;
-        if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
-            $val = (float)$this->getSensor()->getDiffThreshold();
-            if ($val > 0.01) {
-                $diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
-            }
-        }
-        return round($diffThreshHold, 2);
-    }
+    
 }

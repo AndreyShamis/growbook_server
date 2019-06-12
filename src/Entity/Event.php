@@ -287,4 +287,32 @@ class Event implements EventInterface
         return $this;
     }
 
+    /**
+     * @param EventInterface $otherEvent
+     * @param bool $abs
+     * @return mixed
+     */
+    public function diff(EventInterface $otherEvent, bool $abs = false)
+    {
+        /** @var EventInterface $otherEvent */
+        $current = $this->getValue();
+        $ot = $otherEvent->getValue();
+        $td = $current - $ot;
+        if ($abs) {
+            $td = abs($td);
+        }
+        return $td;
+    }
+
+    public function calculateThreshHold(): float
+    {
+        $diffThreshHold = 3;
+        if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
+            $val = (float)$this->getSensor()->getDiffThreshold();
+            if ($val > 0.01) {
+                $diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
+            }
+        }
+        return round($diffThreshHold, 2);
+    }
 }

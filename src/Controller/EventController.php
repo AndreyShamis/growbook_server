@@ -187,48 +187,37 @@ class EventController extends AbstractController
                 $entityManager->flush();
                 $status = 301;
                 $message = 'Created ID:' . $event->getId();
-            } else {
-                // Need to check if last event have same value?
-                if ($lastEvent->getValue() !== $event->getValue()) {
-                    $needUpdate = true;
+            } else if ($lastEvent->getValue() !== $event->getValue()) {
+                $needUpdate = true;
 
-                    if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
-                        if ($event->getType() === EventHumidity::class){
-                            /** @var EventHumidity $event */
-                            if (!$event->humDiff($lastEvent)) {
-                                $needUpdate = false;
-                            }
-                        }
-                        if ($event->getType() === EventTemperature::class){
-                            /** @var EventTemperature $event */
-                            if (!$event->tempDiff($lastEvent)) {
-                                $needUpdate = false;
-                            }
-                        }
-                        if ($event->getType() === EventSoilHydrometer::class){
-                            /** @var EventSoilHydrometer $event */
-                            if (!$event->hydroDiff($lastEvent)) {
-                                $needUpdate = false;
-                            }
-                        }
+                if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
+                    /** @var EventHumidity $event */
+                    if (($event->getType() === EventHumidity::class) && !$event->humDiff($lastEvent)) {
+                        $needUpdate = false;
                     }
+                    /** @var EventTemperature $event */
+                    if (($event->getType() === EventTemperature::class) && !$event->tempDiff($lastEvent)) {
+                        $needUpdate = false;
+                    }
+                    /** @var EventSoilHydrometer $event */
+                    if (($event->getType() === EventSoilHydrometer::class) && !$event->hydroDiff($lastEvent)) {
+                        $needUpdate = false;
+                    }
+                }
 
-                    $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
-                    $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
-                    if ($seconds <= 60) {
-                        $message = 'Ignore diff less then 1 minute  [' . (string)$lastEvent . ']';
-                    } else {
-                        if ($needUpdate){
-                            if ($sensor !== null) {
-                                $sensor->setLastEvent($event);
-                            }
-                            $entityManager->detach($lastEvent);
-                            $entityManager->persist($event);
-                            $entityManager->flush();
-                            $status = 301;
-                            $message = 'Created ID:' . $event->getId();
-                        }
+                $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
+                $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
+                if ($seconds <= 60) {
+                    $message = 'Ignore diff less then 1 minute  [' . (string)$lastEvent . ']';
+                } else if ($needUpdate){
+                    if ($sensor !== null) {
+                        $sensor->setLastEvent($event);
                     }
+                    $entityManager->detach($lastEvent);
+                    $entityManager->persist($event);
+                    $entityManager->flush();
+                    $status = 301;
+                    $message = 'Created ID:' . $event->getId();
                 }
             }
             if ($automatic) {
