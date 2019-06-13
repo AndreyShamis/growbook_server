@@ -80,6 +80,7 @@ class EventController extends AbstractController
         $automatic = false;
         $status = 200;
         $message = '';
+        $entityManager = $this->getDoctrine()->getManager();
         try {
             if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
                 $sensorId = trim($eventRequest['sensor_id']);
@@ -106,9 +107,11 @@ class EventController extends AbstractController
                     'ip' => $request->getClientIp()
                 ));
                 if ($sensor !== null) {
-                    if (array_key_exists('uptime', $eventRequest)) {
-                        $plant->setUptime($eventRequest['uptime']);
 
+                    if (array_key_exists('uptime', $eventRequest) && $eventRequest['uptime'] > 1) {
+                        $plant->setUptime($eventRequest['uptime']);
+                        $entityManager->persist($plant);
+                        $entityManager->flush();
                     }
                     $eventRequest['sensor'] = $sensor->getId();
                     unset($eventRequest['sensor_id'], $eventRequest['plant_id'], $eventRequest['uptime']);
@@ -170,7 +173,7 @@ class EventController extends AbstractController
             if ($lastEvent === null) {
                 $logger->critical(' -------- LAST EVENT NOT FOUND');
             }
-            $entityManager = $this->getDoctrine()->getManager();
+
             $event->setIp($request->getClientIp());
             if ($value1 !== null) {
                 $event->setValue1($value1);
