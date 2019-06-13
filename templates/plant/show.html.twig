@@ -123,6 +123,7 @@
                     {% set color = 'window.chartColors.red' %}
                     {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
                     {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
+                    {% if type == 'SoilHydrometer' %}{% set color = 'window.chartColors.green' %}{% endif %}
                     {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
                     {% if sensor.plant.id != plant.id %}{% set color = 'window.chartColors.grey' %}{% endif %}
                     {

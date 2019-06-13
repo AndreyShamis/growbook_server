@@ -94,6 +94,9 @@
         {% if type == 'Temperature' %}
             my_color = window.chartColors.blue;
         {% endif %}
+        {% if type == 'SoilHydrometer' %}
+        my_color = window.chartColors.green;
+        {% endif %}
         var config = {
             type: 'line',
             data: {
