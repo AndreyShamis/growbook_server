@@ -124,7 +124,7 @@ class Plant implements PlantInterface
      */
     public function setRssi(int $rssi): void
     {
-        $this->rssi = $rssi;
+        $this->rssi = abs($rssi);
     }
 
     /**
