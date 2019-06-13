@@ -32,6 +32,7 @@
     </tr>
 </table>
     {{ form_widget(form) }}
-
+    {% set referer = app.request.headers.get('referer') | default('') %}
+<input type="hidden" name="refer_page" value="{{ referer }}" />
 <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
