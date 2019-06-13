@@ -11,7 +11,7 @@ namespace App\Model;
 interface SensorInterface
 {
     public function getSupportEvents(): bool;
-    public function getDiffThreshold(): ?string;
+    public function getDiffThreshold(): float;
     public function getId(): ?int;
     public function setPlant(?PlantInterface $Plant): SensorInterface;
     public function getPlant(): ?PlantInterface;

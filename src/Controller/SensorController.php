@@ -89,7 +89,7 @@ class SensorController extends AbstractController
             if ($refer_page !== '') {
                 return $this->redirect($refer_page);
             }
-            
+
             return $this->redirectToRoute('sensor_index', [
                 'id' => $sensor->getId(),
             ]);

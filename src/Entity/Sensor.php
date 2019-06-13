@@ -56,9 +56,9 @@ class Sensor implements SensorInterface
     private $writeForceEveryXseconds = 1000;
 
     /**
-     * @ORM\Column(type="string", length=255, options={"default"=""})
+     * @ORM\Column(type="float", options={"default"="0"})
      */
-    private $diffThreshold = '';
+    private $diffThreshold = 0;
 
     /**
      * @ORM\Column(type="boolean", options={"default"="0"})
@@ -117,7 +117,7 @@ class Sensor implements SensorInterface
      * @param string $name
      * @return Sensor
      */
-    public function setName(string $name): self
+    public function setName(string $name): SensorInterface
     {
         $this->name = $name;
 
@@ -166,7 +166,7 @@ class Sensor implements SensorInterface
         return $this;
     }
 
-    public function removeEvent(Event $event): self
+    public function removeEvent(Event $event): SensorInterface
     {
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
@@ -192,19 +192,19 @@ class Sensor implements SensorInterface
         return $this->writeForceEveryXseconds;
     }
 
-    public function setWriteForceEveryXseconds(int $writeForceEveryXseconds): self
+    public function setWriteForceEveryXseconds(int $writeForceEveryXseconds): SensorInterface
     {
         $this->writeForceEveryXseconds = $writeForceEveryXseconds;
 
         return $this;
     }
 
-    public function getDiffThreshold(): ?string
+    public function getDiffThreshold(): float
     {
         return $this->diffThreshold;
     }
 
-    public function setDiffThreshold(string $diffThreshold): self
+    public function setDiffThreshold(float $diffThreshold): SensorInterface
     {
         $this->diffThreshold = $diffThreshold;
 
@@ -222,7 +222,7 @@ class Sensor implements SensorInterface
         return $this->supportEvents;
     }
 
-    public function setSupportEvents(bool $supportEvents): self
+    public function setSupportEvents(bool $supportEvents): SensorInterface
     {
         $this->supportEvents = $supportEvents;
 
@@ -234,7 +234,7 @@ class Sensor implements SensorInterface
         return $this->eventType;
     }
 
-    public function setEventType(?string $eventType): self
+    public function setEventType(?string $eventType): SensorInterface
     {
         $this->eventType = $eventType;
 
@@ -276,7 +276,7 @@ class Sensor implements SensorInterface
         return $this->lastEvent;
     }
 
-    public function setLastEvent(?Event $lastEvent): self
+    public function setLastEvent(?Event $lastEvent): SensorInterface
     {
         $this->lastEvent = $lastEvent;
 

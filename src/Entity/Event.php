@@ -367,8 +367,8 @@ class Event implements EventInterface
         $_diffThreshHold = $diffThreshHold;
         if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
             $val = (float)$this->getSensor()->getDiffThreshold();
-            if ($val > 0.01) {
-                $_diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
+            if ($val >= 0.01) {
+                $_diffThreshHold = $val;
             }
         }
         return round($_diffThreshHold, $round);
@@ -384,7 +384,7 @@ class Event implements EventInterface
         if ($td < $this->calculateThreshHold()) {
             return false;
         }
-        $this->addNote('DIFF_FOUND::' . $td . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;OLD_VALUE::' . $otherEvent->getValue() . ';;');
+        $this->addNote('TH_USED::'. $this->calculateThreshHold() . ';;DIFF::' . $td . ';;OLD_VALUE::' . $otherEvent->getValue() . ';;');
         return true;
     }
 }

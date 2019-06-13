@@ -79,7 +79,7 @@ class EventController extends AbstractController
         $sensor = $plant = null;
         $automatic = false;
         $status = 200;
-        $message = 'OK';
+        $message = '';
         try {
             if (array_key_exists('sensor_id', $eventRequest) && !array_key_exists('sensor', $eventRequest)) {
                 $sensorId = trim($eventRequest['sensor_id']);
@@ -163,6 +163,9 @@ class EventController extends AbstractController
             if ($automatic && $sensor !== null && $plant !== null) {
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
+            if ($lastEvent === null) {
+                $logger->critical(' -------- LAST EVENT NOT FOUND');
+            }
             $entityManager = $this->getDoctrine()->getManager();
             $event->setIp($request->getClientIp());
             if ($value1 !== null) {
@@ -174,6 +177,7 @@ class EventController extends AbstractController
             if ($value3 !== null) {
                 $event->setValue3($value3);
             }
+            $message .= 'TYPE:' . $event->getType();
             if ($lastEvent === null) {
                 if ($automatic) {
                     $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
@@ -187,18 +191,25 @@ class EventController extends AbstractController
                 $entityManager->persist($event);
                 $entityManager->flush();
                 $status = 301;
-                $message = 'Last event not found : Created ID:' . $event->getId();
-            } else if ($lastEvent->getValue() !== $event->getValue()) {
+                $message = 'Last event not found in last ' .  $sensor->getWriteForceEveryXseconds() . ' sec : Created ID:' . $event->getId();
+            } else {
+                //if ($lastEvent->getValue() !== $event->getValue()) {
                 $needUpdate = true;
-                if ($event->getSensor() !== null && $event->getSensor()->getSupportEvents() && !$event->needUpdate($lastEvent)) {
+                //$event->getSensor() !== null && $event->getSensor()->getSupportEvents() &&
+                $_diff = $event->diff($lastEvent, true);
+                $_th = $event->calculateThreshHold();
+                if (!$event->needUpdate($lastEvent)) {
                     $needUpdate = false;
-                    $message .= $event->getNote();
+                    $message .= ' --- CANCEL ' . ' TH_USED:' . $_th . '. DIFF:' . $_diff. ' .';
+                } else {
+                    $message .= ' --- ACCEPT ';
                 }
+                $message .= $event->getNote();
 
                 $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());
                 $seconds = (int)$tDiff->i*60 + (int)$tDiff->s;
                 if ($seconds <= 60) {
-                    $message = 'Ignore diff less then 1 minute  [' . (string)$lastEvent . ']';
+                    $message = 'Ignore diff less then 1 min [' . (string)$lastEvent . '] ETA: '. (60 - $seconds);
                 } else if ($needUpdate){
                     if ($sensor !== null) {
                         $sensor->setLastEvent($event);
@@ -207,14 +218,12 @@ class EventController extends AbstractController
                     $entityManager->persist($event);
                     $entityManager->flush();
                     $status = 301;
-                    $message = 'TIME FORCE FOUND: Created ID:' . $event->getId();
-                } else{
-                    $message = 'TIME FORCE FOUND: Previous value is same ' . (string) $lastEvent->getValue();
+                    $message .= 'Created ID:' . $event->getId();
                 }
-            } else {
-                $message = 'Last event have same value:' .  (string) $lastEvent->getValue();
             }
             if ($automatic) {
+                $logger->critical($message);
+
                 return new Response($message, $status);
             }
             return $this->redirectToRoute('events_index');
