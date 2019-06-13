@@ -18,7 +18,7 @@ use Doctrine\ORM\Mapping as ORM;
 class EventSoilHydrometer extends Event implements SensorEventInterface
 {
     /**
-     * @ORM\Column(type="smallint")
+     * @ORM\Column(type="float")
      */
     private $hydrometer = 0;
 
@@ -34,7 +34,7 @@ class EventSoilHydrometer extends Event implements SensorEventInterface
             $this->setHydrometer(1);
             $this->addNote('NaN_FOUND::' . $value . ';;');
         } else {
-            $this->setHydrometer((int)$value);
+            $this->setHydrometer((float)$value);
         }
 
 
