@@ -37,7 +37,7 @@ class EventHumidity extends Event implements SensorEventInterface
         return $this->getHumidity();
     }
 
-    public function setValue($value)
+    public function setValue($value): EventInterface
     {
         if ($value !== null && $value === 'nan') {
             $this->setHumidity(1);
@@ -50,16 +50,14 @@ class EventHumidity extends Event implements SensorEventInterface
         return $this;
     }
 
-    public function calculateThreshHold(): int
+    /**
+     * @param float $diffThreshHold
+     * @param int $round
+     * @return float
+     */
+    public function calculateThreshHold(float $diffThreshHold=1, int $round=0): float
     {
-        $diffThreshHold = 1;
-        if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
-            $val = (float)$this->getSensor()->getDiffThreshold();
-            if ($val >= 1 && $val <= 100) {
-                $diffThreshHold = (int)$this->getSensor()->getDiffThreshold();
-            }
-        }
-        return $diffThreshHold;
+        return parent::calculateThreshHold($diffThreshHold, $round);
     }
 
     /**
@@ -79,13 +77,13 @@ class EventHumidity extends Event implements SensorEventInterface
         return $td;
     }
 
-    public function humDiff(EventHumidity $otherEvent): bool
-    {
-        $td = $this->diff($otherEvent, true);
-        if ($td < $this->calculateThreshHold()) {
-            return false;
-        }
-        $this->addNote('DIFF_FOUND::' . $td . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;OLD_VALUE::' . $otherEvent->getHumidity() . ';;');
-        return true;
-    }
+//    public function humDiff(EventHumidity $otherEvent): bool
+//    {
+//        $td = $this->diff($otherEvent, true);
+//        if ($td < $this->calculateThreshHold()) {
+//            return false;
+//        }
+//        $this->addNote('DIFF_FOUND::' . $td . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;OLD_VALUE::' . $otherEvent->getHumidity() . ';;');
+//        return true;
+//    }
 }

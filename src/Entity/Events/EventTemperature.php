@@ -51,23 +51,16 @@ class EventTemperature extends Event implements SensorEventInterface
         return $this->getTemperature();
     }
 
-    public function setValue($value)
+    public function setValue($value): EventInterface
     {
         $this->setTemperature((float)$value);
 
         return $this;
     }
 
-    public function calculateThreshHold(): float
+    public function calculateThreshHold(float $diffThreshHold=0.2, int $round=7): float
     {
-        $diffThreshHold = 0.2;
-        if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
-            $val = (float)$this->getSensor()->getDiffThreshold();
-            if ($val > 0.01) {
-                $diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
-            }
-        }
-        return round($diffThreshHold, 7);
+        return parent::calculateThreshHold($diffThreshHold, $round);
     }
 
     /**
@@ -87,13 +80,13 @@ class EventTemperature extends Event implements SensorEventInterface
         return $td;
     }
 
-    public function tempDiff(EventTemperature $otherEvent): bool
-    {
-        $td = $this->diff($otherEvent, true);
-        if ($td < $this->calculateThreshHold()) {
-            return false;
-        }
-        $this->addNote('DIFF_FOUND::' . round($td, 4) . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;');
-        return true;
-    }
+//    public function tempDiff(EventTemperature $otherEvent): bool
+//    {
+//        $td = $this->diff($otherEvent, true);
+//        if ($td < $this->calculateThreshHold()) {
+//            return false;
+//        }
+//        $this->addNote('DIFF_FOUND::' . round($td, 4) . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;');
+//        return true;
+//    }
 }

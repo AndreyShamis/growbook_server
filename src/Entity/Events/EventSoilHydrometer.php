@@ -28,7 +28,7 @@ class EventSoilHydrometer extends Event implements SensorEventInterface
         return $this->getHydrometer();
     }
 
-    public function setValue($value)
+    public function setValue($value): EventInterface
     {
         if ($value !== null && $value === 'nan') {
             $this->setHydrometer(1);
@@ -74,14 +74,14 @@ class EventSoilHydrometer extends Event implements SensorEventInterface
         return $td;
     }
 
-    public function hydroDiff(EventSoilHydrometer $otherEvent): bool
-    {
-        $td = $this->diff($otherEvent, true);
-        if ($td < $this->calculateThreshHold()) {
-            return false;
-        }
-        $this->addNote('DIFF_FOUND::' . round($td, 0) . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;');
-        return true;
-    }
-    
+//    public function hydroDiff(EventSoilHydrometer $otherEvent): bool
+//    {
+//        $td = $this->diff($otherEvent, true);
+//        if ($td < $this->calculateThreshHold()) {
+//            return false;
+//        }
+//        $this->addNote('DIFF_FOUND::' . round($td, 0) . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;');
+//        return true;
+//    }
+
 }

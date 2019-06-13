@@ -189,20 +189,9 @@ class EventController extends AbstractController
                 $message = 'Created ID:' . $event->getId();
             } else if ($lastEvent->getValue() !== $event->getValue()) {
                 $needUpdate = true;
-
-                if ($event->getSensor() && $event->getSensor()->getSupportEvents()) {
-                    /** @var EventHumidity $event */
-                    if (($event->getType() === EventHumidity::class) && !$event->humDiff($lastEvent)) {
-                        $needUpdate = false;
-                    }
-                    /** @var EventTemperature $event */
-                    if (($event->getType() === EventTemperature::class) && !$event->tempDiff($lastEvent)) {
-                        $needUpdate = false;
-                    }
-                    /** @var EventSoilHydrometer $event */
-                    if (($event->getType() === EventSoilHydrometer::class) && !$event->hydroDiff($lastEvent)) {
-                        $needUpdate = false;
-                    }
+                if ($event->getSensor() !== null && $event->getSensor()->getSupportEvents() && !$event->needUpdate($lastEvent)) {
+                    $needUpdate = false;
+                    $message .= $event->getNote();
                 }
 
                 $tDiff = $lastEvent->getCreatedAt()->diff($event->getCreatedAt());

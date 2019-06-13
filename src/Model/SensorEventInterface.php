@@ -18,6 +18,7 @@ interface SensorEventInterface extends EventInterface
      * @return mixed
      */
     public function diff(EventInterface $otherEvent, bool $abs=false);
-
+    public function calculateThreshHold(float $diffThreshHold, int $round): float;
     public function getSensor(): ?SensorInterface;
+    public function needUpdate(EventInterface $otherEvent): bool;
 }

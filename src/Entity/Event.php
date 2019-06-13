@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Model\EventInterface;
+use App\Model\PlantInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use App\Model\SensorInterface;
@@ -117,7 +118,7 @@ class Event implements EventInterface
      * @param string $name
      * @return Event
      */
-    public function setName(string $name): self
+    public function setName(string $name): EventInterface
     {
         $this->name = $name;
 
@@ -151,12 +152,12 @@ class Event implements EventInterface
         $this->updatedAt = new \DateTime();
     }
 
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    public function setType($type): self
+    public function setType($type): EventInterface
     {
         $this->type = $type;
 
@@ -168,13 +169,20 @@ class Event implements EventInterface
         return $this->value;
     }
 
-    public function setValue($value)
+    /**
+     * @param $value
+     * @return EventInterface
+     */
+    public function setValue($value): EventInterface
     {
         $this->value = $value;
 
         return $this;
     }
 
+    /**
+     * @return string
+     */
     public function getNote(): string
     {
         if ($this->note === null) {
@@ -183,7 +191,11 @@ class Event implements EventInterface
         return $this->note;
     }
 
-    public function setNote(?string $note): self
+    /**
+     * @param string|null $note
+     * @return Event
+     */
+    public function setNote(string $note=null): EventInterface
     {
         if ($note === null && $this->note !== null) {
             $note = '';
@@ -194,24 +206,34 @@ class Event implements EventInterface
         return $this;
     }
 
-    public function getPlant(): ?Plant
+    /**
+     * @return PlantInterface
+     */
+    public function getPlant(): PlantInterface
     {
         return $this->plant;
     }
 
-    public function setPlant(?Plant $plant): self
+    /**
+     * @param PlantInterface $plant
+     * @return Event
+     */
+    public function setPlant(PlantInterface $plant): EventInterface
     {
         $this->plant = $plant;
 
         return $this;
     }
 
+    /**
+     * @return SensorInterface|null
+     */
     public function getSensor(): ?SensorInterface
     {
         return $this->sensor;
     }
 
-    public function setSensor(?Sensor $sensor): self
+    public function setSensor(?SensorInterface $sensor): EventInterface
     {
         $this->sensor = $sensor;
 
@@ -238,7 +260,11 @@ class Event implements EventInterface
         return $obj;
     }
 
-    public function addNote(string $newNote): self
+    /**
+     * @param string $newNote
+     * @return EventInterface
+     */
+    public function addNote(string $newNote): EventInterface
     {
         if ($this->getNote() === null) {
             $this->setNote('');
@@ -256,7 +282,7 @@ class Event implements EventInterface
         return $this->value1;
     }
 
-    public function setValue1(?string $value1): self
+    public function setValue1(?string $value1): EventInterface
     {
         $this->value1 = $value1;
 
@@ -268,7 +294,7 @@ class Event implements EventInterface
         return $this->value2;
     }
 
-    public function setValue2(?string $value2): self
+    public function setValue2(?string $value2): EventInterface
     {
         $this->value2 = $value2;
 
@@ -280,7 +306,7 @@ class Event implements EventInterface
         return $this->value3;
     }
 
-    public function setValue3(?float $value3): self
+    public function setValue3(?float $value3): EventInterface
     {
         $this->value3 = $value3;
 
@@ -304,15 +330,34 @@ class Event implements EventInterface
         return $td;
     }
 
-    public function calculateThreshHold(): float
+    /**
+     * @param float $diffThreshHold
+     * @param int $round
+     * @return float
+     */
+    public function calculateThreshHold(float $diffThreshHold=3, int $round=2): float
     {
-        $diffThreshHold = 3;
+        $_diffThreshHold = $diffThreshHold;
         if ($this->getSensor() !== null && $this->getSensor()->getDiffThreshold() !== null) {
             $val = (float)$this->getSensor()->getDiffThreshold();
             if ($val > 0.01) {
-                $diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
+                $_diffThreshHold = (float)$this->getSensor()->getDiffThreshold();
             }
         }
-        return round($diffThreshHold, 2);
+        return round($_diffThreshHold, $round);
+    }
+
+    /**
+     * @param EventInterface $otherEvent
+     * @return bool
+     */
+    public function needUpdate(EventInterface $otherEvent): bool
+    {
+        $td = $this->diff($otherEvent, true);
+        if ($td < $this->calculateThreshHold()) {
+            return false;
+        }
+        $this->addNote('DIFF_FOUND::' . $td . ';;ThreshHold_USED::'. $this->calculateThreshHold() . ';;OLD_VALUE::' . $otherEvent->getValue() . ';;');
+        return true;
     }
 }

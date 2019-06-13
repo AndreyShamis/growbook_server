@@ -31,34 +31,29 @@ class SensorRepository extends ServiceEntityRepository
 
     /**
      * @param array $criteria
+     * @param bool $supportEvents
      * @return Sensor
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function findOrCreateByUniqId(array $criteria): Sensor
+    public function findOrCreateByUniqId(array $criteria, bool $supportEvents=true): Sensor
     {
         $entity = $this->findByUniqId($criteria['uniqId']);
 
         if ($entity === null) {
             $entity = new Sensor();
             $entity->setUniqId($criteria['uniqId']);
-
+            $entity->setDiffThreshold(10);
+            $entity->setSupportEvents($supportEvents);
             //if (array_key_exists('eventType', $criteria)) {
             $entity->setEventType($criteria['eventType']);
             if ($entity->getEventType() === TypeEvent::Humidity) {
                 $entity->setDiffThreshold(2);
-                $entity->setSupportEvents(true);
             } else if ($entity->getEventType() === TypeEvent::Temperature) {
                 $entity->setDiffThreshold(0.5);
-                $entity->setSupportEvents(true);
             } else if ($entity->getEventType() === TypeEvent::SoilHydrometer) {
                 $entity->setDiffThreshold(3);
-                $entity->setSupportEvents(true);
-            } else {
-                $entity->setDiffThreshold(10);
             }
-            //}
-
 
             if (array_key_exists('plant', $criteria) && $criteria['plant'] !== null) {
                 $entity->setPlant($criteria['plant']);
