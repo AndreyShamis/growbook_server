@@ -185,7 +185,7 @@ class EventController extends AbstractController
                 $entityManager->persist($event);
                 $entityManager->flush();
                 $status = 301;
-                $message = 'Created ID:' . $event->getId();
+                $message = 'Last event not found : Created ID:' . $event->getId();
             } else if ($lastEvent->getValue() !== $event->getValue()) {
                 $needUpdate = true;
                 if ($event->getSensor() !== null && $event->getSensor()->getSupportEvents() && !$event->needUpdate($lastEvent)) {
@@ -205,8 +205,12 @@ class EventController extends AbstractController
                     $entityManager->persist($event);
                     $entityManager->flush();
                     $status = 301;
-                    $message = 'Created ID:' . $event->getId();
+                    $message = 'TIME FORCE FOUND: Created ID:' . $event->getId();
+                } else{
+                    $message = 'TIME FORCE FOUND: Previous value is same ' . (string) $lastEvent->getValue();
                 }
+            } else {
+                $message = 'Last event have same value:' .  (string) $lastEvent->getValue();
             }
             if ($automatic) {
                 return new Response($message, $status);
