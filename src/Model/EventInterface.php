@@ -24,7 +24,7 @@ interface EventInterface
     public function setValue($value): EventInterface;
     public function getNote(): string;
     public function setNote(string $note=null): EventInterface;
-    public function getPlant(): PlantInterface;
+    public function getPlant(): ?PlantInterface;
     public function setPlant(PlantInterface $plant): EventInterface;
     public function getSensor(): ?SensorInterface;
     public function setSensor(?SensorInterface $sensor): EventInterface;

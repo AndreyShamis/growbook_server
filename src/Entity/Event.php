@@ -209,7 +209,7 @@ class Event implements EventInterface
     /**
      * @return PlantInterface
      */
-    public function getPlant(): PlantInterface
+    public function getPlant(): ?PlantInterface
     {
         return $this->plant;
     }

@@ -28,7 +28,7 @@ interface PlantInterface
     public function getEvents(): Collection;
     public function addEvent(EventInterface $event): PlantInterface;
     public function removeEvent(EventInterface $event): PlantInterface;
-    
+
     public function getSensors(): Collection;
     public function addSensor(SensorInterface $sensor): PlantInterface;
     public function removeSensor(SensorInterface $sensor): PlantInterface;
