@@ -88,6 +88,12 @@ class Plant implements PlantInterface
      */
     protected $uptime = 0;
 
+    /**
+     * @var int
+     * @ORM\Column(type="integer", options={"default"="0"})
+     */
+    protected $resetCounter = 0;
+
     public function __construct()
     {
         try {
@@ -103,6 +109,22 @@ class Plant implements PlantInterface
     /**
      * @return int
      */
+    public function getResetCounter(): int
+    {
+        return $this->resetCounter;
+    }
+
+    /**
+     * @param int $resetCounter
+     */
+    public function setResetCounter(int $resetCounter): void
+    {
+        $this->resetCounter = $resetCounter;
+    }
+
+    /**
+     * @return int
+     */
     public function getUptime(): int
     {
         return $this->uptime;
@@ -113,6 +135,15 @@ class Plant implements PlantInterface
      */
     public function setUptime(int $uptime): void
     {
+        try {
+            $current_uptime = $this->getUptime();
+            if ($current_uptime > $uptime) {
+                $this->setResetCounter($this->getResetCounter() + 1);
+            }
+        } catch (\Throwable $ex) {
+
+        }
+
         $this->uptime = $uptime;
     }
 
