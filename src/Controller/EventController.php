@@ -103,6 +103,7 @@ class EventController extends AbstractController
                     'name' => $sensorId,
                     'plant' => $plant,
                     'eventType' => $eventRequest['type'],
+                    'ip' => $request->getClientIp()
                 ));
                 if ($sensor !== null) {
                     $eventRequest['sensor'] = $sensor->getId();
@@ -163,6 +164,7 @@ class EventController extends AbstractController
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
             $entityManager = $this->getDoctrine()->getManager();
+            $event->setIp($request->getClientIp());
             if ($value1 !== null) {
                 $event->setValue1($value1);
             }

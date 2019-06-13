@@ -175,6 +175,7 @@
             <th>Type</th>
             <th>Value</th>
             <th>Note</th>
+            <th>Note</th>
             <th>When</th>
             <th>Created</th>
             <th>Updated</th>
@@ -206,6 +207,7 @@
                     {% endif %}
                 </td>
                 <td>{{ event.note }}</td>
+                <td>{{ event.ip }}</td>
                 <td>{{ event.createdAt | time_diff }}</td>
                 <td>{{ event.createdAt |date('Ymd H:i:s')}}</td>
                 <td>{{ event.updatedAt |date('Ymd H:i:s')}}</td>

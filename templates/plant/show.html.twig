@@ -297,7 +297,7 @@
                 </td>
                 <td title="{{ _created | date('Y-m-d H:i:s')}} ">
                     {% if _have_last %}
-                        {{ _created | date('H:i:s')}} | {{ _created | time_diff}}
+                        {{ _created | date('H:i:s')}} | {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
                     {% endif %}
                 </td>
                 <td>{{ sensor.events | length }}</td>

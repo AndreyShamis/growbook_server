@@ -7,6 +7,8 @@ use App\Model\PlantInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 use App\Model\SensorInterface;
+use Symfony\Component\HttpFoundation;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * @ORM\Entity()
@@ -87,6 +89,31 @@ class Event implements EventInterface
      * @ORM\Column(type="float", nullable=true)
      */
     protected $value3;
+
+    /**
+     * @ORM\Column(type="string", length=20, options={"default"=""})
+     */
+    protected $ip = '';
+
+    /**
+     * @return string
+     */
+    public function getIp(): string
+    {
+        return $this->ip;
+    }
+    /**
+     * @var RequestStack
+     */
+    protected $requestStack;
+
+    /**
+     * @param string $ip
+     */
+    public function setIp(string $ip): void
+    {
+        $this->ip = $ip;
+    }
 
     public function __construct()
     {
