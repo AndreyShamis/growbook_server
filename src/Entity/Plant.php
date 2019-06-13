@@ -87,6 +87,11 @@ class Plant implements PlantInterface
      * @ORM\Column(type="bigint", options={"default"="0"})
      */
     protected $uptime = 0;
+    /**
+     * @var int
+     * @ORM\Column(type="smallint", options={"default"="0"})
+     */
+    protected $rssi = 0;
 
     /**
      * @var int
@@ -104,6 +109,22 @@ class Plant implements PlantInterface
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getRssi(): int
+    {
+        return $this->rssi;
+    }
+
+    /**
+     * @param int $rssi
+     */
+    public function setRssi(int $rssi): void
+    {
+        $this->rssi = $rssi;
     }
 
     /**

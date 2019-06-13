@@ -107,14 +107,21 @@ class EventController extends AbstractController
                     'ip' => $request->getClientIp()
                 ));
                 if ($sensor !== null) {
-
+                    $update_palnt = false;
                     if (array_key_exists('uptime', $eventRequest) && $eventRequest['uptime'] > 1) {
                         $plant->setUptime($eventRequest['uptime']);
+                        $update_palnt = true;
+                    }
+                    if (array_key_exists('rssi', $eventRequest)) {
+                        $plant->setUptime($eventRequest['rssi']);
+                        $update_palnt = true;
+                    }
+                    if ($update_palnt) {
                         $entityManager->persist($plant);
                         $entityManager->flush();
                     }
                     $eventRequest['sensor'] = $sensor->getId();
-                    unset($eventRequest['sensor_id'], $eventRequest['plant_id'], $eventRequest['uptime']);
+                    unset($eventRequest['sensor_id'], $eventRequest['plant_id'], $eventRequest['uptime'], $eventRequest['rssi']);
                     $request->request->set('event', $eventRequest);
                     $automatic = true;
                     if ($sensor->getPlant()->getId() !== $plant->getId()) {
