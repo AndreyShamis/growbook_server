@@ -85,7 +85,11 @@ class Sensor implements SensorInterface
      * @ORM\JoinColumn(name="last_event_id", onDelete="SET NULL")
      */
     private $lastEvent;
-
+    
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
     public function __construct()
     {
         try {
@@ -97,10 +101,7 @@ class Sensor implements SensorInterface
 
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+
 
     /**
      * @return string
