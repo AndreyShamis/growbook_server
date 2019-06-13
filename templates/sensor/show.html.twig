@@ -185,7 +185,7 @@
         {% for event in events | slice(0, 10000) %}
             {% set type = event.type| parseType  %}
             <tr>
-                <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.id }}</td>
+                <td><a href="{{ path('event_show', {'id': event.id}) }}">{{ event.id }}</td>
                 <td>{{ event.name }}</td>
                 <td>{{ type }}</td>
                 <td>

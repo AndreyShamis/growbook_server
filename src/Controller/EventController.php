@@ -43,7 +43,6 @@ class EventController extends AbstractController
         ]);
     }
 
-
     /**
      * @Route("/new", name="event_new", methods={"GET","POST"})
      * @param Request $request
@@ -321,6 +320,10 @@ class EventController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);
             $entityManager->flush();
+            $refer_page = $request->request->get('refer_page');
+            if ($refer_page !== '') {
+                return $this->redirect($refer_page);
+            }
         }
 
         return $this->redirectToRoute('events_index');
