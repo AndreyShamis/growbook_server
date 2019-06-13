@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use App\Model\EventInterface;
 use App\Model\PlantInterface;
+use App\Model\SensorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -108,7 +110,7 @@ class Plant implements PlantInterface
         return $this->name;
     }
 
-    public function setName(string $name): self
+    public function setName(string $name): PlantInterface
     {
         $this->name = $name;
 
@@ -124,7 +126,7 @@ class Plant implements PlantInterface
      * @return Plant
      * @throws \Exception
      */
-    public function setCreatedAt(): self
+    public function setCreatedAt(): PlantInterface
     {
         $this->createdAt = new \DateTime();
 
@@ -150,7 +152,7 @@ class Plant implements PlantInterface
         return $this->startedAt;
     }
 
-    public function setStartedAt(\DateTimeInterface $startedAt): self
+    public function setStartedAt(\DateTimeInterface $startedAt): PlantInterface
     {
         $this->startedAt = $startedAt;
 
@@ -162,7 +164,7 @@ class Plant implements PlantInterface
         return $this->finishedAt;
     }
 
-    public function setFinishedAt(?\DateTimeInterface $finishedAt): self
+    public function setFinishedAt(?\DateTimeInterface $finishedAt): PlantInterface
     {
         $this->finishedAt = $finishedAt;
 
@@ -177,7 +179,11 @@ class Plant implements PlantInterface
         return $this->events;
     }
 
-    public function addEvent(Event $event): self
+    /**
+     * @param EventInterface $event
+     * @return PlantInterface
+     */
+    public function addEvent(EventInterface $event): PlantInterface
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
@@ -187,7 +193,11 @@ class Plant implements PlantInterface
         return $this;
     }
 
-    public function removeEvent(Event $event): self
+    /**
+     * @param EventInterface $event
+     * @return PlantInterface
+     */
+    public function removeEvent(EventInterface $event): PlantInterface
     {
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
@@ -208,7 +218,7 @@ class Plant implements PlantInterface
         return $this->sensors;
     }
 
-    public function addSensor(Sensor $sensor): self
+    public function addSensor(SensorInterface $sensor): PlantInterface
     {
         if (!$this->sensors->contains($sensor)) {
             $this->sensors[] = $sensor;
@@ -218,7 +228,7 @@ class Plant implements PlantInterface
         return $this;
     }
 
-    public function removeSensor(Sensor $sensor): self
+    public function removeSensor(SensorInterface $sensor): PlantInterface
     {
         if ($this->sensors->contains($sensor)) {
             $this->sensors->removeElement($sensor);
@@ -239,7 +249,7 @@ class Plant implements PlantInterface
         return $this->uniqId;
     }
 
-    public function setUniqId(string $uniqId): self
+    public function setUniqId(string $uniqId): PlantInterface
     {
         $this->uniqId = $uniqId;
 
@@ -259,7 +269,7 @@ class Plant implements PlantInterface
         return $this->soilMedium;
     }
 
-    public function setSoilMedium(string $soilMedium): self
+    public function setSoilMedium(string $soilMedium): PlantInterface
     {
         $this->soilMedium = $soilMedium;
 
@@ -271,7 +281,7 @@ class Plant implements PlantInterface
         return $this->pot;
     }
 
-    public function setPot(string $pot): self
+    public function setPot(string $pot): PlantInterface
     {
         $this->pot = $pot;
 

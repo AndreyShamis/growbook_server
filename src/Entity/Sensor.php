@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Model\PlantInterface;
 use App\Model\SensorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -128,19 +129,19 @@ class Sensor implements SensorInterface
         return $this->uniqId;
     }
 
-    public function setUniqId(string $uniqId): self
+    public function setUniqId(string $uniqId): SensorInterface
     {
         $this->uniqId = $uniqId;
 
         return $this;
     }
 
-    public function getPlant(): ?Plant
+    public function getPlant(): ?PlantInterface
     {
         return $this->Plant;
     }
 
-    public function setPlant(?Plant $Plant): self
+    public function setPlant(?PlantInterface $Plant): SensorInterface
     {
         $this->Plant = $Plant;
 
@@ -155,7 +156,7 @@ class Sensor implements SensorInterface
         return $this->events;
     }
 
-    public function addEvent(Event $event): self
+    public function addEvent(Event $event): SensorInterface
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
