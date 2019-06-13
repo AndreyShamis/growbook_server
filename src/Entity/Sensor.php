@@ -85,7 +85,7 @@ class Sensor implements SensorInterface
      * @ORM\JoinColumn(name="last_event_id", onDelete="SET NULL")
      */
     private $lastEvent;
-    
+
     public function getId(): ?int
     {
         return $this->id;

@@ -5,7 +5,10 @@
 {% block body %}
     <div class="alert alert-success" role="alert">
         <h5>Plant [{{ plant.name }}]</h5>
-        <p class="mb-0">{{ plant.id }} / ({{ plant.uniqId }})</p>
+        <p class="mb-0">{{ plant.id }} / ({{ plant.uniqId }})
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            uptime: {{ plant.uptime }}
+        </p>
     </div>
     {% apply spaceless %}
     <table class="table table-hover table-condensed tasks-table table-bordered">
