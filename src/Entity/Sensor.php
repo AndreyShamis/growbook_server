@@ -97,10 +97,7 @@ class Sensor implements SensorInterface
 
     }
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+
 
     /**
      * @return string

@@ -82,6 +82,12 @@ class Plant implements PlantInterface
      */
     private $pot = 'standart';
 
+    /**
+     * @var int
+     * @ORM\Column(type="bigint", options={"default"="0"})
+     */
+    protected $uptime = 0;
+
     public function __construct()
     {
         try {
@@ -92,6 +98,22 @@ class Plant implements PlantInterface
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
+    }
+
+    /**
+     * @return int
+     */
+    public function getUptime(): int
+    {
+        return $this->uptime;
+    }
+
+    /**
+     * @param int $uptime
+     */
+    public function setUptime(int $uptime): void
+    {
+        $this->uptime = $uptime;
     }
 
     public function getId(): ?int
