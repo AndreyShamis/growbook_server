@@ -113,7 +113,7 @@ class EventController extends AbstractController
                         $update_palnt = true;
                     }
                     if (array_key_exists('rssi', $eventRequest)) {
-                        $plant->setUptime($eventRequest['rssi']);
+                        $plant->setRssi($eventRequest['rssi']);
                         $update_palnt = true;
                     }
                     if ($update_palnt) {
