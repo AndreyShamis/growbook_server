@@ -105,6 +105,11 @@ class Plant implements PlantInterface
      */
     protected $light = false;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\CustomField")
+     */
+    private $properties;
+
     public function __construct()
     {
         try {
@@ -115,6 +120,7 @@ class Plant implements PlantInterface
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
+        $this->properties = new ArrayCollection();
     }
 
     /**
@@ -392,6 +398,32 @@ class Plant implements PlantInterface
     public function setPot(string $pot): PlantInterface
     {
         $this->pot = $pot;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CustomField[]
+     */
+    public function getProperties(): Collection
+    {
+        return $this->properties;
+    }
+
+    public function addProperty(CustomField $property): self
+    {
+        if (!$this->properties->contains($property)) {
+            $this->properties[] = $property;
+        }
+
+        return $this;
+    }
+
+    public function removeProperty(CustomField $property): self
+    {
+        if ($this->properties->contains($property)) {
+            $this->properties->removeElement($property);
+        }
 
         return $this;
     }

@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\CustomField;
 use App\Entity\Plant;
 use App\Entity\Sensor;
 use App\Form\PlantType;
+use App\Repository\CustomFieldRepository;
 use App\Repository\EventRepository;
 use App\Repository\PlantRepository;
 use App\Utils\RandomName;
@@ -142,7 +144,7 @@ class PlantController extends AbstractController
      * @param string $value
      * @return Response
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value, CustomFieldRepository $fieldsRepo): Response
     {
         $message = '';
         $status = 200;
@@ -169,7 +171,17 @@ class PlantController extends AbstractController
                 call_user_func(array($plant, $get_func_name), $value);
                 try {
                     $entityManager = $this->getDoctrine()->getManager();
+
+                    /** @var CustomField $field */
+                    $field = $fieldsRepo->findOrCreate([
+                        'obj' => $plant,
+                        'key' => $property
+                    ]);
+                    $field->setPropertyValue($value);
+                    $plant->addProperty($field);
                     $entityManager->persist($plant);
+                    $entityManager->persist($field);
+
                     $entityManager->flush();
                     $message = 'Updated:'. $property . '=' . $value;
                 } catch (\Throwable $ex) {
