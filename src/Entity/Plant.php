@@ -95,7 +95,7 @@ class Plant implements PlantInterface
 
     /**
      * @var int
-     * @ORM\Column(type="integer", options={"default"="0"})
+     * @ORM\Column(type="smallint", options={"default"="0"})
      */
     protected $resetCounter = 0;
 
@@ -121,10 +121,12 @@ class Plant implements PlantInterface
 
     /**
      * @param int $rssi
+     * @return PlantInterface
      */
-    public function setRssi(int $rssi): void
+    public function setRssi(int $rssi): PlantInterface
     {
         $this->rssi = $rssi;
+        return $this;
     }
 
     /**
@@ -137,10 +139,15 @@ class Plant implements PlantInterface
 
     /**
      * @param int $resetCounter
+     * @return PlantInterface
      */
-    public function setResetCounter(int $resetCounter): void
+    public function setResetCounter(int $resetCounter): PlantInterface
     {
         $this->resetCounter = $resetCounter;
+        if ($this->resetCounter > 10000) {
+            $this->resetCounter = 0;
+        }
+        return $this;
     }
 
     /**
@@ -153,12 +160,13 @@ class Plant implements PlantInterface
 
     /**
      * @param int $uptime
+     * @return PlantInterface
      */
-    public function setUptime(int $uptime): void
+    public function setUptime(int $uptime): PlantInterface
     {
         try {
             $current_uptime = $this->getUptime();
-            if ($current_uptime > $uptime) {
+            if ($current_uptime > ($uptime + 60)) {
                 $this->setResetCounter($this->getResetCounter() + 1);
             }
         } catch (\Throwable $ex) {
@@ -166,6 +174,8 @@ class Plant implements PlantInterface
         }
 
         $this->uptime = $uptime;
+
+        return $this;
     }
 
     public function getId(): ?int

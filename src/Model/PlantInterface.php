@@ -16,6 +16,13 @@ interface PlantInterface
     public function getName(): string;
     public function setName(string $name): PlantInterface;
 
+    public function getRssi(): int;
+    public function setRssi(int $rssi): PlantInterface;
+    public function getResetCounter(): int;
+    public function setResetCounter(int $resetCounter): PlantInterface;
+    public function getUptime(): int;
+    public function setUptime(int $uptime): PlantInterface;
+
     public function getCreatedAt(): ?\DateTimeInterface;
     public function setCreatedAt(): PlantInterface;
     public function getUpdatedAt(): ?\DateTimeInterface;

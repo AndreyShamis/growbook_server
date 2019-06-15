@@ -146,7 +146,9 @@ class EventController extends AbstractController
             $event = new $ev_type();
             $eventFound = true;
         } catch (\Throwable $ex) {
-            $logger->critical('ERROR in ev_type:' . $ex->getMessage() . ' Got:' . $ev_type);
+            $message = 'ERROR in ev_type:' . $ex->getMessage() . ' Got:' . $ev_type;
+            $logger->critical($message);
+            $status = 501;
         }
         if ($eventReqFound) {
             $tmpType = $ev_req_type;
@@ -244,17 +246,26 @@ class EventController extends AbstractController
             //return $this->redirectToRoute('events_event_temperature_index');
         }
 
-        if ($eventFound && $form->isSubmitted() && !$form->isValid()) {
-            $errors = $form->getErrors();
-            if (count($errors) > 0) {
-                /** @var FormError $error */
-                $error = $errors[0];
+        if ($automatic && $form->isSubmitted() && !$form->isValid()) {
 
-                $logger->critical('ERROR in event_new: submited form:' . $error->getMessage() . '-'. print_r($error->getMessageParameters(), true));
+            if ($eventFound) {
+                $errors = $form->getErrors();
+
+                if (count($errors) > 0) {
+                    /** @var FormError $error */
+                    $error = $errors[0];
+                    $message = 'ERROR in event_new: submited form:' . $error->getMessage() . '-'. print_r($error->getMessageParameters(), true);
+                    $logger->critical($message);
+                } else {
+                    $message = 'ERROR in event_new - no error found';
+                    $logger->critical($message);
+                }
             } else {
-                $logger->critical('ERROR in event_new - no error found');
+                if ($message === '') {
+                    $message = 'Event not found';
+                }
             }
-
+            return new Response($message, $status);
         }
 
         return $this->render('event/new.html.twig', [
