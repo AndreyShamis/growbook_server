@@ -7,6 +7,7 @@ use App\Entity\Sensor;
 use App\Form\PlantType;
 use App\Repository\EventRepository;
 use App\Repository\PlantRepository;
+use App\Utils\RandomName;
 use SplObjectStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -129,5 +130,75 @@ class PlantController extends AbstractController
         }
 
         return $this->redirectToRoute('plant_index');
+    }
+
+    /**
+     * @Route("/cli/{plant_uniq_id}", name="cli_post", methods={"POST"})
+     * @Route("/cli/{plant_uniq_id}/{property}/{value}", name="cli", methods={"GET","POST"})
+     * @param Request $request
+     * @param PlantRepository $plants
+     * @param string $plant_uniq_id
+     * @param string $property
+     * @param string $value
+     * @return Response
+     */
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value): Response
+    {
+        $message = '';
+        $status = 200;
+        $plant = $plants->findOrCreate([
+            'name' => RandomName::getRandomTerm() . '__' . $plant_uniq_id,
+            'uniqId' => $plant_uniq_id,
+        ]);
+        $input = $request->request->all();
+        if (array_key_exists('key', $input) && array_key_exists('value', $input)) {
+            $property = $input['key'];
+            $value = $input['value'];
+        } else {
+            $message = 'Bad input';
+            $status = 400;
+            $plant = null;
+        }
+
+        if ($plant === null) {
+            $message = 'Plant not found';
+            $status = 404;
+        } else {
+            $get_func_name = $this->findSetter($plant, $property);
+            if (method_exists($plant, $get_func_name)) {
+                call_user_func(array($plant, $get_func_name), $value);
+                try {
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->persist($plant);
+                    $entityManager->flush();
+                    $message = 'Updated:'. $property . '=' . $value;
+                } catch (\Throwable $ex) {
+                    $message = $ex->getMessage();
+                }
+            } else {
+                $message = 'Method for property:[' . $property . '] not found';
+                $status = 405;
+            }
+        }
+
+        return new Response($message, $status);
+    }
+
+    protected function findSetter(Plant $plant, string  $key): string
+    {
+        $funcs = get_class_methods($plant);
+        $tmp_key = mb_strtolower($key);
+        $tmp_key = 'set' . str_replace('_', '', $tmp_key);
+        foreach ($funcs as $value) {
+            if (strpos($value, 'set') === 0) {
+                $real_func_name = $value;
+                $func_name = mb_strtolower($real_func_name);
+                $func_name = str_replace('_', '', $func_name);
+                if ($func_name === $tmp_key) {
+                    return $real_func_name;
+                }
+            }
+        }
+        return '';
     }
 }

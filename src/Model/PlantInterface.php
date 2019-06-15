@@ -16,6 +16,8 @@ interface PlantInterface
     public function getName(): string;
     public function setName(string $name): PlantInterface;
 
+    public function isLight(): bool;
+    public function setLight(bool $light): PlantInterface;
     public function getRssi(): int;
     public function setRssi(int $rssi): PlantInterface;
     public function getResetCounter(): int;

@@ -99,6 +99,12 @@ class Plant implements PlantInterface
      */
     protected $resetCounter = 0;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default"="0"})
+     */
+    protected $light = false;
+
     public function __construct()
     {
         try {
@@ -109,6 +115,24 @@ class Plant implements PlantInterface
         }
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLight(): bool
+    {
+        return $this->light;
+    }
+
+    /**
+     * @param bool $light
+     * @return PlantInterface
+     */
+    public function setLight(bool $light): PlantInterface
+    {
+        $this->light = $light;
+        return $this;
     }
 
     /**
