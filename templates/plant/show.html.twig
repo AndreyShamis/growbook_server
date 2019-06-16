@@ -37,7 +37,7 @@
             <th>Hydrometer</th>
             <td><span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span></td>
             <th>UpdatedAt</th>
-            <td>{{ plant.updatedAt ? plant.updatedAt|date('m/d H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+            <td>{{ plant.updatedAt ? plant.updatedAt|date('d M H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
             <th>FinishedAt</th>
             <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
         </tr>
