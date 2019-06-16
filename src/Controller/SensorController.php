@@ -57,12 +57,12 @@ class SensorController extends AbstractController
      * @param int $hours
      * @return Response
      */
-    public function show(Sensor $sensor, EventRepository $eventsRepo, int $hours=12): Response
+    public function show(Sensor $sensor, EventRepository $eventsRepo, int $hours=25): Response
     {
         $events = array();
         try {
             if ($hours < 0) {
-                $hours = 12;
+                $hours = 25;
             }
             $events = $eventsRepo->findAllBySensor($sensor, $hours);
         } catch (\Throwable $ex) {
@@ -71,6 +71,7 @@ class SensorController extends AbstractController
         return $this->render('sensor/show.html.twig', [
             'sensor' => $sensor,
             'events' => $events,
+            'hours' => $hours,
         ]);
     }
 

@@ -291,7 +291,7 @@
             {% endif %}
             <tr>
                 <td>{{ sensor.id }}</td>
-                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}" target="_blank">{{ sensor.name }}</a></td>
+                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
                 <td>{{ type }}</td>
                 <td>
                     {% if _have_last == true %}

@@ -16,19 +16,26 @@
         <tbody>
             <tr>
                 <th>Name</th>
-                <th>UniqId</th>
-                <th>Type</th>
                 <th>Plant</th>
-                <th>Events found</th>
+                <th>Events</th>
+                <th>Updated</th>
                 <th>Options</th>
+                <th>TH</th>
+                <th>Force S</th>
+                <th>Type</th>
+                <th>Unique</th>
             </tr>
             <tr>
                 <td>{{ sensor.name }}</td>
-                <td>{{ sensor.uniqId }}</td>
-                <td>{{ sensor.eventType }}</td>
                 <td><a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}}</a></td>
                 <td>{{ sensor.events | length }}</td>
+                <td>{{ sensor.updatedAt | time_diff}}</td>
                 <td><a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a></td>
+                <td>{{ sensor.diffThreshold }}</td>
+                <td>{{ sensor.writeForceEveryXseconds }}</td>
+                <td>{{ sensor.eventType }}</td>
+                <td>{{ sensor.uniqId }}</td>
+
             </tr>
         </tbody>
     </table>
@@ -117,7 +124,7 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: '{{ type }} [{{ sensor.name }}]'
+                    text: '{{ type }} [{{ sensor.name }}] {{ hours }} hours'
                 },
                 scales: {
                     xAxes: [{
