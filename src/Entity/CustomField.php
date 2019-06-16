@@ -11,9 +11,11 @@ use Doctrine\ORM\Mapping\UniqueConstraint;
  * @ORM\Table(name="custom_field", indexes={
  *     @Index(name="index_3_keys", columns={"object_host_id", "object_host_type", "property"}),
  *     @Index(name="index_2_keys", columns={"object_host_id", "object_host_type"}),
+ *     @Index(name="index_object_host_id", columns={"object_host_id"}),
  *     }
  *     , uniqueConstraints={@ORM\UniqueConstraint(name="uniq_entry", columns={"object_host_id", "object_host_type", "property"})}
  *     )
+ * @ORM\HasLifecycleCallbacks()
  */
 class CustomField
 {
@@ -71,7 +73,7 @@ class CustomField
         } catch (\Exception $e) {
         }
         try {
-            $this->setUpdatedAt(new \DateTime());
+            $this->setUpdatedAt();
         } catch (\Exception $e) {
         }
     }
@@ -163,9 +165,13 @@ class CustomField
         return $this->updated_at;
     }
 
-    public function setUpdatedAt(\DateTimeInterface $updated_at): self
+    /**
+     * @ORM\PreUpdate
+     * @throws \Exception
+     */
+    public function setUpdatedAt(): self
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = new \DateTime();
 
         return $this;
     }

@@ -142,7 +142,10 @@ class PlantController extends AbstractController
      * @param string $plant_uniq_id
      * @param string $property
      * @param string $value
+     * @param CustomFieldRepository $fieldsRepo
      * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value, CustomFieldRepository $fieldsRepo): Response
     {
@@ -167,22 +170,24 @@ class PlantController extends AbstractController
             $status = 404;
         } else {
             $get_func_name = $this->findSetter($plant, $property);
+            $em = $this->getDoctrine()->getManager();
+            /** @var CustomField $field */
+            $field = $fieldsRepo->findOrCreate([
+                'obj' => $plant,
+                'key' => $property
+            ]);
+            $field->setPropertyValue($value);
+            $plant->addProperty($field);
+            $em->persist($plant);
+            $em->persist($field);
+            $em->flush();
             if (method_exists($plant, $get_func_name)) {
                 call_user_func(array($plant, $get_func_name), $value);
                 try {
-                    $entityManager = $this->getDoctrine()->getManager();
-
-                    /** @var CustomField $field */
-                    $field = $fieldsRepo->findOrCreate([
-                        'obj' => $plant,
-                        'key' => $property
-                    ]);
-                    $field->setPropertyValue($value);
-                    $plant->addProperty($field);
-                    $entityManager->persist($plant);
-                    $entityManager->persist($field);
-
-                    $entityManager->flush();
+//                    $plant->addProperty($field);
+                    $em->persist($plant);
+//                    $entityManager->persist($field);
+                    $em->flush();
                     $message = 'Updated:'. $property . '=' . $value;
                 } catch (\Throwable $ex) {
                     $message = $ex->getMessage();
