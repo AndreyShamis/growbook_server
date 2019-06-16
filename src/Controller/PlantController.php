@@ -95,6 +95,7 @@ class PlantController extends AbstractController
             'plant' => $plant,
 //            'events' => $events,
             'sensors' => $sensors,
+            'hours' => $hours,
             'sensorsObj' => $sensorsObj,
             'temperature' => $fields->findForObject($plant, 'temperature'),
             'temperature' => $prop->get('temperature'),

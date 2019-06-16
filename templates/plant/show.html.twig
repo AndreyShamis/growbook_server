@@ -5,44 +5,41 @@
 {% block body %}
     <div class="alert alert-success" role="alert">
         <h5>Plant [{{ plant.name }}]</h5>
-        <p class="mb-0">{{ plant.id }} / ({{ plant.uniqId }})
+        <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ plant.uptime }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             resets: {{ plant.resetCounter }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            rssi: {{ plant.rssi }}
+            RSSI: {{ plant.rssi }}
         </p>
     </div>
     {% apply spaceless %}
     <table class="table table-hover table-condensed tasks-table table-bordered">
         <tbody>
-        {% set temp = 20 %}
-        {% set hum = 20 %}
-        {% set hydro = 20 %}
         <tr>
             <th>Temperature</th>
             <td><span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">{{ temperature }}  &#8451;</span></td>
             <th>Medium</th>
             <td><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
-            <th>Pot</th>
-            <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
+            <th>CreatedAt</th>
+            <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
         </tr>
         <tr>
             <th>Humidity</th>
             <td><span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">{{ humidity }} %</span></td>
-            <th>CreatedAt</th>
-            <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            <th>Pot</th>
+            <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
             <th>StartedAt</th>
-            <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}</td>
+            <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}</td>
         </tr>
         <tr>
             <th>Hydrometer</th>
             <td><span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span></td>
             <th>UpdatedAt</th>
-            <td>{{ plant.updatedAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+            <td>{{ plant.updatedAt ? plant.updatedAt|date('m/d H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
             <th>FinishedAt</th>
-            <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
         </tr>
         </tbody>
         <div class="progress pos-rel" data-percent="66%">
@@ -177,7 +174,7 @@
                 responsive: true,
                 title: {
                     display: true,
-                    text: ' [{{ plant.name }}]'
+                    text: '{{ plant.name }} [{{ hours }} hours]'
                 },
                 scales: {
                     xAxes: [{
