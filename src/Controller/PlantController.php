@@ -62,12 +62,12 @@ class PlantController extends AbstractController
      * @param int $hours
      * @return Response
      */
-    public function show(Plant $plant, EventRepository $eventsRepo, int $hours=84): Response
+    public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, int $hours=25): Response
     {
         $events = array();
         try {
             if ($hours < 0) {
-                $hours = 84;
+                $hours = 25;
             }
             $events = $eventsRepo->findAllByPlant($plant, $hours);
         } catch (\Throwable $ex) {
@@ -88,13 +88,19 @@ class PlantController extends AbstractController
                     $sensorsObj[$id] = $sensor;
                 }
             }
-
         }
+        $prop = $plant->getProperties();
+
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
 //            'events' => $events,
             'sensors' => $sensors,
             'sensorsObj' => $sensorsObj,
+            'temperature' => $fields->findForObject($plant, 'temperature'),
+            'temperature' => $prop->get('temperature'),
+            'humidity' => $fields->findForObject($plant, 'humidity'),
+            'humidity' => $fields->findForObject($plant, 'humidity'),
+            'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
         ]);
     }
 

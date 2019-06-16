@@ -83,8 +83,14 @@ class CustomField
         return $this->id;
     }
 
-    public function getProperty(): ?string
+    /**
+     * @return string
+     */
+    public function getProperty(): string
     {
+        if ($this->property === null) {
+            return '';
+        }
         return $this->property;
     }
 
@@ -108,8 +114,14 @@ class CustomField
         return $this;
     }
 
-    public function getPropertyValueString(): ?string
+    /**
+     * @return string
+     */
+    public function getPropertyValueString(): string
     {
+        if ($this->propertyValueString === null) {
+            return '';
+        }
         return $this->propertyValueString;
     }
 
@@ -132,8 +144,14 @@ class CustomField
         return $this;
     }
 
-    public function getObjectHostType(): ?string
+    /**
+     * @return string
+     */
+    public function getObjectHostType(): string
     {
+        if ($this->object_host_type === null) {
+            return '';
+        }
         return $this->object_host_type;
     }
 
@@ -176,8 +194,14 @@ class CustomField
         return $this;
     }
 
-    public function getPropertyValueType(): ?string
+    /**
+     * @return string
+     */
+    public function getPropertyValueType(): string
     {
+        if ($this->propertyValueType === null) {
+            return 'None';
+        }
         return $this->propertyValueType;
     }
 
@@ -186,5 +210,10 @@ class CustomField
         $this->propertyValueType = $propertyValueType;
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->getPropertyValueString();
     }
 }

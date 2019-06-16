@@ -46,6 +46,24 @@ class CustomFieldRepository extends ServiceEntityRepository
         return $ret;
     }
 
+
+    /**
+     * @param object $obj
+     * @param string $key
+     * @return CustomField
+     */
+    public function findForObject($obj, string $key): CustomField
+    {
+        $ret = $this->findOneBy(array(
+            'object_host_id' => $obj->getId(),
+            'object_host_type' => get_class($obj),
+            'property' => $key,
+        ));
+        if ($ret === null) {
+            $ret = new CustomField();
+        }
+        return $ret;
+    }
     // /**
     //  * @return CustomField[] Returns an array of CustomField objects
     //  */
