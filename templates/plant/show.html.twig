@@ -36,10 +36,18 @@
         <tr>
             <th>Hydrometer</th>
             <td><span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span></td>
-            <th>UpdatedAt</th>
-            <td>{{ plant.updatedAt ? plant.updatedAt|date('d M H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+            <th>Period</th>
+            <td>VEG</td>
             <th>FinishedAt</th>
             <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
+        </tr>
+        <tr>
+            <th>Light</th>
+            <td><span class="badge ">{{ plant.light? "On" : "Off" }} </span></td>
+            <th></th>
+            <td></td>
+            <th>UpdatedAt</th>
+            <td>{{ plant.updatedAt ? plant.updatedAt|date('d M H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
         </tr>
         </tbody>
     </table>
