@@ -34,6 +34,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('humidityToBadge', [$this, 'humidityToBadge']),
             new TwigFilter('temperatureToBadge', [$this, 'temperatureToBadge']),
             new TwigFilter('hydrometerToBadge', [$this, 'hydrometerToBadge']),
+            new TwigFilter('lightToBadge', [$this, 'lightToBadge']),
         );
     }
 
@@ -55,6 +56,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('humidityToBadge', [$this, 'humidityToBadge']),
             new TwigFunction('temperatureToBadge', [$this, 'temperatureToBadge']),
             new TwigFunction('hydrometerToBadge', [$this, 'hydrometerToBadge']),
+            new TwigFunction('lightToBadge', [$this, 'lightToBadge']),
         ];
     }
 
@@ -133,6 +135,18 @@ class AppExtension extends AbstractExtension
         return $ret;
     }
 
+    /**
+     * @param bool $value
+     * @return string
+     */
+    public function lightToBadge(bool $value=false): string
+    {
+        $ret = 'badge-dark';
+        if ($value) {
+            $ret = 'badge-warning';
+        }
+        return $ret;
+    }
 
     public function parseType(string $typeFull=null): string
     {

@@ -9,9 +9,13 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ plant.uptime }} | {{ plant.uptime | executionTimeGenericShort }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            uptime: {{ uptime }} | {{ uptime.propertyValue | number_format | executionTimeGenericShort }}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             resets: {{ plant.resetCounter }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             RSSI: {{ plant.rssi }}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            {{ plant.updatedAt ? plant.updatedAt | time_diff }}
         </p>
     </div>
     {% apply spaceless %}
@@ -43,7 +47,7 @@
         </tr>
         <tr>
             <th>Light</th>
-            <td><span class="badge ">{{ plant.light? "On" : "Off" }} </span></td>
+            <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>
             <th></th>
             <td></td>
             <th>UpdatedAt</th>

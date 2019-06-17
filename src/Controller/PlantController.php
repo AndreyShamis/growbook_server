@@ -97,10 +97,11 @@ class PlantController extends AbstractController
             'sensors' => $sensors,
             'hours' => $hours,
             'sensorsObj' => $sensorsObj,
+            'uptime' => $fields->findForObject($plant, 'uptime'),
             'temperature' => $fields->findForObject($plant, 'temperature'),
-            'temperature' => $prop->get('temperature'),
+            //'temperature' => $prop->get('temperature'),
             'humidity' => $fields->findForObject($plant, 'humidity'),
-            'humidity' => $fields->findForObject($plant, 'humidity'),
+            'light' => $fields->findForObject($plant, 'light'),
             'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
         ]);
     }
