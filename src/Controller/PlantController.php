@@ -144,7 +144,7 @@ class PlantController extends AbstractController
     }
 
     /**
-     * @Route("/cli/{plant_uniq_id}", name="cli_post", methods={"POST"})
+     * @Route("/cli/{plant_uniq_id}", name="cli_post", methods={"POST", "GET"})
      * @Route("/cli/{plant_uniq_id}/{property}/{value}", name="cli", methods={"GET","POST"})
      * @param Request $request
      * @param PlantRepository $plants
@@ -157,57 +157,84 @@ class PlantController extends AbstractController
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value, CustomFieldRepository $fieldsRepo, LoggerInterface $logger): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, string $property=null, string $value=null): Response
     {
         $message = '';
         $status = 200;
-        $plant = $plants->findOrCreate([
-            'name' => RandomName::getRandomTerm() . '__' . $plant_uniq_id,
-            'uniqId' => $plant_uniq_id,
-        ]);
-        $input = $request->request->all();
-        if (array_key_exists('key', $input) && array_key_exists('value', $input)) {
-            $property = $input['key'];
-            $value = $input['value'];
-        } else {
-            $message = 'Bad input';
-            $status = 400;
-            $plant = null;
-        }
-
-        if ($plant === null) {
-            $message = 'Plant not found';
-            $status = 404;
-        } else {
-            $get_func_name = $this->findSetter($plant, $property);
+        try {
             $em = $this->getDoctrine()->getManager();
-            /** @var CustomField $field */
-            $field = $fieldsRepo->findOrCreate([
-                'obj' => $plant,
-                'key' => $property
+
+            $plant = $plants->findOrCreate([
+                'name' => RandomName::getRandomTerm() . '__' . $plant_uniq_id,
+                'uniqId' => $plant_uniq_id,
             ]);
-            $field->setPropertyValue($value);
-            $plant->addProperty($field);
-            $em->persist($plant);
-            $em->persist($field);
-            $em->flush();
-            if (method_exists($plant, $get_func_name)) {
-                call_user_func(array($plant, $get_func_name), $value);
-                try {
-//                    $plant->addProperty($field);
-                    $em->persist($plant);
-//                    $entityManager->persist($field);
-                    $em->flush();
-                    $message = 'Updated:'. $property . '=' . $value;
-                } catch (\Throwable $ex) {
-                    $message = $ex->getMessage();
+            if ($plant === null) {
+                throw new \Exception('Plant not found', 404);
+            }
+            $input = $request->request->all();
+            if (array_key_exists('key', $input) && array_key_exists('value', $input)) {
+                $property = $input['key'];
+                $value = $input['value'];
+            } else if (count($input) >= 1) {
+                $a = print_r($input, true);
+                $fields = array();
+                foreach ($input as $key => $val) {
+                    $field = $fieldsRepo->findOrCreate([
+                        'obj' => $plant,
+                        'key' => $key
+                    ]);
+                    $field->setPropertyValue($val);
+                    $plant->addProperty($field);
+                    $em->persist($field);
+                    //
+                    $fields[] = $field;
                 }
+                $em->persist($plant);
+                $em->flush();
+                $message = count($fields) . ' fields added - ' . $a;
             } else {
-                $message = 'Method for property:[' . $property . '] not found';
-                $status = 405;
+                $message = 'Bad input';
+                $status = 400;
+                $plant = null;
+            }
+
+            if ($property !== null) {
+                $get_func_name = $this->findSetter($plant, $property);
+                /** @var CustomField $field */
+                $field = $fieldsRepo->findOrCreate([
+                    'obj' => $plant,
+                    'key' => $property
+                ]);
+                $field->setPropertyValue($value);
+                $plant->addProperty($field);
+                $em->persist($plant);
+                $em->persist($field);
+                $em->flush();
+                if (method_exists($plant, $get_func_name)) {
+                    call_user_func(array($plant, $get_func_name), $value);
+                    try {
+//                    $plant->addProperty($field);
+                        $em->persist($plant);
+//                    $entityManager->persist($field);
+                        $em->flush();
+                        $message = 'Updated:'. $property . '=' . $value;
+                    } catch (\Throwable $ex) {
+                        $message = $ex->getMessage();
+                    }
+                } else {
+                    $message = 'Method for property:[' . $property . '] not found';
+                    $status = 405;
+                }
+            }
+            $message = $plant_uniq_id . ' : ' . $message;
+        } catch (\Throwable $ex) {
+            $message = $ex->getMessage();
+            if ($ex->getCode() === 0) {
+                $status = 500;
+            } else {
+                $status = $ex->getCode();
             }
         }
-        $message = $plant_uniq_id . ' : ' . $message;
 
         if ($status === 400 || $status === 404) {
             $logger->critical($message);
