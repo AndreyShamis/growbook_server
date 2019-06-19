@@ -238,7 +238,7 @@ class EventController extends AbstractController
                 }
             }
             if ($automatic) {
-                $logger->critical($message);
+                $logger->alert($message);
 
                 return new Response($message, $status);
             }
