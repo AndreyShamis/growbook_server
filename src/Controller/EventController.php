@@ -235,7 +235,15 @@ class EventController extends AbstractController
                 }
             }
             if ($automatic) {
-                //$logger->alert($message);
+                if ($sensor !== null) {
+                    $message = '['. $sensor->getUniqId() . '] : ' . $message;
+                }
+                if ($plant !== null) {
+                    $message = $plant->getUniqId() . ' :  ' . $message;
+                }
+                //$logger->warning('WARNING:' . $message);
+                $logger->notice($message);
+                //$logger->info('INFO:' . $message);
 
                 return new Response($message, $status);
             }

@@ -10,6 +10,7 @@ use App\Repository\CustomFieldRepository;
 use App\Repository\EventRepository;
 use App\Repository\PlantRepository;
 use App\Utils\RandomName;
+use Psr\Log\LoggerInterface;
 use SplObjectStorage;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -151,11 +152,12 @@ class PlantController extends AbstractController
      * @param string $property
      * @param string $value
      * @param CustomFieldRepository $fieldsRepo
+     * @param LoggerInterface $logger
      * @return Response
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value, CustomFieldRepository $fieldsRepo): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, string $property, string $value, CustomFieldRepository $fieldsRepo, LoggerInterface $logger): Response
     {
         $message = '';
         $status = 200;
@@ -204,6 +206,13 @@ class PlantController extends AbstractController
                 $message = 'Method for property:[' . $property . '] not found';
                 $status = 405;
             }
+        }
+        $message = $plant_uniq_id . ' : ' . $message;
+
+        if ($status === 400 || $status === 404) {
+            $logger->critical($message);
+        } else {
+            $logger->notice($message);
         }
 
         return new Response($message, $status);
