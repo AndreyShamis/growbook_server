@@ -27,6 +27,15 @@ class SensorController extends AbstractController
     }
 
     /**
+     * @Route("/demo", name="sensor_demo", methods={"GET"})
+     */
+    public function demo(SensorRepository $sensorRepository): Response
+    {
+        return $this->render('sensor/demo.html.twig', [
+            'sensors' => $sensorRepository->findAll(),
+        ]);
+    }
+    /**
      * @Route("/new", name="sensor_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
