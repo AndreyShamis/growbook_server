@@ -179,9 +179,6 @@ class EventController extends AbstractController
             if ($automatic && $sensor !== null && $plant !== null) {
                 $lastEvent = $events->findLast($event->getType(), $plant, $sensor);
             }
-            if ($lastEvent === null) {
-                $logger->critical(' -------- LAST EVENT NOT FOUND');
-            }
 
             $event->setIp($request->getClientIp());
             if ($value1 !== null) {
