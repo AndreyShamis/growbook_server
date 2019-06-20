@@ -149,13 +149,11 @@ class PlantController extends AbstractController
      * @param Request $request
      * @param PlantRepository $plants
      * @param string $plant_uniq_id
-     * @param string $property
-     * @param string $value
      * @param CustomFieldRepository $fieldsRepo
      * @param LoggerInterface $logger
+     * @param string $property
+     * @param string $value
      * @return Response
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, string $property=null, string $value=null): Response
     {
@@ -210,6 +208,7 @@ class PlantController extends AbstractController
                 $em->persist($plant);
                 $em->persist($field);
                 $em->flush();
+                $message = 'Updated:'. $property . '=' . $value . '. ';
                 if (method_exists($plant, $get_func_name)) {
                     call_user_func(array($plant, $get_func_name), $value);
                     try {
@@ -217,12 +216,12 @@ class PlantController extends AbstractController
                         $em->persist($plant);
 //                    $entityManager->persist($field);
                         $em->flush();
-                        $message = 'Updated:'. $property . '=' . $value;
+
                     } catch (\Throwable $ex) {
                         $message = $ex->getMessage();
                     }
                 } else {
-                    $message = 'Method for property:[' . $property . '] not found';
+                    $message .= 'Method for property:[' . $property . '] not found.';
                     $status = 405;
                 }
             }

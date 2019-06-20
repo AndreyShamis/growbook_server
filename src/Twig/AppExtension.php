@@ -307,9 +307,9 @@ class AppExtension extends AbstractExtension
      */
     public function executionTimeGenericShort(int $time): string
     {
-        $seconds  =   $time%60;
-        $minutes  =   ($time/60)%60;
-        $hours    =   number_format (floor($time/60/60));
+        $seconds = $time%60;
+        $minutes = ($time/60)%60;
+        $hours = number_format (floor($time/60/60));
         $hour_print = sprintf('%d',$hours);
         $min_print = sprintf('%02d',$minutes);
         $sec_print = sprintf('%02d',$seconds);
