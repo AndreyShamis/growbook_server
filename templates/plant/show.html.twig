@@ -22,8 +22,13 @@
     <table class="table table-hover table-condensed tasks-table table-bordered">
         <tbody>
         <tr>
-            <th>Temperature</th>
-            <td><span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">{{ temperature }}  &#8451;</span></td>
+            <th style="width: 120px;">Temperature</th>
+            <td style="width: 180px;">
+                <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">
+                    {{ temperature }}  &#8451;
+                </span>
+                <span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span>
+            </td>
             <th>Medium</th>
             <td><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
             <th>CreatedAt</th>
@@ -31,7 +36,12 @@
         </tr>
         <tr>
             <th>Humidity</th>
-            <td><span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">{{ humidity }} %</span></td>
+            <td>
+                <span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">
+                    {{ humidity }} %
+                </span>
+                <span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span>
+            </td>
             <th>Pot</th>
             <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
             <th>StartedAt</th>
@@ -39,7 +49,12 @@
         </tr>
         <tr>
             <th>Hydrometer</th>
-            <td><span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span></td>
+            <td>
+                <span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">
+                    {{ hydrometer }} %
+                </span>
+                <span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span>
+            </td>
             <th>Period</th>
             <td>VEG</td>
             <th>FinishedAt</th>
