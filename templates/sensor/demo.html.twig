@@ -4,21 +4,27 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    temperature
-{% for i in range(0, 100, 5) %}
+    Temperature C
+{% for i in range(0, 40, 1) %}
     <span class="badge {{ temperatureToBadge(i)}}">{{ i }}  &#8451;</span>
 {% endfor %}
     <br/>
 
 
-    humidityToBadge
-    {% for i in range(0, 100, 5) %}
+    Humidity 50-80%
+    {% for i in range(0, 100, 1) %}
         <span class="badge {{ humidityToBadge(i)}}">{{ i }}  %</span>
     {% endfor %}
     <br/>
 
-    hydrometerToBadge
-    {% for i in range(0, 100, 5) %}
+    Humidity 30-50%
+    {% for i in range(0, 100, 1) %}
+        <span class="badge {{ humidityToBadge(i, 2)}}">{{ i }}  %</span>
+    {% endfor %}
+    <br/>
+
+    Hydrometer %
+    {% for i in range(0, 100, 1) %}
         <span class="badge {{ hydrometerToBadge(i)}}">{{ i }}  %</span>
     {% endfor %}
     <br/>

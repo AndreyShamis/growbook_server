@@ -62,24 +62,39 @@ class AppExtension extends AbstractExtension
 
     /**
      * @param int $value
+     * @param int $period
      * @return string
      */
-    public function humidityToBadge(int $value=50): string
+    public function humidityToBadge(int $value=50, $period=1): string
     {
         $ret = '';
-        if ($value <= 0) {
+        if ($value <= 0 || $value > 100) {
             $ret = 'badge-secondary';
         } else {
-            if ($value >= 40 && $value <= 70) {
-                $ret = 'badge-success';
-            } elseif ($value < 15 || $value > 85) {
-                $ret = 'badge-warning';
-            } elseif ($value > 70) {
-                $ret = 'badge-info';
-            } elseif ($value < 40) {
-                $ret = 'badge-warning';
-            } else {
-                $ret = 'badge-info';
+            if ($period === 1) {
+                if ($value < 40 || $value > 90) {
+                    $ret = 'badge-danger';
+                } elseif ($value < 50 || $value > 80) {
+                    $ret = 'badge-warning';
+                } elseif ($value < 60 || $value > 70) {
+                    $ret = 'badge-info';
+                } elseif ($value >= 60 && $value <= 70) {
+                    $ret = 'badge-success';
+                } else {
+                    $ret = 'badge-danger';
+                }
+            } elseif ($period === 2) {
+                if ($value < 30 || $value > 70) {
+                    $ret = 'badge-danger';
+                } elseif ($value < 35 || $value > 60) {
+                    $ret = 'badge-warning';
+                } elseif ($value < 40 || $value > 50) {
+                    $ret = 'badge-info';
+                } elseif ($value >= 40 && $value <= 50) {
+                    $ret = 'badge-success';
+                } else {
+                    $ret = 'badge-danger';
+                }
             }
         }
 
@@ -88,22 +103,25 @@ class AppExtension extends AbstractExtension
 
     /**
      * @param int $value
+     * @param int $period
      * @return string
      */
-    public function temperatureToBadge(int $value=25): string
+    public function temperatureToBadge(int $value=25, $period=1): string
     {
         $ret = '';
         if ($value <= 0) {
             $ret = 'badge-secondary';
         } else {
-            if ($value >= 22 && $value <= 32) {
-                $ret = 'badge-success';
-            } elseif ($value > 35 || $value < 20) {
+            if ($value < 20 || $value > 33) {
                 $ret = 'badge-danger';
-            } elseif ($value > 32 || $value < 22) {
+            } elseif ($value < 22 || $value > 31) {
                 $ret = 'badge-warning';
-            } else {
+            } elseif ($value < 24 || $value > 28) {
                 $ret = 'badge-info';
+            } elseif ($value >= 24 && $value <= 28) {
+                $ret = 'badge-success';
+            } else {
+                $ret = 'badge-danger';
             }
         }
 
@@ -117,22 +135,43 @@ class AppExtension extends AbstractExtension
     public function hydrometerToBadge(int $value=50): string
     {
         $ret = '';
-        if ($value <=0) {
+        if ($value <= 0) {
             $ret = 'badge-secondary';
-
         } else {
-            if ($value >= 35 && $value <= 80) {
-                $ret = 'badge-success';
-            } elseif ($value > 80 || $value < 20) {
+            if ($value < 11 || $value > 60) {
                 $ret = 'badge-danger';
-            } elseif ($value < 35) {
+            } elseif ($value < 16 || $value > 55) {
                 $ret = 'badge-warning';
-            } else {
+            } elseif ($value < 20 || $value > 45) {
                 $ret = 'badge-info';
+            } elseif ($value >= 20 && $value <= 45) {
+                $ret = 'badge-success';
+            } else {
+                $ret = 'badge-danger';
             }
         }
 
         return $ret;
+//        $ret = '';
+//        $upGood = 55;
+//        $midlle = 15;
+//        $downGood = 12;
+//        if ($value <= 0 || $value >= 95) {
+//            $ret = 'badge-secondary';
+//
+//        } else {
+//            if ($value > $midlle && $value <= $upGood) {
+//                $ret = 'badge-success';
+//            } elseif ($value > $upGood || $value < $downGood) {
+//                $ret = 'badge-danger';
+//            } elseif ($value <= $midlle) {
+//                $ret = 'badge-warning';
+//            } else {
+//                $ret = 'badge-info';
+//            }
+//        }
+//
+//        return $ret;
     }
 
     /**
