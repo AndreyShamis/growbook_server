@@ -1,0 +1,24 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+    {#<meta charset="UTF-8">#}
+    {#<title>Title</title>#}
+{#</head>#}
+{#<body>#}
+{# templates/emails/registration.html.twig #}
+<h3>Light is {{ plant.isLight ? "ON" : "off" }} on {{ plant.name }} at {{ printTime | date('Y-m-d H:i') }}</h3>
+
+Hi
+<br/>
+<p>
+    The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.isLight ? "ON" : "off" }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
+</p>
+{# example, assuming you have a route named "login" #}
+Link to object: <a href="http://{{ domain }}{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a>.
+
+Thanks!
+
+{# Makes an absolute URL to the /images/logo.png file #}
+{#<img src="{{ absolute_url(asset('images/logo.png')) }}">#}
+{#</body>#}
+{#</html>#}

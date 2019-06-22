@@ -110,6 +110,9 @@ class Plant implements PlantInterface
      */
     private $properties;
 
+    /** @var bool  */
+    protected $lightChanged = false;
+
     public function __construct()
     {
         try {
@@ -123,6 +126,10 @@ class Plant implements PlantInterface
         $this->properties = new ArrayCollection();
     }
 
+    public function getLightChanged(): bool
+    {
+        return $this->lightChanged;
+    }
     /**
      * @return bool
      */
@@ -137,6 +144,9 @@ class Plant implements PlantInterface
      */
     public function setLight(bool $light): PlantInterface
     {
+        if ($this->light !== null && $this->light !== $light) {
+            $this->lightChanged = true;
+        }
         $this->light = $light;
         return $this;
     }

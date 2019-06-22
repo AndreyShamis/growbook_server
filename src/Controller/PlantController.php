@@ -151,15 +151,17 @@ class PlantController extends AbstractController
      * @param string $plant_uniq_id
      * @param CustomFieldRepository $fieldsRepo
      * @param LoggerInterface $logger
+     * @param \Swift_Mailer $mailer
      * @param string $property
      * @param string $value
      * @return Response
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, string $property=null, string $value=null): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, string $property=null, string $value=null): Response
     {
         $message = '';
         $status = 200;
         try {
+            //$domain = $this->getParameter('DOMAIN');
             $em = $this->getDoctrine()->getManager();
 
             $plant = $plants->findOrCreate([
@@ -240,7 +242,39 @@ class PlantController extends AbstractController
         } else {
             $logger->notice($message);
         }
+        if ($plant !== null && $plant->getLightChanged()) {
+            try {
+                $domain = $_ENV['DOMAIN'];
+                $_time = new \DateTime();
+                $message = (new \Swift_Message('[' . $domain. '] Light change detected on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s')))
+                    ->setFrom('hicam.golda@gmail.com')
+                    ->setTo('lolnik@gmail.com')
+                    ->setBody(
+                        $this->renderView(
+                        // templates/emails/registration.html.twig
+                            'emails/light.changed.html.twig',
+                            ['plant' => $plant, 'printTime' => $_time, 'domain' => $domain]
+                        ),
+                        'text/html'
+                    )
 
+                    // you can remove the following code if you don't define a text version for your emails
+                    ->addPart(
+                        $this->renderView(
+                            'emails/registration.txt.twig',
+                            ['plant' => $plant]
+                        ),
+                        'text/plain'
+                    )
+                ;
+
+                $res = $mailer->send($message);
+                $a = print_r($res, true);
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
+            }
+
+        }
         return new Response($message, $status);
     }
 
