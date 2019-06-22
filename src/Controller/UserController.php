@@ -13,6 +13,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 
+/**
+ * @Route("/users")
+ */
 class UserController extends AbstractController
 {
     /** @var \Doctrine\Common\Persistence\ObjectManager  */
