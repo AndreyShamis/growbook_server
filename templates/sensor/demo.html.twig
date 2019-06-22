@@ -4,34 +4,49 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    Temperature C
-{% for i in range(0, 40, 1) %}
-    <span class="badge {{ temperatureToBadge(i)}}">{{ i }}  &#8451;</span>
-{% endfor %}
-    <br/>
-
-
-    Humidity 50-80%
-    {% for i in range(0, 100, 1) %}
-        <span class="badge {{ humidityToBadge(i)}}">{{ i }}  %</span>
-    {% endfor %}
-    <br/>
-
-    Humidity 30-50%
-    {% for i in range(0, 100, 1) %}
-        <span class="badge {{ humidityToBadge(i, 2)}}">{{ i }}  %</span>
-    {% endfor %}
-    <br/>
-
-    Hydrometer %
-    {% for i in range(0, 100, 1) %}
-        <span class="badge {{ hydrometerToBadge(i)}}">{{ i }}  %</span>
-    {% endfor %}
-    <br/>
-
-    lightToBadge
-    {% for i in range(0, 1, 1) %}
-        <span class="badge {{ lightToBadge(i)}}">{{ i }}</span>
-    {% endfor %}
-    <br/>
+    <table style="width: 100%">
+        <tr>
+            <th>Temperature C</th>
+            <td>
+                {% for i in range(17, 36, 1) %}
+                    <span class="badge {{ temperatureToBadge(i)}}">{{ i }}  &#8451;</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr><td class="font8">&nbsp;</td><td></td></tr>
+        <tr>
+            <th>Humidity 50-80%</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <span class="badge {{ humidityToBadge(i)}}">{{ i }}  %</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Humidity 30-50%</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <span class="badge {{ humidityToBadge(i, 2)}}">{{ i }}  %</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr><td class="font8">&nbsp;</td><td></td></tr>
+        <tr>
+            <th>Hydrometer %</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <span class="badge {{ hydrometerToBadge(i)}}">{{ i }}  %</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr><td class="font8">&nbsp;</td><td></td></tr>
+        <tr>
+            <th>Light</th>
+            <td>
+                {% for i in range(0, 1, 1) %}
+                    <span class="badge {{ lightToBadge(i)}}">{{ i }}</span>
+                {% endfor %}
+            </td>
+        </tr>
+    </table>
 {% endblock %}
