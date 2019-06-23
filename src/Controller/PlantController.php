@@ -269,7 +269,6 @@ class PlantController extends AbstractController
                 ;
 
                 $res = $mailer->send($message);
-                $a = print_r($res, true);
             } catch (\Throwable $ex) {
                 $logger->critical($ex->getMessage());
             }

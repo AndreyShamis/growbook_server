@@ -181,15 +181,33 @@ class EventController extends AbstractController
             }
 
             $event->setIp($request->getClientIp());
-            if ($value1 !== null) {
-                $event->setValue1($value1);
+
+            /**  */
+            try {
+                if ($value1 !== null) {
+                    $event->setValue1($value1);
+                }
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
             }
-            if ($value2 !== null) {
-                $event->setValue2($value2);
+
+            try {
+                if ($value2 !== null) {
+                    $event->setValue2($value2);
+                }
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
             }
-            if ($value3 !== null) {
-                $event->setValue3($value3);
+
+            try {
+                if ($value3 !== null) {
+                    $event->setValue3($value3);
+                }
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
             }
+
+            /**  */
             $message .= 'TYPE:' . $event->getType();
             if ($lastEvent === null) {
                 if ($automatic) {

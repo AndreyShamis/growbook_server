@@ -184,6 +184,9 @@
             <th>Name</th>
             <th>Type</th>
             <th>Value</th>
+            <th>Value 1</th>
+            <th>Value 2</th>
+            <th>Value 3</th>
             <th>Note</th>
             <th>Note</th>
             <th>When</th>
@@ -216,6 +219,9 @@
                         {% endif %}
                     {% endif %}
                 </td>
+                <td>{{ event.value1 }}</td>
+                <td>{{ event.value2 }}</td>
+                <td>{{ event.value3 }}</td>
                 <td>{{ event.note }}</td>
                 <td>{{ event.ip }}</td>
                 <td>{{ event.createdAt | time_diff }}</td>
