@@ -176,7 +176,7 @@ class PlantController extends AbstractController
                 $property = $input['key'];
                 $value = $input['value'];
             } else if (count($input) >= 1) {
-                $a = print_r($input, true);
+                $a = str_replace("\n", ' ', print_r($input, true)) ;
                 $fields = array();
                 foreach ($input as $key => $val) {
                     $field = $fieldsRepo->findOrCreate([
