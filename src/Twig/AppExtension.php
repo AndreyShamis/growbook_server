@@ -135,7 +135,7 @@ class AppExtension extends AbstractExtension
     public function hydrometerToBadge(int $value=50): string
     {
         $ret = '';
-        if ($value <= 0) {
+        if ($value < 0) {
             $ret = 'badge-secondary';
         } else {
             if ($value < 11 || $value > 60) {
@@ -152,26 +152,6 @@ class AppExtension extends AbstractExtension
         }
 
         return $ret;
-//        $ret = '';
-//        $upGood = 55;
-//        $midlle = 15;
-//        $downGood = 12;
-//        if ($value <= 0 || $value >= 95) {
-//            $ret = 'badge-secondary';
-//
-//        } else {
-//            if ($value > $midlle && $value <= $upGood) {
-//                $ret = 'badge-success';
-//            } elseif ($value > $upGood || $value < $downGood) {
-//                $ret = 'badge-danger';
-//            } elseif ($value <= $midlle) {
-//                $ret = 'badge-warning';
-//            } else {
-//                $ret = 'badge-info';
-//            }
-//        }
-//
-//        return $ret;
     }
 
     /**
