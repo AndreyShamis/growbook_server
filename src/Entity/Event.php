@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * @ORM\Entity()
  * @ ORM\Map pedSuperclass(repositoryClass="App\Repository\EventRepository")
- * @ORM\DiscriminatorColumn(name = "andrey_type", type = "string", fieldName="")
+ * @ORM\DiscriminatorColumn(name = "discr", type = "string", fieldName="")
  * @ORM\InheritanceType(value="SINGLE_TABLE")
  * @ ORM\DiscriminatorMap({"EventHumidity" = "ParentEntity", "child_entity" = "AppBundle\Entity\ChildEntity"})
  * @ORM\Table(name="events", indexes={
