@@ -13,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Events\EventFeedRepository")
  */
-class EventFeed extends Event implements EventInterface
+abstract class EventFeed extends Event implements EventInterface
 {
     /**
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
@@ -43,7 +43,7 @@ class EventFeed extends Event implements EventInterface
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event")
      */
-    private $fertilizers;
+    protected $fertilizers;
 
     public function __construct()
     {
