@@ -5,7 +5,6 @@ namespace App\Entity\Events;
 
 use App\Entity\Event;
 use App\Entity\FeedFertilizer;
-use App\Model\EventInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -13,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\Events\EventFeedRepository")
  */
-class EventFeed extends Event implements EventInterface
+class EventFeed extends Event
 {
     /**
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
