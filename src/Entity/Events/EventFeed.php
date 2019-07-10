@@ -13,34 +13,34 @@ use Doctrine\ORM\Mapping as ORM;
 class EventFeed extends Event implements EventInterface
 {
     /**
-     * @ORM\Column(type="float", options={"unsigned"=true, "default"="0"})
+     * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
     protected $water = 0;
 
     /**
-     * @ORM\Column(type="float", options={"unsigned"=true})
+     * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
     protected $ph = 0;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned"=true, "default"="300"})
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned"=true})
      */
-    protected $tds = 300;
+    protected $tds = 0;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned"=true, "default"="300"})
+     * @ORM\Column(type="smallint", nullable=true, options={"unsigned"=true})
      */
-    protected $ec = 300;
+    protected $ec = 0;
 
     /**
-     * @ORM\Column(type="smallint", options={"unsigned"=true, "default"="300"})
+     * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
-    protected $temperature = 24;
+    protected $temperature = 24.0;
 
     /**
      * @return mixed
      */
-    public function getWater()
+    public function getWater(): float
     {
         return $this->water;
     }
@@ -56,7 +56,7 @@ class EventFeed extends Event implements EventInterface
     /**
      * @return mixed
      */
-    public function getPh()
+    public function getPh(): float
     {
         return $this->ph;
     }
@@ -72,7 +72,7 @@ class EventFeed extends Event implements EventInterface
     /**
      * @return mixed
      */
-    public function getTds()
+    public function getTds(): int
     {
         return $this->tds;
     }
@@ -88,8 +88,11 @@ class EventFeed extends Event implements EventInterface
     /**
      * @return mixed
      */
-    public function getEc()
+    public function getEc(): int
     {
+        if ($this->ec === null) {
+            return 0;
+        }
         return $this->ec;
     }
 
@@ -104,7 +107,7 @@ class EventFeed extends Event implements EventInterface
     /**
      * @return mixed
      */
-    public function getTemperature()
+    public function getTemperature(): float
     {
         return $this->temperature;
     }
@@ -116,22 +119,25 @@ class EventFeed extends Event implements EventInterface
     {
         $this->temperature = $temperature;
     }
-    public function getValue()
-    {
-        return $this->getWater();
-    }
 
-    public function setValue($value): EventInterface
-    {
-        if ($value !== null && $value === 'nan') {
-            $this->setWater(0);
-            $this->addNote('NaN_FOUND::' . $value . ';;');
-        } else {
-            $this->setWater((float)$value);
-        }
+//    /**
+//     * @return float|mixed|string
+//     */
+//    public function getValue()
+//    {
+//        return $this->getWater();
+//    }
 
-
-        return $this;
-    }
+//    public function setValue($value): EventInterface
+//    {
+////        if ($value !== null && $value === 'nan') {
+////            $this->setWater(0);
+////            $this->addNote('NaN_FOUND::' . $value . ';;');
+////        } else {
+////            $this->setWater((float)$value);
+////        }
+//
+//        return $this;
+//    }
 
 }

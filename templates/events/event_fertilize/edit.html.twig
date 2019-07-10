@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit EventFertilize{% endblock %}
+
+{% block body %}
+    <h1>Edit EventFertilize</h1>
+
+    {{ include('events/event_fertilize/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('events_event_fertilize_index') }}">back to list</a>
+
+    {{ include('events/event_fertilize/_delete_form.html.twig') }}
+{% endblock %}
