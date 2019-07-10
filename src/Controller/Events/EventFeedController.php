@@ -3,8 +3,11 @@
 namespace App\Controller\Events;
 
 use App\Entity\Events\EventFeed;
+use App\Entity\FeedFertilizer;
 use App\Form\Events\EventFeedType;
 use App\Repository\Events\EventFeedRepository;
+use App\Repository\FeedFertilizerRepository;
+use App\Repository\FertilizerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,15 +35,32 @@ class EventFeedController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FertilizerRepository $fertiRepo): Response
     {
         $eventFeed = new EventFeed();
+        $r = $request->request->all();
         $eventFeed->setType(EventFeed::class);
         $form = $this->createForm(EventFeedType::class, $eventFeed);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if (array_key_exists('FertilizerType', $r) && array_key_exists('FertilizerAmount', $r)) {
+                foreach ($r['FertilizerType'] as $key => $value) {
+                    $ferti = $fertiRepo->findOneBy(['id' => $value]);
+                    if ($ferti !== null) {
+                        $newFertiFeed = new FeedFertilizer();
+                        $newFertiFeed->setAmount($r['FertilizerAmount'][$key]);
+                        $newFertiFeed->setFertilizer($ferti);
+                        $eventFeed->addFertilizer($newFertiFeed);
+                        $entityManager->persist($newFertiFeed);
+                    } else {
+
+                    }
+
+                }
+            }
+
             $entityManager->persist($eventFeed);
             $entityManager->flush();
 
@@ -68,13 +88,38 @@ class EventFeedController extends AbstractController
     /**
      * @Route("/{id}/edit", name="events_event_feed_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, EventFeed $eventFeed): Response
+    public function edit(Request $request, EventFeed $eventFeed, FertilizerRepository $fertiRepo, FeedFertilizerRepository $ffRepo): Response
     {
         $form = $this->createForm(EventFeedType::class, $eventFeed);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $r = $request->request->all();
+            $entityManager = $this->getDoctrine()->getManager();
+            if (array_key_exists('FertilizerType', $r) && array_key_exists('FertilizerAmount', $r)) {
+                foreach ($r['FertilizerType'] as $key => $value) {
+                    $ferti = $fertiRepo->findOneBy(['id' => $value]);
+                    if ($ferti !== null) {
+                        $newFertiFeed = $ffRepo->findOrCreate([
+                            'fertilizer' => $ferti,
+                            'event' => $eventFeed
+                        ]);
+                        if ($newFertiFeed !== null) {
+                            $newFertiFeed->setAmount((float)$r['FertilizerAmount'][$key]);
+                            $eventFeed->addFertilizer($newFertiFeed);
+                            $entityManager->persist($newFertiFeed);
+                        } else {
+
+                        }
+
+                    } else {
+
+                    }
+
+                }
+            }
+
+            $entityManager->flush();
 
             return $this->redirectToRoute('events_event_feed_index', [
                 'id' => $eventFeed->getId(),

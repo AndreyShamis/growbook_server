@@ -4,7 +4,10 @@
 namespace App\Entity\Events;
 
 use App\Entity\Event;
+use App\Entity\FeedFertilizer;
 use App\Model\EventInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -36,6 +39,17 @@ class EventFeed extends Event implements EventInterface
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
     protected $temperature = 24.0;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event")
+     */
+    private $fertilizers;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->fertilizers = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -118,6 +132,37 @@ class EventFeed extends Event implements EventInterface
     public function setTemperature($temperature): void
     {
         $this->temperature = $temperature;
+    }
+
+    /**
+     * @return Collection|FeedFertilizer[]
+     */
+    public function getFertilizers(): Collection
+    {
+        return $this->fertilizers;
+    }
+
+    public function addFertilizer(FeedFertilizer $fertilizer): self
+    {
+        if (!$this->fertilizers->contains($fertilizer)) {
+            $this->fertilizers[] = $fertilizer;
+            $fertilizer->setEvent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFertilizer(FeedFertilizer $fertilizer): self
+    {
+        if ($this->fertilizers->contains($fertilizer)) {
+            $this->fertilizers->removeElement($fertilizer);
+            // set the owning side to null (unless already changed)
+            if ($fertilizer->getEvent() === $this) {
+                $fertilizer->setEvent(null);
+            }
+        }
+
+        return $this;
     }
 
 //    /**
