@@ -10,6 +10,7 @@ use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventSoilHydrometer;
 use App\Entity\Events\EventTemperature;
+use App\Entity\Events\EventFeed;
 
 abstract class TypeEvent
 {
@@ -17,6 +18,7 @@ abstract class TypeEvent
     public const Humidity = EventHumidity::class;
     public const Temperature = EventTemperature::class;
     public const SoilHydrometer = EventSoilHydrometer::class;
+    public const EventFeed = EventFeed::class;
     public const UNKNOWN = 'unknown';
 
     /** @var array  */
@@ -25,6 +27,7 @@ abstract class TypeEvent
         self::Humidity => 'Humidity',
         self::Temperature => 'Temperature',
         self::SoilHydrometer => 'SoilHydrometer',
+        self::EventFeed => 'EventFeed',
         self::UNKNOWN => 'UNKNOWN',
     ];
 
