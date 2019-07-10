@@ -3,8 +3,10 @@
 namespace App\Controller\Events;
 
 use App\Entity\Events\EventFeed;
+use App\Entity\FeedFertilizer;
 use App\Form\Events\EventFeedType;
 use App\Repository\Events\EventFeedRepository;
+use App\Repository\FertilizerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -32,15 +34,32 @@ class EventFeedController extends AbstractController
      * @param Request $request
      * @return Response
      */
-    public function new(Request $request): Response
+    public function new(Request $request, FertilizerRepository $fertiRepo): Response
     {
         $eventFeed = new EventFeed();
+        $r = $request->request->all();
         $eventFeed->setType(EventFeed::class);
         $form = $this->createForm(EventFeedType::class, $eventFeed);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            if (array_key_exists('FertilizerType', $r) && array_key_exists('FertilizerAmount', $r)) {
+                foreach ($r['FertilizerType'] as $key => $value) {
+                    $ferti = $fertiRepo->findOneBy(['id' => $value]);
+                    if ($ferti !== null) {
+                        $newFertiFeed = new FeedFertilizer();
+                        $newFertiFeed->setAmount($r['FertilizerAmount'][$key]);
+                        $newFertiFeed->setFertilizer($ferti);
+                        $eventFeed->addFertilizer($newFertiFeed);
+                        $entityManager->persist($newFertiFeed);
+                    } else {
+
+                    }
+
+                }
+            }
+
             $entityManager->persist($eventFeed);
             $entityManager->flush();
 
