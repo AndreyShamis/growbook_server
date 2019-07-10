@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fertilizer{% endblock %}
+
+{% block body %}
+    <h1>Fertilizer</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ fertilizer.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ fertilizer.name }}</td>
+            </tr>
+            <tr>
+                <th>N</th>
+                <td>{{ fertilizer.N }}</td>
+            </tr>
+            <tr>
+                <th>P</th>
+                <td>{{ fertilizer.P }}</td>
+            </tr>
+            <tr>
+                <th>K</th>
+                <td>{{ fertilizer.K }}</td>
+            </tr>
+            <tr>
+                <th>Company</th>
+                <td>{{ fertilizer.company }}</td>
+            </tr>
+            <tr>
+                <th>Dose</th>
+                <td>{{ fertilizer.dose }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ fertilizer.content }}</td>
+            </tr>
+            <tr>
+                <th>Url1</th>
+                <td>{{ fertilizer.url1 }}</td>
+            </tr>
+            <tr>
+                <th>Url2</th>
+                <td>{{ fertilizer.url2 }}</td>
+            </tr>
+            <tr>
+                <th>Url3</th>
+                <td>{{ fertilizer.url3 }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>{{ fertilizer.price }}</td>
+            </tr>
+            <tr>
+                <th>Target</th>
+                <td>{{ fertilizer.target }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('fertilizer_index') }}">back to list</a>
+
+    <a href="{{ path('fertilizer_edit', {'id': fertilizer.id}) }}">edit</a>
+
+    {{ include('fertilizer/_delete_form.html.twig') }}
+{% endblock %}

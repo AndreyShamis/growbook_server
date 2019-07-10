@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Fertilizer{% endblock %}
+
+{% block body %}
+    <h1>Edit Fertilizer</h1>
+
+    {{ include('fertilizer/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('fertilizer_index') }}">back to list</a>
+
+    {{ include('fertilizer/_delete_form.html.twig') }}
+{% endblock %}

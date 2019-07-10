@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Fertilizer index{% endblock %}
+
+{% block body %}
+    <h1>Fertilizer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>N</th>
+                <th>P</th>
+                <th>K</th>
+                <th>Company</th>
+                <th>Dose</th>
+                <th>Content</th>
+                <th>Url1</th>
+                <th>Url2</th>
+                <th>Url3</th>
+                <th>Price</th>
+                <th>Target</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for fertilizer in fertilizers %}
+            <tr>
+                <td>{{ fertilizer.id }}</td>
+                <td>{{ fertilizer.name }}</td>
+                <td>{{ fertilizer.N }}</td>
+                <td>{{ fertilizer.P }}</td>
+                <td>{{ fertilizer.K }}</td>
+                <td>{{ fertilizer.company }}</td>
+                <td>{{ fertilizer.dose }}</td>
+                <td>{{ fertilizer.content }}</td>
+                <td>{{ fertilizer.url1 }}</td>
+                <td>{{ fertilizer.url2 }}</td>
+                <td>{{ fertilizer.url3 }}</td>
+                <td>{{ fertilizer.price }}</td>
+                <td>{{ fertilizer.target }}</td>
+                <td>
+                    <a href="{{ path('fertilizer_show', {'id': fertilizer.id}) }}">show</a>
+                    <a href="{{ path('fertilizer_edit', {'id': fertilizer.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="14">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('fertilizer_new') }}">Create new</a>
+{% endblock %}

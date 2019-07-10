@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Fertilizer{% endblock %}
+
+{% block body %}
+    <h1>Create new Fertilizer</h1>
+
+    {{ include('fertilizer/_form.html.twig') }}
+
+    <a href="{{ path('fertilizer_index') }}">back to list</a>
+{% endblock %}
