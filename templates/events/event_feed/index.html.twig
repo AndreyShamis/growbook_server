@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventFeed index{% endblock %}
+
+{% block body %}
+    <h1>Feeds events</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Water</th>
+                <th>Ph</th>
+                <th>Tds</th>
+                <th>Ec</th>
+                <th>Temperature</th>
+                <th>Name</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Type</th>
+                <th>Value</th>
+                <th>Note</th>
+                <th>Value1</th>
+                <th>Value2</th>
+                <th>Value3</th>
+
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for event_feed in event_feeds %}
+            <tr>
+                <td>{{ event_feed.id }}</td>
+                <td>{{ event_feed.water }}</td>
+                <td>{{ event_feed.ph }}</td>
+                <td>{{ event_feed.tds }}</td>
+                <td>{{ event_feed.ec }}</td>
+                <td>{{ event_feed.temperature }}</td>
+                <td>{{ event_feed.name }}</td>
+                <td>{{ event_feed.createdAt ? event_feed.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_feed.updatedAt ? event_feed.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ event_feed.type }}</td>
+                <td>{{ event_feed.value }}</td>
+                <td>{{ event_feed.note }}</td>
+                <td>{{ event_feed.value1 }}</td>
+                <td>{{ event_feed.value2 }}</td>
+                <td>{{ event_feed.value3 }}</td>
+
+                <td>
+                    <a href="{{ path('events_event_feed_show', {'id': event_feed.id}) }}">show</a>
+                    <a href="{{ path('events_event_feed_edit', {'id': event_feed.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="17">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('events_event_feed_new') }}">Create new</a>
+{% endblock %}
