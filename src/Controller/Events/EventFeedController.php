@@ -5,6 +5,7 @@ namespace App\Controller\Events;
 use App\Entity\Events\EventFeed;
 use App\Form\Events\EventFeedType;
 use App\Repository\Events\EventFeedRepository;
+use App\Repository\FertilizerRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,6 +36,7 @@ class EventFeedController extends AbstractController
     public function new(Request $request): Response
     {
         $eventFeed = new EventFeed();
+        $r = $request->request->all();
         $eventFeed->setType(EventFeed::class);
         $form = $this->createForm(EventFeedType::class, $eventFeed);
         $form->handleRequest($request);
