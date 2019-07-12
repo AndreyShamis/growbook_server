@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Events\EventFeed;
 use App\Model\EventInterface;
 use App\Model\PlantInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +16,12 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * @ORM\MappedSuperclass(repositoryClass="App\Repository\EventRepository")
  * @ORM\DiscriminatorColumn(name = "discr", type = "string", fieldName="")
  * @ORM\InheritanceType(value="SINGLE_TABLE")
- * @ ORM\DiscriminatorMap({"EventHumidity" = "ParentEntity", "child_entity" = "AppBundle\Entity\ChildEntity"})
+ * @ORM\DiscriminatorMap({"event" = "Event",
+ *     "eventfeed" = "App\Entity\Events\EventFeed",
+ *     "eventhumidity" = "App\Entity\Events\EventHumidity",
+ *     "eventsoilhydrometer" = "App\Entity\Events\EventSoilHydrometer",
+ *     "eventtemperature" = "App\Entity\Events\EventTemperature"
+ * })
  * @ORM\Table(name="events", indexes={
  *     @Index(name="index_type", columns={"type"}),
  *     @Index(name="fulltext_type", columns={"type"}, flags={"fulltext"}),
