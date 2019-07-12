@@ -11,8 +11,8 @@ use Symfony\Component\HttpFoundation;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
- * @ORM\Entity()
- * @ ORM\Map pedSuperclass(repositoryClass="App\Repository\EventRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ * @ORM\MappedSuperclass(repositoryClass="App\Repository\EventRepository")
  * @ORM\DiscriminatorColumn(name = "discr", type = "string", fieldName="")
  * @ORM\InheritanceType(value="SINGLE_TABLE")
  * @ ORM\DiscriminatorMap({"EventHumidity" = "ParentEntity", "child_entity" = "AppBundle\Entity\ChildEntity"})
