@@ -92,6 +92,11 @@ class PlantController extends AbstractController
         }
         $prop = $plant->getProperties();
 
+//        foreach ($sensorsObj as $id => $_sensor) {
+//            /** @var Sensor $s */
+//            $s = $_sensor;
+//            $ev = $s->getEvents()->toArray();
+//        }
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
 //            'events' => $events,
