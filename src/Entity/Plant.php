@@ -138,6 +138,15 @@ class Plant implements PlantInterface
         return $this->light;
     }
 
+    public function lightStatus(): string
+    {
+        if ($this->isLight()) {
+            return 'On';
+        } else {
+            return 'Off';
+        }
+    }
+
     /**
      * @param bool $light
      * @return PlantInterface

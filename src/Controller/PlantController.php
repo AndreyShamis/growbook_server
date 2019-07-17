@@ -251,7 +251,7 @@ class PlantController extends AbstractController
             try {
                 $domain = $_ENV['DOMAIN'];
                 $_time = new \DateTime();
-                $message = (new \Swift_Message('[' . $domain. '] Light change detected on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s')))
+                $message = (new \Swift_Message('[' . $domain. '] Light changed to ['.$plant->lightStatus().'] on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s')))
                     ->setFrom('hicam.golda@gmail.com')
                     ->setTo('lolnik@gmail.com')
                     ->setBody(

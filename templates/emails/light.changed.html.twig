@@ -11,7 +11,7 @@
 Hi
 <br/>
 <p>
-    The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.isLight ? "ON" : "off" }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
+    The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.lightStatus }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
 </p>
 {# example, assuming you have a route named "login" #}
 Link to object: <a href="http://{{ domain }}{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a>.
