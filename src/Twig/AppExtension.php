@@ -21,6 +21,7 @@ class AppExtension extends AbstractExtension
     {
         return array(
             new TwigFilter('parseType', array($this, 'parseType')),
+            new TwigFilter('ExecutionTimeWithDays', array($this, 'ExecutionTimeWithDays')),
             new TwigFilter('ExecutionTimeInHours', array($this, 'ExecutionTimeInHours')),
             new TwigFilter('ExecutionTimeGeneric', array($this, 'ExecutionTimeGeneric')),
             new TwigFilter('executionTimeGenericShort', array($this, 'executionTimeGenericShort')),
@@ -45,6 +46,7 @@ class AppExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
+            new TwigFunction('ExecutionTimeWithDays', array($this, 'ExecutionTimeWithDays')),
             new TwigFunction('ExecutionTimeGeneric', array($this, 'ExecutionTimeGeneric')),
             new TwigFunction('executionTimeGenericShort', array($this, 'executionTimeGenericShort')),
             new TwigFunction('relativeTime', array($this, 'relativeTime')),
@@ -360,6 +362,34 @@ class AppExtension extends AbstractExtension
         return $ret;
     }
 
+
+    /**
+     * @param $time
+     * @return string
+     */
+    public function ExecutionTimeWithDays(int $time): string
+    {
+        $seconds = $time%60;
+        $minutes = ($time/60)%60;
+        $hours = floor($time/60/60);
+        $hour_print = sprintf('%dh', $hours);
+        $min_print = sprintf('%02dm', $minutes);
+        $sec_print = sprintf('%02ds', $seconds);
+        if ($hours > 0) {
+            if ($hours > 24) {
+                $days = round($time/60/60)%24;
+                $hours = floor(($time/60/60)%24);
+                $hour_print = sprintf('%dh', $hours);
+                $days_print = sprintf('%dd', $days);
+                $ret = sprintf('%s %s %s %s', $days_print, $hour_print, $min_print, $sec_print);
+            } else {
+                $ret = sprintf('%s %s %s', $hour_print, $min_print, $sec_print);
+            }
+        } else {
+            $ret = sprintf('%s %s', $min_print, $sec_print);
+        }
+        return $ret;
+    }
     /**
      * @param $time
      * @return integer

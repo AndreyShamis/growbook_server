@@ -7,9 +7,9 @@
         <h5>Plant [{{ plant.name }}]</h5>
         <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ plant.uptime }} | {{ plant.uptime | executionTimeGenericShort }}
+            uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ uptime }} | {{ uptime.propertyValue  | executionTimeGenericShort }}
+            uptime: {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | executionTimeGenericShort }} {% endif %}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             resets: {{ plant.resetCounter }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
