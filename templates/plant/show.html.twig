@@ -411,7 +411,7 @@
                             <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
                         {% elseif type == 'Temperature' %}
                             <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
-                        {% elseif type == 'Hydrometer' %}
+                        {% elseif type == 'SoilHydrometer' %}
                             <span class="badge badge-pill {{ hydrometerToBadge(_value)}}">{{ _value }} %</span>
                         {% else %}
                            {{ _value }}
