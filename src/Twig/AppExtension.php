@@ -377,7 +377,7 @@ class AppExtension extends AbstractExtension
         $sec_print = sprintf('%02ds', $seconds);
         if ($hours > 0) {
             if ($hours > 24) {
-                $days = round($time/60/60)%24;
+                $days = floor($time/60/60/24);
                 $hours = floor(($time/60/60)%24);
                 $hour_print = sprintf('%dh', $hours);
                 $days_print = sprintf('%dd', $days);
