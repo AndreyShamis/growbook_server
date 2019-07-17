@@ -7,7 +7,7 @@
         <h5>Plant [{{ plant.name }}]</h5>
         <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
+            uptime: {{ plant.uptime }} | {{ 1925871 | ExecutionTimeWithDays }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | executionTimeGenericShort }} {% endif %}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -411,6 +411,8 @@
                             <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
                         {% elseif type == 'Temperature' %}
                             <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
+                        {% elseif type == 'Hydrometer' %}
+                            <span class="badge badge-pill {{ hydrometerToBadge(_value)}}">{{ _value }} %</span>
                         {% else %}
                            {{ _value }}
                         {% endif %}
