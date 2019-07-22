@@ -481,7 +481,9 @@
     <hr/>
     <a href="{{ path('plant_index') }}">back to list</a>
 
-    <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+    {% if is_granted('edit', plant) %}
+        <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+    {% endif %}
 
     {#{{ include('plant/_delete_form.html.twig') }}#}
 {% endblock %}

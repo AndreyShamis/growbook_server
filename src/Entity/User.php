@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -101,6 +103,11 @@ class User implements UserInterface, \Serializable
      */
     protected $isLdapUser = 0;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Plant", mappedBy="owner")
+     */
+    private $plants;
+
 
     /**
      *
@@ -110,6 +117,7 @@ class User implements UserInterface, \Serializable
     {
         $this->isActive = true;
         $this->roles = array();
+        $this->plants = new ArrayCollection();
     }
 
     /**
@@ -484,5 +492,33 @@ class User implements UserInterface, \Serializable
             return $ret;
         }
         return $this->getUsername();
+    }
+
+    /**
+     * @return Collection|Plant[]
+     */
+    public function getPlants(): Collection
+    {
+        return $this->plants;
+    }
+
+    public function addPlant(Plant $plant): self
+    {
+        if (!$this->plants->contains($plant)) {
+            $this->plants[] = $plant;
+            $plant->addOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removePlant(Plant $plant): self
+    {
+        if ($this->plants->contains($plant)) {
+            $this->plants->removeElement($plant);
+            $plant->removeOwner($this);
+        }
+
+        return $this;
     }
 }

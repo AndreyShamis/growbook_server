@@ -33,7 +33,9 @@
                 <td title="">{{ plant.resetCounter }}</td>
                 <td title="">{{ plant.Rssi }}</td>
                 <td>
+                    {% if is_granted('edit', plant) %}
                     <a href="{{ path('plant_edit', {'id': plant.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

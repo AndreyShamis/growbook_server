@@ -113,6 +113,11 @@ class Plant implements PlantInterface
     /** @var bool  */
     protected $lightChanged = false;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="plants")
+     */
+    protected $owners;
+
     public function __construct()
     {
         try {
@@ -124,6 +129,7 @@ class Plant implements PlantInterface
         $this->events = new ArrayCollection();
         $this->sensors = new ArrayCollection();
         $this->properties = new ArrayCollection();
+        $this->owners = new ArrayCollection();
     }
 
     public function getLightChanged(): bool
@@ -142,9 +148,9 @@ class Plant implements PlantInterface
     {
         if ($this->isLight()) {
             return 'On';
-        } else {
-            return 'Off';
         }
+
+        return 'Off';
     }
 
     /**
@@ -442,6 +448,32 @@ class Plant implements PlantInterface
     {
         if ($this->properties->contains($property)) {
             $this->properties->removeElement($property);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|\App\Entity\User[]
+     */
+    public function getOwners(): Collection
+    {
+        return $this->owners;
+    }
+
+    public function addOwner(\App\Entity\User $owner): self
+    {
+        if (!$this->owners->contains($owner)) {
+            $this->owners[] = $owner;
+        }
+
+        return $this;
+    }
+
+    public function removeOwner(\App\Entity\User $owner): self
+    {
+        if ($this->owners->contains($owner)) {
+            $this->owners->removeElement($owner);
         }
 
         return $this;
