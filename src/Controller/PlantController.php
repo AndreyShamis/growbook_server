@@ -24,6 +24,8 @@ class PlantController extends AbstractController
 {
     /**
      * @Route("/", name="plant_index", methods={"GET"})
+     * @param PlantRepository $plantRepository
+     * @return Response
      */
     public function index(PlantRepository $plantRepository): Response
     {
@@ -34,6 +36,8 @@ class PlantController extends AbstractController
 
     /**
      * @Route("/new", name="plant_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -65,6 +69,7 @@ class PlantController extends AbstractController
      */
     public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, int $hours=25): Response
     {
+        $this->denyAccessUnlessGranted('view', $plant);
         $events = array();
         try {
             if ($hours < 0) {
@@ -117,6 +122,7 @@ class PlantController extends AbstractController
      */
     public function edit(Request $request, Plant $plant): Response
     {
+        $this->denyAccessUnlessGranted('edit', $plant);
         $form = $this->createForm(PlantType::class, $plant);
         $form->handleRequest($request);
 
@@ -139,6 +145,7 @@ class PlantController extends AbstractController
      */
     public function delete(Request $request, Plant $plant): Response
     {
+        $this->denyAccessUnlessGranted('delete', $plant);
         if ($this->isCsrfTokenValid('delete'.$plant->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($plant);
