@@ -1,4 +1,86 @@
 {{ form_start(form) }}
+<table class="table" style="width: 100%">
+
+<tr>
+    <td>{{ form_label(form.name, 'Provide name') }}</td>
+    <td style="width: 40%;">{{ form_widget(form.name) }}</td>
+    <td>{{ form_help(form.name) }}</td>
+    <td style="width: 40%;">{{ form_errors(form.name) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.N, 'Nitrigen(N)') }}</td>
+    <td>{{ form_widget(form.N) }}</td>
+    <td>{{ form_help(form.N) }}</td>
+    <td>{{ form_errors(form.N) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.P, 'Phosphorus(P)') }}</td>
+    <td>{{ form_widget(form.P) }}</td>
+    <td>{{ form_help(form.P) }}</td>
+    <td>{{ form_errors(form.P) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.K, 'Potassium(K)') }}</td>
+    <td>{{ form_widget(form.K) }}</td>
+    <td>{{ form_help(form.K) }}</td>
+    <td>{{ form_errors(form.K) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.company) }}</td>
+    <td>{{ form_widget(form.company) }}</td>
+    <td>{{ form_help(form.company) }}</td>
+    <td>{{ form_errors(form.company) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.dose) }}</td>
+    <td>{{ form_widget(form.dose) }}</td>
+    <td>{{ form_help(form.dose, ['4ml=1L']) }}</td>
+    <td>{{ form_errors(form.dose) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.content) }}</td>
+    <td>{{ form_widget(form.content) }}</td>
+    <td>{{ form_help(form.content) }}</td>
+    <td>{{ form_errors(form.content) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.price) }}</td>
+    <td>{{ form_widget(form.price) }}</td>
+    <td>{{ form_help(form.price) }}</td>
+    <td>{{ form_errors(form.price) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.target, 'UNI/COCO/SOIL/HYDRO') }}</td>
+    <td>{{ form_widget(form.target) }}</td>
+    <td>{{ form_help(form.target) }}</td>
+    <td>{{ form_errors(form.target) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.url1) }}</td>
+    <td>{{ form_widget(form.url1) }}</td>
+    <td>{{ form_help(form.url1) }}</td>
+    <td>{{ form_errors(form.url1) }}</td>
+</tr>
+
+<tr>
+    <td>{{ form_label(form.url2) }}</td>
+    <td>{{ form_widget(form.url2) }}</td>
+    <td>{{ form_help(form.url2) }}</td>
+    <td>{{ form_errors(form.url2) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.url3) }}</td>
+    <td>{{ form_widget(form.url3) }}</td>
+    <td>{{ form_help(form.url3) }}</td>
+    <td>{{ form_errors(form.url3) }}</td>
+</tr>
+</table>
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+
+<style>
+    input[type="text"] {
+        width: 400px !important;
+    }
+</style>

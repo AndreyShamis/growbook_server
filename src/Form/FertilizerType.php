@@ -17,7 +17,7 @@ class FertilizerType extends AbstractType
             ->add('N')
             ->add('P')
             ->add('K')
-            ->add('company',TextType::class, ['required' => false])
+            ->add('company',TextType::class, ['required' => false, 'empty_data' => ''])
             ->add('dose',TextType::class, ['required' => false, 'empty_data' => ''])
             ->add('content', null, ['help' => 'liters'])
             ->add('url1',TextType::class, ['required' => false, 'empty_data' => ''])
