@@ -32,7 +32,34 @@
     <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
     <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Sign out</a>
+            {#<a class="nav-link" href="#">Sign out</a>#}
+
+            {% if app.user is not null %}
+            {#<li>#}
+                {#<a href="{{ path('user_settings_show', {'id': app.user.id} ) }}">#}
+                    {#Settings{WIP}#}
+                {#</a>#}
+            {#</li>#}
+
+            <li>
+                <a href="{{asset(path('user_show', { 'id': app.user.id }))}}">
+                    Profile
+                </a>
+            </li>
+
+            <li class="divider"></li>
+            <li>
+                <a href="/logout" target="">
+                    Logout
+                </a>
+            </li>
+            {% else %}
+                <li>
+                    <a href="/login" target="">
+                        Login
+                    </a>
+                </li>
+            {% endif %}
         </li>
     </ul>
 </nav>
@@ -41,6 +68,7 @@
 {% set url = app.request.scheme ~'://' ~  app.request.httpHost %}
 <div class="container-fluid">
     <div class="row">
+        {% if app.user is not null %}
         {% apply spaceless %}
         <nav class="col-md-2 d-none d-md-block bg-light sidebar">
             <div class="sidebar-sticky">
@@ -107,6 +135,7 @@
             </div>
         </nav>
         {% endapply %}
+        {% endif %}
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             {#<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">#}
                 {#<h1 class="h6">GrowBook</h1>#}

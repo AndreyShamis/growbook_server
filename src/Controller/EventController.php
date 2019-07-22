@@ -39,7 +39,7 @@ class EventController extends AbstractController
     {
         return $this->render('event/index.html.twig', [
             //'events' => $eventRepository->findAllTypes(),
-            'events' => $eventRepository->findBy(array(), ['updatedAt' => 'DESC']),
+            'events' => $eventRepository->findBy(array(), ['updatedAt' => 'DESC'], 500),
         ]);
     }
 
