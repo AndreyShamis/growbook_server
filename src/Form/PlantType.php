@@ -19,7 +19,7 @@ class PlantType extends AbstractType
             ->add('startedAt')
             ->add('finishedAt')
             ->add('soilMedium')
-            ->add('owner')
+            ->add('owners')
         ;
     }
 

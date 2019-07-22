@@ -1,4 +1,60 @@
 {{ form_start(form) }}
+<table class="table" style="width: 100%">
+    <tr>
+        <td>{{ form_label(form.name, 'Provide name') }}</td>
+        <td style="width: 40%;">{{ form_widget(form.name) }}</td>
+        <td>{{ form_help(form.name) }}</td>
+        <td style="width: 40%;">{{ form_errors(form.name) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.uniqId, 'Unique ID') }}</td>
+        <td>{{ form_widget(form.uniqId) }}</td>
+        <td>{{ form_help(form.uniqId) }}</td>
+        <td>{{ form_errors(form.uniqId) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.startedAt) }}</td>
+        <td>{{ form_widget(form.startedAt) }}</td>
+        <td>{{ form_help(form.startedAt) }}</td>
+        <td>{{ form_errors(form.startedAt) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.finishedAt) }}</td>
+        <td>{{ form_widget(form.finishedAt) }}</td>
+        <td>{{ form_help(form.finishedAt) }}</td>
+        <td>{{ form_errors(form.finishedAt) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.soilMedium) }}</td>
+        <td>{{ form_widget(form.soilMedium) }}</td>
+        <td>{{ form_help(form.soilMedium) }}</td>
+        <td>{{ form_errors(form.soilMedium) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.owners) }}</td>
+        <td>{{ form_widget(form.owners) }}</td>
+        <td>{{ form_help(form.owners) }}</td>
+        <td>{{ form_errors(form.owners) }}</td>
+    </tr>
+</table>
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+<style>
+    select#plant_owners{
+        width: 400px !important;
+    }
+    input[type="text"] {
+        width: 400px !important;
+    }
+
+    #plant_startedAtm, #plant_finishedAt{
+        isplay:inline;
+    }
+    #plant_startedAt_date, #plant_finishedAt_date{
+        display:inline;
+    }
+    #plant_startedAt_time, #plant_finishedAt_time{
+        display:inline;
+    }
+</style>
