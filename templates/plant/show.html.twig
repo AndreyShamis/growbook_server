@@ -8,14 +8,15 @@
         <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
+            &nbsp;&nbsp;/&nbsp;&nbsp;
+            {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             resets: {{ plant.resetCounter }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             RSSI: {{ plant.rssi }}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            {{ plant.updatedAt ? plant.updatedAt | time_diff }}
+            &nbsp;&nbsp;&nbsp;&nbsp;
         </p>
     </div>
     {% apply spaceless %}
@@ -382,9 +383,9 @@
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Type</th>
                 <th>Last Value</th>
                 <th>Last Time</th>
+                <th>Type</th>
                 <th>Count</th>
                 <th>TH</th>
                 <th>Force sec</th>
@@ -401,9 +402,8 @@
                 {% set _created = sensor.lastEvent.createdAt %}
             {% endif %}
             <tr>
-                <td>{{ sensor.id }}</td>
+                <td style="font-size: 10px;">{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
-                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
                 <td>
                     {% if _have_last == true %}
                         {% set _value = sensor.lastEvent.value %}
@@ -425,14 +425,15 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td title="{{ _created | date('Y-m-d H:i:s')}} ">
+                <td title="{{ _created | date('Y-m-d H:i:s')}} " style="font-size: 10px;">
                     {% if _have_last %}
                         {{ _created | date('H:i:s')}} | {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
                     {% endif %}
                 </td>
-                <td>{{ sensor.events | length }}</td>
-                <td>{{ sensor.diffThreshold }}</td>
-                <td>{{ sensor.writeForceEveryXseconds }}</td>
+                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
+                <td style="font-size: 10px;">{{ sensor.events | length }}</td>
+                <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
+                <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
                 <td style="font-size: 10px;">{{ sensor.uniqId }}</td>
             </tr>
         {% endfor %}

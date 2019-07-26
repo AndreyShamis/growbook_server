@@ -120,6 +120,10 @@ class SensorController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($sensor);
             $entityManager->flush();
+            $refer_page = $request->request->get('refer_page');
+            if ($refer_page !== '') {
+                return $this->redirect($refer_page);
+            }
         }
 
         return $this->redirectToRoute('sensor_index');
