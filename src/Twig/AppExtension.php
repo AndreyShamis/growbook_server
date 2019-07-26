@@ -36,6 +36,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('temperatureToBadge', [$this, 'temperatureToBadge']),
             new TwigFilter('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFilter('lightToBadge', [$this, 'lightToBadge']),
+            new TwigFilter('SensorTypeShort', [$this, 'SensorTypeShort']),
         );
     }
 
@@ -59,7 +60,25 @@ class AppExtension extends AbstractExtension
             new TwigFunction('temperatureToBadge', [$this, 'temperatureToBadge']),
             new TwigFunction('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFunction('lightToBadge', [$this, 'lightToBadge']),
+            new TwigFunction('SensorTypeShort', [$this, 'SensorTypeShort']),
         ];
+    }
+
+    public function SensorTypeShort($input=null): string
+    {
+        $ret = '';
+        if ($input === 'Humidity') {
+            $ret = 'Hum';
+        } elseif ($input === 'Temperature') {
+            $ret = 'Temp';
+        } elseif ($input === 'SoilHydrometer') {
+            $ret = 'Hyd';
+        } elseif ($input === null) {
+            $ret = 'None';
+        } else {
+            $ret = 'Unknown';
+        }
+        return $ret;
     }
 
     /**

@@ -8,8 +8,8 @@
         <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | executionTimeGenericShort }} {% endif %}
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            uptime: {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             resets: {{ plant.resetCounter }}
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -403,7 +403,7 @@
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
-                <td>{{ type }}</td>
+                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
                 <td>
                     {% if _have_last == true %}
                         {% set _value = sensor.lastEvent.value %}
@@ -433,7 +433,7 @@
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.diffThreshold }}</td>
                 <td>{{ sensor.writeForceEveryXseconds }}</td>
-                <td>{{ sensor.uniqId }}</td>
+                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>
             </tr>
         {% endfor %}
         </tbody>
