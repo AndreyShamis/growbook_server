@@ -5,6 +5,8 @@
 {% block body %}
     <div class="alert alert-success" role="alert">
         <h5>Plant [{{ plant.name }}]</h5>
+    </div>
+    <div class="alert alert-info" role="alert">
         <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
@@ -17,6 +19,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             RSSI: {{ plant.rssi }}
             &nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="reloadPage" value="Reload" />
         </p>
     </div>
     {% apply spaceless %}
@@ -250,6 +253,11 @@
             google.setOnLoadCallback(drawHumidityHourly);
             google.setOnLoadCallback(drawTemperatureHourly);
             google.setOnLoadCallback(drawSoilHydrometerHourly);
+
+
+            $('#reloadPage').click(function() {
+                location.reload();
+            });
         });
 
         var color = Chart.helpers.color;
@@ -384,12 +392,15 @@
                 <th>ID</th>
                 <th>Name</th>
                 <th>Last Value</th>
+                <th>Value1</th>
+                <th>Value2</th>
+                <th>Value3</th>
                 <th>Last Time</th>
                 <th>Type</th>
                 <th>Count</th>
                 <th>TH</th>
                 <th>Force sec</th>
-                <th>UniqID</th>
+{#                <th>UniqID</th>#}
             </tr>
         </thead>
         <tbody>
@@ -425,16 +436,19 @@
                         {% endif %}
                     {% endif %}
                 </td>
+                <td style="font-size: 10px;">{{ sensor.lastEvent.value1 }}</td>
+                <td style="font-size: 10px;">{{ sensor.lastEvent.value2 }}</td>
+                <td style="font-size: 10px;">{{ sensor.lastEvent.value3 }}</td>
                 <td title="{{ _created | date('Y-m-d H:i:s')}} " style="font-size: 10px;">
                     {% if _have_last %}
-                        {{ _created | date('H:i:s')}} | {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
+                        {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
                     {% endif %}
                 </td>
                 <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
                 <td style="font-size: 10px;">{{ sensor.events | length }}</td>
                 <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
                 <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
-                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>
+{#                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>#}
             </tr>
         {% endfor %}
         </tbody>
