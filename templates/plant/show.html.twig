@@ -144,8 +144,8 @@
             },
             is3D:true,
             hAxis: {
-                format: 'Y/m/d HH:mm',
-                gridlines: {count: 15}
+                format: 'd HH:mm',
+                gridlines: {count: 24}
             },
             legend: {position: 'top', maxLines: 3}
         };
@@ -176,6 +176,13 @@
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('divHumidityHourly'));
             optionsHourly['colors'] = ['#fccd55'];
+            optionsHourly['vAxis'] = {
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    max: 100,
+                    min: 0
+                }
+            };
             chart.draw(newData, optionsHourly);
         }
 
@@ -204,6 +211,13 @@
             // Instantiate and draw our chart, passing in some options.
             var chart = new google.visualization.ColumnChart(document.getElementById('divTemperatureHourly'));
             optionsHourly['colors'] = ['#86b9c9'];
+            optionsHourly['vAxis'] = {
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    max: 'auto',
+                    min: 'auto',
+                }
+            };
             chart.draw(newData, optionsHourly);
         }
 
@@ -232,6 +246,13 @@
             }]);
             var chart = new google.visualization.ColumnChart(document.getElementById('divSoilHydrometerHourly'));
             optionsHourly['colors'] = ['#06C3C0','#DA68A0','#657CD0','#777B80','#7C6D70','#7C0850','#F75870'];
+            optionsHourly['vAxis'] = {
+                viewWindowMode: 'explicit',
+                viewWindow: {
+                    max: 100,
+                    min: 0
+                }
+            };
             chart.draw(newData, optionsHourly);
         }
 
