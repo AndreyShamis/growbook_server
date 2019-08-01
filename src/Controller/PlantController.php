@@ -164,14 +164,17 @@ class PlantController extends AbstractController
      * @param CustomFieldRepository $fieldsRepo
      * @param LoggerInterface $logger
      * @param \Swift_Mailer $mailer
+     * @param CustomFieldRepository $customFields
      * @param string $property
      * @param string $value
      * @return Response
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, CustomFieldRepository $fields, string $property=null, string $value=null): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, CustomFieldRepository $customFields, string $property=null, string $value=null): Response
     {
         $message = '';
         $status = 200;
+        $alertFound = false;
+        $alertMessage = '';
         try {
             //$domain = $this->getParameter('DOMAIN');
             $em = $this->getDoctrine()->getManager();
@@ -195,7 +198,23 @@ class PlantController extends AbstractController
                         'obj' => $plant,
                         'key' => $key
                     ]);
-                    $field->setPropertyValue($val);
+                    try {
+                        if ($key === 'humidity') {
+                            $prev_value = $field->getPropertyValue();
+                            if (($prev_value > 10 && $val < 10) || ($prev_value < 90 && $val > 90)) {
+                                $alertFound = true;
+                                $alertMessage = 'Humidity pass alert treshhold, new value=' . $val . ', old=' . $prev_value;
+                            }
+                            if (($prev_value < 10 && $val > 10) || ($prev_value > 90 && $val < 90)) {
+                                $alertFound = true;
+                                $alertMessage = 'Humidity normalized, new value=' . $val . ', old=' . $prev_value;
+                            }
+                            $field->setPropertyValue($val);
+                        }
+                    } catch (\Throwable $ex) {
+                        $logger->critical($ex->getMessage());
+                    }
+
                     $plant->addProperty($field);
                     $em->persist($field);
                     //
@@ -254,6 +273,37 @@ class PlantController extends AbstractController
         } else {
             $logger->notice($message);
         }
+        if ($plant !== null && $alertFound) {
+            try {
+            $domain = $_ENV['DOMAIN'];
+            $_time = new \DateTime();
+            $message = (new \Swift_Message('[' . $domain. '] Alert found ['.$alertMessage.'] on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s')))
+                ->setFrom('hicam.golda@gmail.com')
+                ->setTo('lolnik@gmail.com')
+                ->setBody(
+                    $this->renderView(
+                        'emails/sensor.alert.html.twig',
+                        [
+                            'plantBaseUrl' => $request->getUriForPath('/plant/'),
+                            'plant' => $plant,
+                            'alertMessage' => $alertMessage,
+                            'printTime' => $_time,
+                            'domain' => $domain,
+                            'uptime' => $customFields->findForObject($plant, 'uptime'),
+                            'temperature' => $customFields->findForObject($plant, 'temperature'),
+                            //'temperature' => $prop->get('temperature'),
+                            'humidity' => $customFields->findForObject($plant, 'humidity'),
+                            'light' => $customFields->findForObject($plant, 'light'),
+                            'hydrometer' => $customFields->findForObject($plant, 'hydrometer'),
+                        ]
+                    ),
+                    'text/html'
+                );
+            $res = $mailer->send($message);
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
+            }
+        }
         if ($plant !== null && $plant->getLightChanged()) {
             try {
                 $domain = $_ENV['DOMAIN'];
@@ -263,19 +313,18 @@ class PlantController extends AbstractController
                     ->setTo('lolnik@gmail.com')
                     ->setBody(
                         $this->renderView(
-                        // templates/emails/registration.html.twig
                             'emails/light.changed.html.twig',
                             [
                                 'plantBaseUrl' => $request->getUriForPath('/plant/'),
                                 'plant' => $plant,
                                 'printTime' => $_time,
                                 'domain' => $domain,
-                                'uptime' => $fields->findForObject($plant, 'uptime'),
-                                'temperature' => $fields->findForObject($plant, 'temperature'),
+                                'uptime' => $fields->$customFields($plant, 'uptime'),
+                                'temperature' => $fields->$customFields($plant, 'temperature'),
                                 //'temperature' => $prop->get('temperature'),
-                                'humidity' => $fields->findForObject($plant, 'humidity'),
-                                'light' => $fields->findForObject($plant, 'light'),
-                                'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
+                                'humidity' => $fields->$customFields($plant, 'humidity'),
+                                'light' => $fields->$customFields($plant, 'light'),
+                                'hydrometer' => $fields->$customFields($plant, 'hydrometer'),
                             ]
                         ),
                         'text/html'
