@@ -9,6 +9,7 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Plant</th>
                 <th>Water</th>
                 <th>Ph</th>
                 <th>Tds</th>
@@ -31,6 +32,7 @@
         {% for event_feed in event_feeds %}
             <tr>
                 <td>{{ event_feed.id }}</td>
+                <td>{{ event_feed.plant.name }} | {{ event_feed.plant.id }}</td>
                 <td>{{ event_feed.water }}</td>
                 <td>{{ event_feed.ph }}</td>
                 <td>{{ event_feed.tds }}</td>
