@@ -12,6 +12,10 @@
                 <td>{{ event_feed.id }} - [{{ event_feed.name }}]</td>
             </tr>
             <tr>
+                <th>Plant</th>
+                <td><a href="{{ path('plant_show', {'id': event_feed.plant.id }) }}">{{ event_feed.plant.name }} - [{{ event_feed.plant.id }}]</a></td>
+            </tr>
+            <tr>
                 <th>Amount of water</th>
                 <td>{{ event_feed.water }}</td>
             </tr>
@@ -68,4 +72,5 @@
     <a href="{{ path('events_event_feed_edit', {'id': event_feed.id}) }}">edit</a>
 
     {{ include('events/event_feed/_delete_form.html.twig') }}
+    {{ include('events/event_feed/_clone.html.twig') }}
 {% endblock %}

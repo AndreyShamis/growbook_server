@@ -2,6 +2,7 @@
 
 namespace App\Controller\Events;
 
+use App\Entity\Event;
 use App\Entity\Events\EventFeed;
 use App\Entity\FeedFertilizer;
 use App\Form\Events\EventFeedType;
@@ -28,6 +29,21 @@ class EventFeedController extends AbstractController
         return $this->render('events/event_feed/index.html.twig', [
             'event_feeds' => $eventRepository->findAll(),
         ]);
+    }
+
+    /**
+     * @Route("/clone/{feed}", name="clone_feed_event", methods={"GET","POST"})
+     * @param EventFeed $feed
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function cloneFeed(EventFeed $feed)
+    {
+        $eventFeed = new EventFeed();
+        $eventFeed->cloneSelf($feed);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($eventFeed);
+        $entityManager->flush();
+        return $this->redirectToRoute('events_event_feed_show', ['id' => $eventFeed->getId()]);
     }
 
     /**

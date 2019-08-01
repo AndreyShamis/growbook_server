@@ -536,6 +536,7 @@
         <thead>
         <tr>
             <th>ID</th>
+            <th>Created</th>
             <th>Name</th>
             <th>Type</th>
             <th>Value</th>
@@ -551,6 +552,7 @@
                     {% set type = event.type | parseType %}
                     <tr>
                         <td>{{ event.id }}</td>
+                        <td>{{ event.createdAt | date('d M H:i:s') }}</td>
                         <td>{% if type == "Feed"  %}
                             <a href="{{ path('events_event_feed_show', {'id': event.id}) }}" target="_blank">
                                 {% else %}

@@ -5,6 +5,7 @@ namespace App\Entity\Events;
 
 use App\Entity\Event;
 use App\Entity\FeedFertilizer;
+use App\Model\EventInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -43,6 +44,24 @@ class EventFeed extends Event
      * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event")
      */
     protected $fertilizers;
+
+    public function cloneSelf(EventFeed $eventFeed)
+    {
+        $this->setType($eventFeed->getType());
+        $this->setWater($eventFeed->getWater());
+        $this->setPh($eventFeed->getPh());
+        $this->setTds($eventFeed->getTds());
+        $this->setTemperature($eventFeed->getTemperature());
+        $this->setEc($eventFeed->getEc());
+        $this->setName($eventFeed->getName());
+        $this->setPlant($eventFeed->getPlant());
+        $this->setSensor($eventFeed->getSensor());
+        $this->setNote($eventFeed->getNote() . '\nCloned');
+        $this->setValue($eventFeed->getValue());
+        $this->setValue1($eventFeed->getValue1());
+        $this->setValue2($eventFeed->getValue2());
+        $this->setValue3($eventFeed->getValue3());
+    }
 
     public function __construct()
     {

@@ -1,0 +1,4 @@
+<form method="post" action="{{ path('clone_feed_event', {'feed': event_feed.id}) }}" onsubmit="return confirm('Are you sure you want to clone it?');">
+    <input type="hidden" name="_method" value="POST">
+    <button class="btn">Clone</button>
+</form>
