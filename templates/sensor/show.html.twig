@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td>{{ sensor.name }}</td>
-                <td><a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}}</a></td>
+                <td><a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}</a></td>
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.updatedAt | time_diff}}</td>
                 <td><a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a></td>
