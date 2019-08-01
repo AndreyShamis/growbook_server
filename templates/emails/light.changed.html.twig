@@ -14,8 +14,76 @@ Hi
     The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.lightStatus }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
 </p>
 {# example, assuming you have a route named "login" #}
-Link to object: <a href="http://{{ domain }}{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a>.
+Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
 
+<div class="alert alert-success" role="alert">
+    <h5>Plant [{{ plant.name }}]</h5>
+</div>
+<div class="alert alert-info" role="alert">
+    <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
+        &nbsp;&nbsp;/&nbsp;&nbsp;
+        {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        resets: {{ plant.resetCounter }}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        RSSI: {{ plant.rssi }}
+        &nbsp;&nbsp;</p>
+</div>
+<table class="table table-hover table-condensed tasks-table table-bordered">
+    <tbody>
+    <tr>
+        <th style="width: 120px;">Temperature</th>
+        <td style="width: 180px;">
+                <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">
+                    {{ temperature }}  &#8451;
+                </span>
+            <span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span>
+        </td>
+        <th>Medium</th>
+        <td><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
+        <th>CreatedAt</th>
+        <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Humidity</th>
+        <td>
+                <span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">
+                    {{ humidity }} %
+                </span>
+            <span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span>
+        </td>
+        <th>Pot</th>
+        <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
+        <th>StartedAt</th>
+        <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}</td>
+    </tr>
+    <tr>
+        <th>Hydrometer</th>
+        <td>
+                <span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">
+                    {{ hydrometer }} %
+                </span>
+            <span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span>
+        </td>
+        <th>Period</th>
+        <td>{{ plant.periodName }}</td>
+        <th>FinishedAt</th>
+        <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
+    </tr>
+    <tr>
+        <th>Light</th>
+        <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>
+        <th></th>
+        <td></td>
+        <th>UpdatedAt</th>
+        <td>{{ plant.updatedAt ? plant.updatedAt|date('d M H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+    </tr>
+    </tbody>
+</table>
 Thanks!
 
 {# Makes an absolute URL to the /images/logo.png file #}

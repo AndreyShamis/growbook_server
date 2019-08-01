@@ -168,7 +168,7 @@ class PlantController extends AbstractController
      * @param string $value
      * @return Response
      */
-    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, string $property=null, string $value=null): Response
+    public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, CustomFieldRepository $fields, string $property=null, string $value=null): Response
     {
         $message = '';
         $status = 200;
@@ -265,7 +265,18 @@ class PlantController extends AbstractController
                         $this->renderView(
                         // templates/emails/registration.html.twig
                             'emails/light.changed.html.twig',
-                            ['plant' => $plant, 'printTime' => $_time, 'domain' => $domain]
+                            [
+                                'plantBaseUrl' => $request->getUriForPath('/plant/'),
+                                'plant' => $plant,
+                                'printTime' => $_time,
+                                'domain' => $domain,
+                                'uptime' => $fields->findForObject($plant, 'uptime'),
+                                'temperature' => $fields->findForObject($plant, 'temperature'),
+                                //'temperature' => $prop->get('temperature'),
+                                'humidity' => $fields->findForObject($plant, 'humidity'),
+                                'light' => $fields->findForObject($plant, 'light'),
+                                'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
+                            ]
                         ),
                         'text/html'
                     )

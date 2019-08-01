@@ -504,9 +504,9 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td style="font-size: 10px;">{{ sensor.lastEvent.value1 }}</td>
-                <td style="font-size: 10px;">{{ sensor.lastEvent.value2 }}</td>
-                <td style="font-size: 10px;">{{ sensor.lastEvent.value3 }}</td>
+                <td style="font-size: 10px;">{% if sensor.lastEvent.value1 is defined %}{{ sensor.lastEvent.value1 }}{% endif %}</td>
+                <td style="font-size: 10px;">{% if sensor.lastEvent.value2 is defined %}{{ sensor.lastEvent.value2 }}{% endif %}</td>
+                <td style="font-size: 10px;">{% if sensor.lastEvent.value3 is defined %}{{ sensor.lastEvent.value3 }}{% endif %}</td>
                 <td title="{{ _created | date('Y-m-d H:i:s')}} " style="font-size: 10px;">
                     {% if _have_last %}
                         {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
@@ -548,11 +548,21 @@
             {% else %}
                 {% if event.sensor is none %}
                     {% set counter = counter+1 %}
+                    {% set type = event.type | parseType %}
                     <tr>
                         <td>{{ event.id }}</td>
-                        <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">_{{ event.name }}_</a></td>
+                        <td>{% if type == "Feed"  %}
+                            <a href="{{ path('events_event_feed_show', {'id': event.id}) }}" target="_blank">
+                                {% else %}
+                            <a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">
+                            {% endif %}_{{ event.name }}_</a></td>
                         <td>{{ event.type | parseType }}</td>
-                        <td>{{ event.value }}</td>
+                        <td>{% if type == "Feed"  %}
+                                {{ event.water }}
+                            {% else %}
+                                {{ event.value }}
+                            {% endif %}
+                        </td>
                     </tr>
                 {% endif %}
             {% endif %}
