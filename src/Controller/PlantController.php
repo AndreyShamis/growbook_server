@@ -215,6 +215,18 @@ class PlantController extends AbstractController
                         $logger->critical($ex->getMessage());
                     }
 
+                    try {
+                        if ($key === 'hydrometer') {
+                            $prev_value = $field->getPropertyValue();
+                            if (($prev_value > 5 && $val < 5) || ($prev_value < 90 && $val > 90)) {
+                                $alertFound = true;
+                                $alertMessage = 'Hydrometer pass alert treshhold, new value=' . $val . ', old=' . $prev_value;
+                            }
+                            $field->setPropertyValue($val);
+                        }
+                    } catch (\Throwable $ex) {
+                        $logger->critical($ex->getMessage());
+                    }
                     $plant->addProperty($field);
                     $em->persist($field);
                     //
