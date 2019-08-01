@@ -35,6 +35,7 @@ class FeedFertilizerRepository extends ServiceEntityRepository
             $entity = new FeedFertilizer();
             $entity->setFertilizer($criteria['fertilizer']);
             $entity->setEvent($criteria['event']);
+            $entity->setAmount(0);
             $this->_em->persist($entity);
             $this->_em->flush();
         }
