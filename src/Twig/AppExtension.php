@@ -64,9 +64,13 @@ class AppExtension extends AbstractExtension
         ];
     }
 
+    /**
+     * @param null $input
+     * @return string
+     */
     public function SensorTypeShort($input=null): string
     {
-        $ret = '';
+        $ret = 'Unknown';
         if ($input === 'Humidity') {
             $ret = 'Hum';
         } elseif ($input === 'Temperature') {
@@ -75,8 +79,6 @@ class AppExtension extends AbstractExtension
             $ret = 'Hyd';
         } elseif ($input === null) {
             $ret = 'None';
-        } else {
-            $ret = 'Unknown';
         }
         return $ret;
     }
@@ -91,27 +93,29 @@ class AppExtension extends AbstractExtension
         $ret = '';
         if ($value <= 0 || $value > 100) {
             $ret = 'badge-secondary';
+        } else if($value < 10 || $value > 90) {
+            $ret = 'badge-danger';
         } else {
             if ($period === 1) {
-                if ($value < 40 || $value > 90) {
+                if ($value < 30) {
                     $ret = 'badge-danger';
-                } elseif ($value < 50 || $value > 80) {
+                } elseif ($value < 40 || $value > 85) {
                     $ret = 'badge-warning';
-                } elseif ($value < 60 || $value > 70) {
+                } elseif ($value < 50 || $value > 80) {
                     $ret = 'badge-info';
-                } elseif ($value >= 60 && $value <= 70) {
+                } elseif ($value >= 50 && $value <= 80) {
                     $ret = 'badge-success';
                 } else {
                     $ret = 'badge-danger';
                 }
             } elseif ($period === 2) {
-                if ($value < 30 || $value > 70) {
+                if ($value > 70) {
                     $ret = 'badge-danger';
-                } elseif ($value < 35 || $value > 60) {
+                } elseif ($value < 25 || $value > 65) {
                     $ret = 'badge-warning';
-                } elseif ($value < 40 || $value > 50) {
+                } elseif ($value < 30 || $value > 50) {
                     $ret = 'badge-info';
-                } elseif ($value >= 40 && $value <= 50) {
+                } elseif ($value >= 30 && $value <= 50) {
                     $ret = 'badge-success';
                 } else {
                     $ret = 'badge-danger';
