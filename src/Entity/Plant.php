@@ -108,7 +108,7 @@ class Plant implements PlantInterface
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CustomField")
      */
-    private $properties;
+    protected $properties;
 
     /** @var bool  */
     protected $lightChanged = false;
@@ -117,6 +117,11 @@ class Plant implements PlantInterface
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="plants")
      */
     protected $owners;
+
+    /**
+     * @ORM\Column(type="smallint", options={"default"="0"})
+     */
+    protected $photoPeriod = 0;
 
     public function __construct()
     {
@@ -477,5 +482,62 @@ class Plant implements PlantInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPhotoPeriod(): int
+    {
+        return $this->photoPeriod;
+    }
+
+    /**
+     * @param int $photoPeriod
+     * @return Plant
+     */
+    public function setPhotoPeriod(int $photoPeriod): self
+    {
+        $this->photoPeriod = $photoPeriod;
+
+        return $this;
+    }
+
+    public static function getPhotoPeriodList(): array
+    {
+        $ret = array();
+        $ret[0] = 'Rooting';
+        $ret[1] = 'Growing';
+        $ret[2] = 'PreFlowering';
+        $ret[3] = 'Flowering';
+        $ret[4] = 'Ripening';
+        $ret[5] = 'Cleaning';
+        $ret[6] = 'Drying';
+        $ret[7] = 'PreFinish';
+        $ret[8] = 'Finish';
+        return $ret;
+    }
+
+    public static function getPhotoPeriodListAsHelp(): string
+    {
+        $ret = '';
+        $arr = self::getPhotoPeriodList();
+        foreach ($arr as $key => $val) {
+            if (strlen($ret) > 1) {
+                $ret .= '/';
+            }
+            $ret .= $key . '=' . $val;
+        }
+        return $ret;
+    }
+
+    public function getPeriodName(): string
+    {
+        $p = $this->getPhotoPeriod();
+        $arr = self::getPhotoPeriodList();
+        if (array_key_exists($p, $arr)) {
+            return $arr[$p];
+        }
+        return 'Unknown';
     }
 }

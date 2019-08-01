@@ -60,7 +60,7 @@
                 <span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span>
             </td>
             <th>Period</th>
-            <td>VEG</td>
+            <td>{{ plant.periodName }}</td>
             <th>FinishedAt</th>
             <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
         </tr>
