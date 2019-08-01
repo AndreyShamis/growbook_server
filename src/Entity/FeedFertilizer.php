@@ -4,34 +4,42 @@ namespace App\Entity;
 
 use App\Entity\Events\EventFeed;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\FeedFertilizerRepository")
+ * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(name="uniq", columns={"fertilizer", "event"})})
  */
 class FeedFertilizer
 {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="bigint", options={"unsigned"=true})
      */
-    private $id;
+    protected $id;
 
     /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Fertilizer", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Fertilizer") // , cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="fertilizer")
      */
-    private $fertilizer;
+    protected $fertilizer;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $amount;
+    protected $amount = 0;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Events\EventFeed", inversedBy="fertilizers")
+     * @ORM\JoinColumn(name="event")
      */
-    private $event;
+    protected $event;
+
+//    /**
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Fertilizer")
+//     */
+//    private $dddd;
 
     public function getId(): ?int
     {
@@ -78,4 +86,16 @@ class FeedFertilizer
     {
         return $this->getAmount() . 'ml - [' . $this->getFertilizer() . ']';
     }
+//
+//    public function getDddd(): ?Fertilizer
+//    {
+//        return $this->dddd;
+//    }
+//
+//    public function setDddd(?Fertilizer $dddd): self
+//    {
+//        $this->dddd = $dddd;
+//
+//        return $this;
+//    }
 }
