@@ -48,6 +48,7 @@
                     </tbody>
                 </table>
             </div>
+            {% if event.sensor is defined and event.sensor is not null %}
             <div class="col-sm-4">
                 <table class="table table-bordered ">
                     <tbody>
@@ -75,6 +76,7 @@
                     </tbody>
                 </table>
             </div>
+            {% endif %}
         </div>
     </div>
 {% endblock %}

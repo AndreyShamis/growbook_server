@@ -502,7 +502,7 @@
                     {% set counter = counter+1 %}
                     <tr>
                         <td>{{ event.id }}</td>
-                        <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">{{ event.name }}</a></td>
+                        <td><a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">_{{ event.name }}_</a></td>
                         <td>{{ event.type | parseType }}</td>
                         <td>{{ event.value }}</td>
                     </tr>
