@@ -16,7 +16,6 @@
                 <th>Ec</th>
                 <th>Temperature</th>
                 <th>Name</th>
-
                 <th>Type</th>
                 <th>Value</th>
                 <th>Note</th>
@@ -31,16 +30,15 @@
         <tbody>
         {% for event_feed in event_feeds %}
             <tr>
-                <td>{{ event_feed.id }}</td>
-                <td>{{ event_feed.plant.name }} | {{ event_feed.plant.id }}</td>
+                <td><a href="{{ path('events_event_feed_show', {'id': event_feed.id}) }}">{{ event_feed.id }}</a></td>
+                <td><a href="{{ path('plant_show', {'id': event_feed.plant.id}) }}">{{ event_feed.plant.name }} | {{ event_feed.plant.id }}</a></td>
                 <td>{{ event_feed.water }}</td>
                 <td>{{ event_feed.ph }}</td>
                 <td>{{ event_feed.tds }}</td>
                 <td>{{ event_feed.ec }}</td>
                 <td>{{ event_feed.temperature }}</td>
                 <td>{{ event_feed.name }}</td>
-
-                <td>{{ event_feed.type }}</td>
+                <td>{{ event_feed.type | parseType }}</td>
                 <td>{{ event_feed.value }}</td>
                 <td>{{ event_feed.note }}</td>
                 <td>{{ event_feed.value1 }}</td>
@@ -49,7 +47,7 @@
                 <td>{{ event_feed.createdAt ? event_feed.createdAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ event_feed.updatedAt ? event_feed.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                 <td>
-                    <a href="{{ path('events_event_feed_show', {'id': event_feed.id}) }}">show</a>
+{#                    <a href="{{ path('events_event_feed_show', {'id': event_feed.id}) }}">show</a>#}
                     <a href="{{ path('events_event_feed_edit', {'id': event_feed.id}) }}">edit</a>
                 </td>
             </tr>

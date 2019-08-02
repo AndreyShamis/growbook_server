@@ -34,9 +34,30 @@
             <tr>
                 <th>Fertilizers</th>
                 <td>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Amount</th>
+                            <th>Ferti</th>
+                            <th>N</th>
+                            <th>P</th>
+                            <th>K</th>
+                            <th>Company</th>
+                        </tr>
+                        </thead>
+                        <tbody>
                     {% for ferti in event_feed.fertilizers %}
-                        {{ ferti }} <br/>
+                        <tr>
+                            <td>{{ ferti.amount }}</td>
+                            <td>{{ ferti.fertilizer.name }}</td>
+                            <td>{{ ferti.fertilizer.n }}</td>
+                            <td>{{ ferti.fertilizer.p }}</td>
+                            <td>{{ ferti.fertilizer.k }}</td>
+                            <td>{{ ferti.fertilizer.company }}</td>
+                        </tr>
                     {% endfor %}
+                        </tbody>
+                    </table>
                 </td>
             </tr>
             <tr>
