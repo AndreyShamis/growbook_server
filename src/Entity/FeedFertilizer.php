@@ -31,7 +31,7 @@ class FeedFertilizer
     protected $amount = 0;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Events\EventFeed", inversedBy="fertilizers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Events\EventFeed", inversedBy="fertilizers", cascade={"persist"})
      * @ORM\JoinColumn(name="event")
      */
     protected $event;
@@ -40,6 +40,14 @@ class FeedFertilizer
 //     * @ORM\ManyToOne(targetEntity="App\Entity\Fertilizer")
 //     */
 //    private $dddd;
+
+    public static function cloneFrom(FeedFertilizer $obj): FeedFertilizer
+    {
+        $new = new FeedFertilizer();
+        $new->setAmount($obj->getAmount());
+        $new->setFertilizer($obj->getFertilizer());
+        return $new;
+    }
 
     public function getId(): ?int
     {

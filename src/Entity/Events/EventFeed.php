@@ -41,11 +41,11 @@ class EventFeed extends Event
     protected $temperature = 24.0;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event")
+     * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event", cascade={"persist"})
      */
     protected $fertilizers;
 
-    public function cloneSelf(EventFeed $eventFeed)
+    public function cloneSelf(EventFeed $eventFeed): EventFeed
     {
         $this->setType($eventFeed->getType());
         $this->setWater($eventFeed->getWater());
@@ -56,11 +56,19 @@ class EventFeed extends Event
         $this->setName($eventFeed->getName());
         $this->setPlant($eventFeed->getPlant());
         $this->setSensor($eventFeed->getSensor());
-        $this->setNote($eventFeed->getNote() . '\nCloned');
+        $this->setNote($eventFeed->getNote() . "\nCloned");
         $this->setValue($eventFeed->getValue());
         $this->setValue1($eventFeed->getValue1());
         $this->setValue2($eventFeed->getValue2());
         $this->setValue3($eventFeed->getValue3());
+        $listOfFerti = $eventFeed->getFertilizers();
+        /** @var FeedFertilizer $ferti */
+        foreach ($listOfFerti as $ferti) {
+            $newFerti =  FeedFertilizer::cloneFrom($ferti);
+            $this->addFertilizer($newFerti);
+        }
+
+        return $this;
     }
 
     public function __construct()

@@ -43,7 +43,7 @@ class EventFeedController extends AbstractController
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($eventFeed);
         $entityManager->flush();
-        return $this->redirectToRoute('events_event_feed_show', ['id' => $eventFeed->getId()]);
+        return $this->redirectToRoute('events_event_feed_edit', ['id' => $eventFeed->getId()]);
     }
 
     /**
