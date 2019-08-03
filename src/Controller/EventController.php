@@ -112,6 +112,10 @@ class EventController extends AbstractController
                         $plant->setUptime($eventRequest['uptime']);
                         $update_palnt = true;
                     }
+                    if (array_key_exists('version', $eventRequest)) {
+                        $plant->setVersion($eventRequest['version']);
+                        $update_palnt = true;
+                    }
                     if (array_key_exists('rssi', $eventRequest)) {
                         $plant->setRssi($eventRequest['rssi']);
                         $update_palnt = true;
@@ -121,7 +125,7 @@ class EventController extends AbstractController
                         $entityManager->flush();
                     }
                     $eventRequest['sensor'] = $sensor->getId();
-                    unset($eventRequest['sensor_id'], $eventRequest['plant_id'], $eventRequest['uptime'], $eventRequest['rssi']);
+                    unset($eventRequest['sensor_id'], $eventRequest['plant_id'], $eventRequest['uptime'], $eventRequest['rssi'], $eventRequest['version']);
                     $request->request->set('event', $eventRequest);
                     $automatic = true;
                     if ($sensor->getPlant()->getId() !== $plant->getId()) {

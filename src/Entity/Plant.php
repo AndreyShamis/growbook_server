@@ -128,6 +128,11 @@ class Plant implements PlantInterface
      */
     private $nodeCommands;
 
+    /**
+     * @ORM\Column(type="string", length=50)
+     */
+    private $version;
+
     public function __construct()
     {
         try {
@@ -588,6 +593,18 @@ class Plant implements PlantInterface
                 $nodeCommand->setPlant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getVersion(): ?string
+    {
+        return $this->version;
+    }
+
+    public function setVersion(string $version): self
+    {
+        $this->version = $version;
 
         return $this;
     }
