@@ -19,7 +19,9 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             RSSI: {{ plant.rssi }}
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" id="reloadPage" value="Reload" />
+            <input type="button" id="reloadPage" value="&nbsp;&nbsp;&nbsp;Reload&nbsp;&nbsp;&nbsp;" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="rebootNode" value="Reboot" />
         </p>
     </div>
     {% apply spaceless %}
@@ -326,6 +328,11 @@
             $('#reloadPage').click(function() {
                 location.reload();
             });
+            $('#rebootNode').click(function() {
+                location.href = '{{ path('reboot_node', {'plant': plant.id}) }}'
+            });
+
+
         });
 
         var color = Chart.helpers.color;

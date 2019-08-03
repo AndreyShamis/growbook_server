@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\NodeCommand;
+use App\Entity\Plant;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -19,6 +20,28 @@ class NodeCommandRepository extends ServiceEntityRepository
         parent::__construct($registry, NodeCommand::class);
     }
 
+    /**
+     * @param string $key
+     * @param Plant $pant
+     * @return NodeCommand
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function findOrCreate(string $key, Plant $pant): NodeCommand
+    {
+        $entity = $this->findOneBy([
+            'cmd_key' => $key,
+            'plant' => $pant
+        ]);
+        if ($entity === null) {
+            $entity = new NodeCommand();
+            $entity->setPlant($pant);
+            $entity->setCmdKey($key);
+            $this->_em->persist($entity);
+            $this->_em->flush();
+        }
+        return $entity;
+    }
     // /**
     //  * @return NodeCommand[] Returns an array of NodeCommand objects
     //  */

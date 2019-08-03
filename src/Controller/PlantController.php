@@ -8,6 +8,7 @@ use App\Entity\Sensor;
 use App\Form\PlantType;
 use App\Repository\CustomFieldRepository;
 use App\Repository\EventRepository;
+use App\Repository\NodeCommandRepository;
 use App\Repository\PlantRepository;
 use App\Utils\RandomName;
 use Psr\Log\LoggerInterface;
@@ -153,6 +154,30 @@ class PlantController extends AbstractController
         }
 
         return $this->redirectToRoute('plant_index');
+    }
+
+    /**
+     * @Route("/reboot/{plant}", name="reboot_node", methods={"POST", "GET"})
+     * @param Request $request
+     * @param Plant $plant
+     * @param NodeCommandRepository $nodeCommands
+     * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
+    public function reboot(Request $request, Plant $plant, NodeCommandRepository $nodeCommands): Response
+    {
+        $reboot_cmd = $nodeCommands->findOrCreate('reboot', $plant);
+        $reboot_cmd->setCmdValue("1");
+        $reboot_cmd->setPublished(false);
+        $reboot_cmd->setReceived(false);
+        $reboot_cmd->setCanBeDeleted(false);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($reboot_cmd);
+        $entityManager->flush();
+        return $this->redirectToRoute('plant_index', [
+            'id' => $plant->getId(),
+        ]);
     }
 
     /**
