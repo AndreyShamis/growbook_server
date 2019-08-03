@@ -156,6 +156,52 @@ class PlantController extends AbstractController
     }
 
     /**
+     * @Route("/read_cmd/{plant_uniq_id}", name="read_cmd", methods={"POST", "GET"})
+     * @param Request $request
+     * @param PlantRepository $plants
+     * @param string $plant_uniq_id
+     * @param CustomFieldRepository $fieldsRepo
+     * @param LoggerInterface $logger
+     * @param \Swift_Mailer $mailer
+     * @param CustomFieldRepository $customFields
+     * @param string $property
+     * @param string $value
+     * @return Response
+     */
+    public function read_cmd(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, CustomFieldRepository $customFields): Response
+    {
+        $message = '';  //'reboot ^ On ^^';
+        $status = 200;
+        $alertFound = false;
+        $alertMessage = '';
+        try {
+            //$domain = $this->getParameter('DOMAIN');
+            $em = $this->getDoctrine()->getManager();
+
+            $plant = $plants->findOrCreate([
+                'name' => RandomName::getRandomTerm() . '__' . $plant_uniq_id,
+                'uniqId' => $plant_uniq_id,
+            ]);
+
+            if ($plant === null) {
+                throw new \Exception('Plant not found', 404);
+            } else {
+                $cmd = $plant->getNodeNotPublishedCommand();
+                if ($cmd !== null) {
+                    $cmd->setPublished(1);
+                    $cmd->setReceived(1);
+                    $message = $cmd->getCmdKey() . ' ^ ' . $cmd->getCmdValue() . ' ^^';
+                    $em->flush();
+                }
+            }
+        } catch (\Throwable $ex) {
+            $logger->critical($ex->getMessage());
+            $status = 500;
+        }
+
+        return new Response($message, $status);
+    }
+    /**
      * @Route("/cli/{plant_uniq_id}", name="cli_post", methods={"POST", "GET"})
      * @Route("/cli/{plant_uniq_id}/{property}/{value}", name="cli", methods={"GET","POST"})
      * @param Request $request

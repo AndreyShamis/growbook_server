@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NodeCommand index{% endblock %}
+
+{% block body %}
+    <h1>NodeCommand index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Cmd_key</th>
+                <th>Cmd_value</th>
+                <th>Published</th>
+                <th>Received</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Can_be_deleted</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for node_command in node_commands %}
+            <tr>
+                <td>{{ node_command.id }}</td>
+                <td>{{ node_command.cmdKey }}</td>
+                <td>{{ node_command.cmdValue }}</td>
+                <td>{{ node_command.published ? 'Yes' : 'No' }}</td>
+                <td>{{ node_command.received ? 'Yes' : 'No' }}</td>
+                <td>{{ node_command.createdAt ? node_command.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ node_command.updatedAt ? node_command.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ node_command.canBeDeleted ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('node_command_show', {'id': node_command.id}) }}">show</a>
+                    <a href="{{ path('node_command_edit', {'id': node_command.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('node_command_new') }}">Create new</a>
+{% endblock %}

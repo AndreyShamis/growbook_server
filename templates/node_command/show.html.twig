@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}NodeCommand{% endblock %}
+
+{% block body %}
+    <h1>NodeCommand</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ node_command.id }}</td>
+            </tr>
+            <tr>
+                <th>Cmd_key</th>
+                <td>{{ node_command.cmdKey }}</td>
+            </tr>
+            <tr>
+                <th>Cmd_value</th>
+                <td>{{ node_command.cmdValue }}</td>
+            </tr>
+            <tr>
+                <th>Published</th>
+                <td>{{ node_command.published ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Received</th>
+                <td>{{ node_command.received ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ node_command.createdAt ? node_command.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ node_command.updatedAt ? node_command.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Can_be_deleted</th>
+                <td>{{ node_command.canBeDeleted ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('node_command_index') }}">back to list</a>
+
+    <a href="{{ path('node_command_edit', {'id': node_command.id}) }}">edit</a>
+
+    {{ include('node_command/_delete_form.html.twig') }}
+{% endblock %}
