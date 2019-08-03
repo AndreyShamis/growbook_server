@@ -331,12 +331,12 @@ class PlantController extends AbstractController
                                 'plant' => $plant,
                                 'printTime' => $_time,
                                 'domain' => $domain,
-                                'uptime' => $fields->$customFields($plant, 'uptime'),
-                                'temperature' => $fields->$customFields($plant, 'temperature'),
+                                'uptime' => $customFields->$customFields($plant, 'uptime'),
+                                'temperature' => $customFields->$customFields($plant, 'temperature'),
                                 //'temperature' => $prop->get('temperature'),
-                                'humidity' => $fields->$customFields($plant, 'humidity'),
-                                'light' => $fields->$customFields($plant, 'light'),
-                                'hydrometer' => $fields->$customFields($plant, 'hydrometer'),
+                                'humidity' => $customFields->$customFields($plant, 'humidity'),
+                                'light' => $customFields->$customFields($plant, 'light'),
+                                'hydrometer' => $customFields->$customFields($plant, 'hydrometer'),
                             ]
                         ),
                         'text/html'
@@ -354,7 +354,7 @@ class PlantController extends AbstractController
 
                 $res = $mailer->send($message);
             } catch (\Throwable $ex) {
-                $logger->critical($ex->getMessage());
+                $logger->critical($ex->getMessage(), $request->request->all());
             }
 
         }
