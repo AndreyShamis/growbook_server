@@ -123,6 +123,11 @@ class Plant implements PlantInterface
      */
     protected $photoPeriod = 0;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\NodeCommand", mappedBy="plant", orphanRemoval=true)
+     */
+    private $nodeCommands;
+
     public function __construct()
     {
         try {
@@ -135,6 +140,7 @@ class Plant implements PlantInterface
         $this->sensors = new ArrayCollection();
         $this->properties = new ArrayCollection();
         $this->owners = new ArrayCollection();
+        $this->nodeCommands = new ArrayCollection();
     }
 
     public function getLightChanged(): bool
@@ -539,5 +545,50 @@ class Plant implements PlantInterface
             return $arr[$p];
         }
         return 'Unknown';
+    }
+
+    /**
+     * @return NodeCommand
+     */
+    public function getNodeNotPublishedCommand(): ?NodeCommand
+    {
+        $cmds = $this->getNodeCommands();
+        foreach ($cmds as $cmd) {
+            if ($cmd->getPublished() === false) {
+                return $cmd;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return Collection|NodeCommand[]
+     */
+    public function getNodeCommands(): Collection
+    {
+        return $this->nodeCommands;
+    }
+
+    public function addNodeCommand(NodeCommand $nodeCommand): self
+    {
+        if (!$this->nodeCommands->contains($nodeCommand)) {
+            $this->nodeCommands[] = $nodeCommand;
+            $nodeCommand->setPlant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNodeCommand(NodeCommand $nodeCommand): self
+    {
+        if ($this->nodeCommands->contains($nodeCommand)) {
+            $this->nodeCommands->removeElement($nodeCommand);
+            // set the owning side to null (unless already changed)
+            if ($nodeCommand->getPlant() === $this) {
+                $nodeCommand->setPlant(null);
+            }
+        }
+
+        return $this;
     }
 }
