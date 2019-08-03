@@ -331,12 +331,12 @@ class PlantController extends AbstractController
                                 'plant' => $plant,
                                 'printTime' => $_time,
                                 'domain' => $domain,
-                                'uptime' => $customFields->$customFields($plant, 'uptime'),
-                                'temperature' => $customFields->$customFields($plant, 'temperature'),
+                                'uptime' => $customFields->findForObject($plant, 'uptime'),
+                                'temperature' => $customFields->findForObject($plant, 'temperature'),
                                 //'temperature' => $prop->get('temperature'),
-                                'humidity' => $customFields->$customFields($plant, 'humidity'),
-                                'light' => $customFields->$customFields($plant, 'light'),
-                                'hydrometer' => $customFields->$customFields($plant, 'hydrometer'),
+                                'humidity' => $customFields->findForObject($plant, 'humidity'),
+                                'light' => $customFields->findForObject($plant, 'light'),
+                                'hydrometer' => $customFields->findForObject($plant, 'hydrometer'),
                             ]
                         ),
                         'text/html'
