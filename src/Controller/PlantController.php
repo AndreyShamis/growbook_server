@@ -215,7 +215,7 @@ class PlantController extends AbstractController
                 if ($cmd !== null) {
                     $cmd->setPublished(1);
                     $cmd->setReceived(1);
-                    $message = $cmd->getCmdKey() . ':' . $cmd->getCmdValue() . '';
+                    $message = $cmd->getCmdKey() . '^' . $cmd->getCmdValue();
                     $em->flush();
                 }
             }
