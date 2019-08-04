@@ -272,7 +272,7 @@ class PlantController extends AbstractController
                     try {
                         if ($key === 'humidity') {
                             $prev_value = $field->getPropertyValue();
-                            if (($prev_value > 10 && $val < 10) || ($prev_value < 90 && $val > 90)) {
+                            if (($prev_value > 10 && $val < 10) || ($prev_value < 90 && $val > 91)) {
                                 $alertFound = true;
                                 $alertMessage = 'Humidity pass alert treshhold, new value=' . $val . ', old=' . $prev_value;
                             }
