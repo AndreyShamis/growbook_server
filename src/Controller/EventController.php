@@ -208,7 +208,6 @@ class EventController extends AbstractController
                     $event->setValue3($value3);
                 }
             } catch (\Throwable $ex) {
-                $logger->critical($ex->getMessage(), $eventRequest);
                 return new Response($message, 412); // 412 Precondition Failed
             }
 
