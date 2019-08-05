@@ -188,11 +188,11 @@
             <th>Value 2</th>
             <th>Value 3</th>
             <th>Note</th>
-            <th>Note</th>
-            <th>When</th>
+            <th>IP</th>
             <th>Created</th>
+            {#<th>Created</th>#}
             <th>Updated</th>
-            <th>PlantID</th>
+            {#<th>PlantID</th>#}
         </tr>
         </thead>
         <tbody>
@@ -219,15 +219,15 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                <td>{{ event.value1 }}</td>
-                <td>{{ event.value2 }}</td>
-                <td>{{ event.value3 }}</td>
-                <td>{{ event.note }}</td>
-                <td>{{ event.ip }}</td>
-                <td>{{ event.createdAt | time_diff }}</td>
-                <td>{{ event.createdAt |date('Ymd H:i:s')}}</td>
-                <td>{{ event.updatedAt |date('Ymd H:i:s')}}</td>
-                <td>{{ event.plant.id }}</td>
+                <td class="font10">{{ event.value1 }}</td>
+                <td class="font10">{{ event.value2 }}</td>
+                <td class="font10">{{ event.value3 }}</td>
+                <td class="font9">{{ event.note }}</td>
+                <td class="font9">{{ event.ip }}</td>
+                <td class="font9">{{ event.createdAt | time_diff }}</td>
+                {#<td>{{ event.createdAt |date('Ymd H:i:s')}}</td>#}
+                <td class="font8">{{ event.updatedAt |date('Ymd H:i:s')}}</td>
+                {#<td>{{ event.plant.id }}</td>#}
             </tr>
         {% endfor %}
         </tbody>
