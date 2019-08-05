@@ -116,7 +116,7 @@
                     // lineTension: 0,
                     borderWidth: 2,
                     data: [{% for event in events | slice(0, 2000) %}
-                        {x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value }},},{% endfor %}],
+                        {x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value }}, z: '{{ event.name}}'},{% endfor %}],
                 }
                 ]
             },
@@ -160,16 +160,36 @@
                 },
                 tooltips: {
                     intersect: false,
-                    mode: 'index',
+                    mode: 'single',
                     callbacks: {
                         label: function(tooltipItem, myData) {
                             var label = myData.datasets[tooltipItem.datasetIndex].label || '';
                             if (label) {
-                                label += ': ';
+                                label += '  :  ';
                             }
                             label += parseFloat(tooltipItem.value).toFixed(2);
+                            // try {
+                            //     var eventName = myData.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].z;
+                            //     if (eventName.length > 0) {
+                            //         label = [label];
+                            //         label.push(eventName);
+                            //     }
+                            // }  catch (e) {
+                            // }
                             return label;
-                        }
+                        },
+                        afterBody: function(data, myData) {
+                            var ret = '';
+                            try{
+                                var eventName = myData.datasets[data[0].datasetIndex].data[data[0].index].z;
+                                var multistringText = [''];
+                                multistringText.push(eventName);
+                                ret =  multistringText;
+                            } catch (e) {
+
+                            }
+                            return ret;
+                        },
                     }
                 }
             }
