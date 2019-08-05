@@ -7,6 +7,12 @@
         <td style="width: 40%;">{{ form_errors(form.type) }}</td>
     </tr>
     <tr>
+        <td>{{ form_label(form.name, 'Name') }}</td>
+        <td>{{ form_widget(form.name) }}</td>
+        <td>{{ form_help(form.name) }}</td>
+        <td>{{ form_errors(form.name) }}</td>
+    </tr>
+    <tr>
         <td>{{ form_label(form.value, 'Value') }}</td>
         <td>{{ form_widget(form.value) }}</td>
         <td>{{ form_help(form.value) }}</td>

@@ -44,6 +44,7 @@ class EventType extends AbstractType
             ->add('plant')
             ->add('sensor')
             ->add('note')
+            ->add('name', TextType::class, ['required' => false, 'empty_data' => ''])
 
         ;
         $builder->add('type', ChoiceType::class , TypeEvent::buildFormType());
