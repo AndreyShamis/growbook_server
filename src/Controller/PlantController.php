@@ -276,7 +276,7 @@ class PlantController extends AbstractController
                                 $alertFound = true;
                                 $alertMessage = 'Humidity pass alert threshold, new value=' . $val . ', old=' . $prev_value;
                             }
-                            if (($prev_value < 10 && $val > 10) || ($prev_value > 90 && $val < 90)) {
+                            if (($prev_value < 10 && $val > 10) || ($prev_value > 91 && $val < 90)) {
                                 $alertFound = true;
                                 $alertMessage = 'Humidity normalized, new value=' . $val . ', old=' . $prev_value;
                             }
