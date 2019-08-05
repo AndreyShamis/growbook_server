@@ -274,7 +274,7 @@ class PlantController extends AbstractController
                             $prev_value = $field->getPropertyValue();
                             if (($prev_value > 10 && $val < 10) || ($prev_value < 90 && $val > 91)) {
                                 $alertFound = true;
-                                $alertMessage = 'Humidity pass alert treshhold, new value=' . $val . ', old=' . $prev_value;
+                                $alertMessage = 'Humidity pass alert threshold, new value=' . $val . ', old=' . $prev_value;
                             }
                             if (($prev_value < 10 && $val > 10) || ($prev_value > 90 && $val < 90)) {
                                 $alertFound = true;
@@ -291,7 +291,7 @@ class PlantController extends AbstractController
                             $prev_value = $field->getPropertyValue();
                             if (($prev_value > 5 && $val < 5) || ($prev_value < 90 && $val > 90)) {
                                 $alertFound = true;
-                                $alertMessage = 'Hydrometer pass alert treshhold, new value=' . $val . ', old=' . $prev_value;
+                                $alertMessage = 'Hydrometer pass alert threshold, new value=' . $val . ', old=' . $prev_value;
                             }
                             $field->setPropertyValue($val);
                         }
