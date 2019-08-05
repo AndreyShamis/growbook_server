@@ -280,7 +280,6 @@ class PlantController extends AbstractController
                                 $alertFound = true;
                                 $alertMessage = 'Humidity normalized, new value=' . $val . ', old=' . $prev_value;
                             }
-                            $field->setPropertyValue($val);
                         }
                     } catch (\Throwable $ex) {
                         $logger->critical($ex->getMessage());
@@ -293,11 +292,11 @@ class PlantController extends AbstractController
                                 $alertFound = true;
                                 $alertMessage = 'Hydrometer pass alert threshold, new value=' . $val . ', old=' . $prev_value;
                             }
-                            $field->setPropertyValue($val);
                         }
                     } catch (\Throwable $ex) {
                         $logger->critical($ex->getMessage());
                     }
+                    $field->setPropertyValue($val);
                     $plant->addProperty($field);
                     $em->persist($field);
                     //
