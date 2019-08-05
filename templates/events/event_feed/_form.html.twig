@@ -6,7 +6,7 @@
             {{ form_start(form, {'attr': {'id': 'event_feed'}}) }}
             <div class="fertilizers_dest"></div>
             {{ form_widget(form) }}
-            {{ form_widget(form.add_fertilizer, { 'label': 'Add fertilizers' }) }}
+            {#{{ form_widget(form.add_fertilizer, { 'label': 'Add fertilizers' }) }}#}
             <button class="btn">{{ button_label|default('Save') }}</button>
             {{ form_end(form) }}
         </td>
@@ -22,7 +22,7 @@
 {#                        <option val="val2">desc1</option>#}
 {#                    </select>#}
 {#                </div>#}
-                <input type="submit" value="submit Button" id="subButton">
+                {#<input type="submit" value="submit Button" id="subButton">#}
                 <input type="button" value="Add Fertilizer" id="addFertilizer">
 
             </form>
@@ -35,12 +35,9 @@
     var counter = 1;
     var counterSummary = 0;
     function removeFertilizerDiv(className) {
-        console.log('Here');
         var obj = $("." + className).first();
-        console.log(obj);
         obj.empty();
         obj.remove();
-        console.log('Here 2');
         counterSummary--;
     }
 
@@ -52,12 +49,11 @@
         }
         var new_obj = $(".fertilizers").first().clone();
         new_obj.attr('id', "type" + counter);
-        ;
+        new_obj.show();
         var str_id = "FertilizerDiv_" + counter;
         var str_type = "FertilizerType[]";// + counter;
         var str_value = "FertilizerAmount[]";// + counter;
         new_obj.attr('name', str_type)
-        console.log(new_obj);
         $(".fertilizers_dest").append('<div class="' + str_id + '">'+
             counter +
             '</div>');
@@ -68,32 +64,25 @@
             '<input type="button" class="deleteFertilizer" id="deleteFertilizer' + counter + '" value="Delete" onclick="removeFertilizerDiv(\'' + str_id + '\')"/>'
         );
 
-        // var newTextBoxDiv = $(document.createElement('div')).attr("id", 'TextBoxDiv' + counter);
-        // newTextBoxDiv.after().html('<label>Select #' + counter + ' : </label>' +
-        //     '<select id="select' + counter + '" ><option value="' + "val" + ' ">"' + "desc2" + '"</option><option value="' + "val2" + ' ">"' + "desc" + '"</option><option value="' + "val3" + ' ">"' + "desc3" + '"</option>');
-        //
-        // newTextBoxDiv.appendTo("#TextBoxesGroup");
         counter++;
         counterSummary++;
     }
 
     $(document).ready(function () {
-
-
-
-
+        $("#event_feed_fertilizers").hide();
         $("#addFertilizer").click(function () {
             addFertilizer();
+
         });
+        var selectObjectKey, str_atr, str_val_atr;
         {% set counter = 0 %}
         {% for ferti in event_feed.fertilizers %}
-        {% set counter = counter + 1 %}
-        addFertilizer();
-        var str_atr = '#type{{ counter }} option[value={{ ferti.id }}]';
-        var str_val_atr = '#val{{ counter }}';
-        console.log(str_atr);
-        $(str_atr).attr('selected','selected');
-        $(str_val_atr).val('{{ ferti.amount }}');
+            {% set counter = counter + 1 %}
+            addFertilizer();
+            str_atr = '#type{{ counter }} option[value={{ ferti.fertilizer.id }}]';
+            str_val_atr = '#val{{ counter }}';
+            $(str_atr).attr('selected','selected');
+            $(str_val_atr).val('{{ ferti.amount }}');
         {% endfor %}
 
         //adding hidden inputs

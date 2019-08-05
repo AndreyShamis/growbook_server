@@ -32,9 +32,9 @@ class EventFeedType extends AbstractType
             ->add('value1')
             ->add('value2')
             ->add('value3')
-            ->add('add_fertilizer', ButtonType::class, [
-                'attr' => ['class' => 'Add fertilizer'],
-            ])
+//            ->add('add_fertilizer', ButtonType::class, [
+//                'attr' => ['class' => 'Add fertilizer'],
+//            ])
             ;
             $builder
                 ->add('fertilizers', EntityType::class, [

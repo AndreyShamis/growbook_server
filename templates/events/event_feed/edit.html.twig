@@ -1,13 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit EventFeed{% endblock %}
+{% block title %}Edit Feed{% endblock %}
 
 {% block body %}
-    <h1>Edit EventFeed</h1>
+    <h1>Edit Feed</h1>
 
     {{ include('events/event_feed/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('events_event_feed_index') }}">back to list</a>
-
+    <br/>
+    <br/>
     {{ include('events/event_feed/_delete_form.html.twig') }}
 {% endblock %}
