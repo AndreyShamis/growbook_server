@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Fertilizer;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,6 +18,8 @@ class FertilizerType extends AbstractType
             ->add('N')
             ->add('P')
             ->add('K')
+            ->add('description',TextareaType::class, ['required' => false, 'empty_data' => ''])
+            ->add('additionalElements',TextareaType::class, ['required' => false, 'empty_data' => ''])
             ->add('company',TextType::class, ['required' => false, 'empty_data' => ''])
             ->add('dose',TextType::class, ['required' => false, 'empty_data' => ''])
             ->add('content', null, ['help' => 'liters'])

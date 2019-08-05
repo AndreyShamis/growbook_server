@@ -1,18 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Fertilizer index{% endblock %}
+{% block title %}Fertilizers{% endblock %}
 
 {% block body %}
-    <h1>Fertilizer index</h1>
+    <h5>Fertilizers</h5>
 
-    <table class="table">
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Name</th>
-                <th>N</th>
-                <th>P</th>
-                <th>K</th>
+                <th style="width: 25px;">N</th>
+                <th style="width: 25px;">P</th>
+                <th style="width: 25px;">K</th>
+                <th>A</th>
                 <th>Company</th>
                 <th>Dose</th>
                 <th>Content</th>
@@ -27,21 +28,22 @@
         <tbody>
         {% for fertilizer in fertilizers %}
             <tr>
-                <td>{{ fertilizer.id }}</td>
+                <td><a href="{{ path('fertilizer_show', {'id': fertilizer.id}) }}">{{ fertilizer.id }}</a></td>
                 <td>{{ fertilizer.name }}</td>
-                <td>{{ fertilizer.N }}</td>
-                <td>{{ fertilizer.P }}</td>
-                <td>{{ fertilizer.K }}</td>
-                <td>{{ fertilizer.company }}</td>
-                <td>{{ fertilizer.dose }}</td>
-                <td>{{ fertilizer.content }}</td>
-                <td>{{ fertilizer.url1 }}</td>
-                <td>{{ fertilizer.url2 }}</td>
-                <td>{{ fertilizer.url3 }}</td>
-                <td>{{ fertilizer.price }}</td>
-                <td>{{ fertilizer.target }}</td>
+                <td style="text-align: right;"><strong>{{ fertilizer.N }}</strong></td>
+                <td style="text-align: right;"><strong>{{ fertilizer.P }}</strong></td>
+                <td style="text-align: right;"><strong>{{ fertilizer.K }}</strong></td>
+                <td class="font12">{{ fertilizer.additionalElements }}</td>
+                <td class="font10">{{ fertilizer.company }}</td>
+                <td class="font10">{{ fertilizer.dose }}</td>
+                <td class="font10">{{ fertilizer.content }}</td>
+                <td class="font8">{{ fertilizer.url1 }}</td>
+                <td class="font8">{{ fertilizer.url2 }}</td>
+                <td class="font8">{{ fertilizer.url3 }}</td>
+                <td class="font9">{{ fertilizer.price }}</td>
+                <td class="font8">{{ fertilizer.target }}</td>
                 <td>
-                    <a href="{{ path('fertilizer_show', {'id': fertilizer.id}) }}">show</a>
+
                     <a href="{{ path('fertilizer_edit', {'id': fertilizer.id}) }}">edit</a>
                 </td>
             </tr>

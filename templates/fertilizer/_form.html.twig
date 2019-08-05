@@ -26,6 +26,18 @@
     <td>{{ form_errors(form.K) }}</td>
 </tr>
 <tr>
+    <td>{{ form_label(form.description) }}</td>
+    <td>{{ form_widget(form.description) }}</td>
+    <td>{{ form_help(form.description) }}</td>
+    <td>{{ form_errors(form.description) }}</td>
+</tr>
+<tr>
+    <td>{{ form_label(form.additionalElements) }}</td>
+    <td>{{ form_widget(form.additionalElements) }}</td>
+    <td>{{ form_help(form.additionalElements) }}</td>
+    <td>{{ form_errors(form.additionalElements) }}</td>
+</tr>
+<tr>
     <td>{{ form_label(form.company) }}</td>
     <td>{{ form_widget(form.company) }}</td>
     <td>{{ form_help(form.company) }}</td>
@@ -80,7 +92,7 @@
 {{ form_end(form) }}
 
 <style>
-    input[type="text"] {
+    textarea, input[type="text"] {
         width: 400px !important;
     }
 </style>

@@ -87,6 +87,16 @@ class Fertilizer
      */
     private $target = 'UNI';
 
+    /**
+     * @ORM\Column(type="string", length=255, options={"default"=""})
+     */
+    private $description = '';
+
+    /**
+     * @ORM\Column(type="string", length=5000, options={"default"=""})
+     */
+    private $additionalElements = '';
+
     public function getId(): ?int
     {
         return $this->id;
@@ -246,6 +256,30 @@ class Fertilizer
     public function setTarget(string $target): self
     {
         $this->target = strtoupper(trim($target));
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getAdditionalElements(): ?string
+    {
+        return $this->additionalElements;
+    }
+
+    public function setAdditionalElements(string $additionalElements): self
+    {
+        $this->additionalElements = $additionalElements;
 
         return $this;
     }
