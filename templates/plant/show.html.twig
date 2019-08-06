@@ -128,7 +128,6 @@
     </table>
 
     <script>
-
         function floorDate(datetime) {
             var newDate = new Date(datetime);
             //newDate.setHours(0);
@@ -162,7 +161,7 @@
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
                 {% if type == 'Humidity' %}
-                {% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}), {{ event.value }}],{% endfor %}{% endif %}
+                {% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}),{{ event.value }}],{% endfor %}{% endif %}
                 {% endfor %}
             ]);
 
@@ -196,7 +195,7 @@
             data.addRows([
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
-                {% if type == 'Temperature' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}), {{ event.value }}],{% endfor %}{% endif %}
+                {% if type == 'Temperature' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}),{{ event.value }}],{% endfor %}{% endif %}
                 {% endfor %}
             ]);
 
@@ -234,7 +233,7 @@
             data.addRows([
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
-                {% if type == 'SoilHydrometer' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}), {{ event.value }}],{% endfor %}{% endif %}{% endfor %}
+                {% if type == 'SoilHydrometer' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.createdAt|date('Y, m, d, H, i, 0') }}),{{ event.value }}],{% endfor %}{% endif %}{% endfor %}
             ]);
 
             var newData = google.visualization.data.group(data, [{
@@ -273,7 +272,7 @@
                     {% if event.sensor is none %}
                         {% if type == 'Feed' %}
                             {% set counter = counter + 1 %}
-                                [new Date({{ event.createdAt|date('Y, m, d, H, i') }}), {{ event.water }}],
+                                [new Date({{ event.createdAt|date('Y, m, d, H, i') }}),{{ event.water }}],
                         {% endif %}
                     {% endif %}
                 {% endfor %}
@@ -457,129 +456,13 @@
             };
             window.myLine.update();
         });
+
     </script>
 
-    <h5>Sensors {{ plant.sensors | length }}</h5>
+    {% include 'plant/plant.sensor.html.twig' %}
     <hr/>
-    {% apply spaceless %}
-    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Last Value</th>
-                <th>Value1</th>
-                <th>Value2</th>
-                <th>Value3</th>
-                <th>Last Time</th>
-                <th>Type</th>
-                <th>Count</th>
-                <th>TH</th>
-                <th>Force sec</th>
-{#                <th>UniqID</th>#}
-            </tr>
-        </thead>
-        <tbody>
-        {% for sensor in plant.sensors | slice(0, 100)%}
-            {% set type = sensor.eventType | parseType  %}
-            {% set _have_last = false %}
-            {% set _created = '' %}
-            {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
-                {% set _have_last = true %}
-                {% set _created = sensor.lastEvent.createdAt %}
-            {% endif %}
-            <tr>
-                <td style="font-size: 10px;">{{ sensor.id }}</td>
-                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
-                <td>
-                    {% if _have_last == true %}
-                        {% set _value = sensor.lastEvent.value %}
-                        {% if type == 'Humidity' %}
-                            <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
-                        {% elseif type == 'Temperature' %}
-                            <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
-                        {% elseif type == 'SoilHydrometer' %}
-                            <span class="badge badge-pill {{ hydrometerToBadge(_value)}}">{{ _value }} %</span>
-                        {% else %}
-                           {{ _value }}
-                        {% endif %}
-                        {% set _value3 = sensor.lastEvent.value3 %}
-                        {% if _value3 is not null %}
-                            <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
-                            {% if type == 'Humidity' %}
-                                Heat index
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                </td>
-                <td style="font-size: 10px;">{% if sensor.lastEvent.value1 is defined %}{{ sensor.lastEvent.value1 }}{% endif %}</td>
-                <td style="font-size: 10px;">{% if sensor.lastEvent.value2 is defined %}{{ sensor.lastEvent.value2 }}{% endif %}</td>
-                <td style="font-size: 10px;">{% if sensor.lastEvent.value3 is defined %}{{ sensor.lastEvent.value3 }}{% endif %}</td>
-                <td title="{{ _created | date('Y-m-d H:i:s')}} " style="font-size: 10px;">
-                    {% if _have_last %}
-                        {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
-                    {% endif %}
-                </td>
-                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
-                <td style="font-size: 10px;">{{ sensor.events | length }}</td>
-                <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
-                <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
-{#                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>#}
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endapply %}
-    <hr/>
+    {% include 'plant/plant.events.no.sensor.html.twig' %}
 
-    <div id="divTemperatureHourly" style="width: 100%;height: 400px !important;"></div>
-    <div id="divHumidityHourly" style="width: 100%;height: 350px !important;"></div>
-    <div id="divSoilHydrometerHourly" style="width: 100%;height: 300px !important;"></div>
-    <div id="divFeedDaily" style="width: 100%;height: 300px !important;"></div>
-    <hr/>
-    <h5>Events without sensor | All events count {{ plant.events | length }}</h5>
-    <hr/>
-    {% apply spaceless %}
-    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Created</th>
-            <th>Name</th>
-            <th>Type</th>
-            <th>Value</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% set counter = 0 %}
-        {% for event in plant.events %}
-            {% if counter > 1000 %}
-            {% else %}
-                {% if event.sensor is none %}
-                    {% set counter = counter+1 %}
-                    {% set type = event.type | parseType %}
-                    <tr>
-                        <td>{{ event.id }}</td>
-                        <td>{{ event.createdAt | date('d M H:i:s') }}</td>
-                        <td>{% if type == "Feed"  %}
-                            <a href="{{ path('events_event_feed_show', {'id': event.id}) }}" target="_blank">
-                                {% else %}
-                            <a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">
-                            {% endif %}_{{ event.name }}_</a></td>
-                        <td>{{ event.type | parseType }}</td>
-                        <td>{% if type == "Feed"  %}
-                                {{ event.water }}
-                            {% else %}
-                                {{ event.value }}
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% endif %}
-            {% endif %}
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endapply %}
     <hr/>
     <h5>Other</h5>
     <hr/>

@@ -1,0 +1,95 @@
+<h5>Sensors {{ plant.sensors | length }}</h5>
+<hr/>
+{% apply spaceless %}
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Last Value</th>
+            <th>Value1</th>
+            <th>Value2</th>
+            <th>Value3</th>
+            <th>Last Time</th>
+            <th>Type</th>
+            <th>Count</th>
+            <th>TH</th>
+            <th>Force sec</th>
+            {#                <th>UniqID</th>#}
+        </tr>
+        </thead>
+        <tbody>
+        {% for sensor in plant.sensors | slice(0, 100)%}
+            {% set type = sensor.eventType | parseType  %}
+            {% set _have_last = false %}
+            {% set _created = '' %}
+            {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
+                {% set _have_last = true %}
+                {% set _created = sensor.lastEvent.createdAt %}
+            {% endif %}
+            <tr>
+                <td style="font-size: 10px;">{{ sensor.id }}</td>
+                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
+                <td>
+                    {% if _have_last == true %}
+                        {% set _value = sensor.lastEvent.value %}
+                        {% if type == 'Humidity' %}
+                            <span class="badge {{ humidityToBadge(_value)}}">{{ _value }} %</span>
+                        {% elseif type == 'Temperature' %}
+                            <span class="badge badge-pill {{ temperatureToBadge(_value)}}">{{ _value }} &#8451;</span>
+                        {% elseif type == 'SoilHydrometer' %}
+                            <span class="badge badge-pill {{ hydrometerToBadge(_value)}}">{{ _value }} %</span>
+                        {% else %}
+                            {{ _value }}
+                        {% endif %}
+                        {#                        {% set _value3 = sensor.lastEvent.value3 %}#}
+                        {#                        {% if _value3 is not null %}#}
+                        {#                            <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>#}
+                        {#                            {% if type == 'Humidity' %}#}
+                        {#                                Heat index#}
+                        {#                            {% endif %}#}
+                        {#                        {% endif %}#}
+                    {% endif %}
+                </td>
+                <td style="font-size: 10px;">
+                    {% if sensor.lastEvent.value1 is defined %}
+                        {% set _value1 = sensor.lastEvent.value1 %}
+                        {% if _value1 is not null %}
+                            <span class="badge  badge-pill badge-dark">{{ _value1 }}</span>
+                            {% if type == 'Humidity' %} AbsHunidity{% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td style="font-size: 10px;">
+                    {% if sensor.lastEvent.value2 is defined %}
+                        {% set _value2 = sensor.lastEvent.value2 %}
+                        {% if _value2 is not null %}
+                            <span class="badge  badge-pill badge-dark">{{ _value2 }}</span>
+                            {% if type == 'Humidity' %} C{% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td style="font-size: 10px;">
+                    {% if sensor.lastEvent.value3 is defined %}
+                        {% set _value3 = sensor.lastEvent.value3 %}
+                        {% if _value3 is not null %}
+                            <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
+                            {% if type == 'Humidity' %}Heat index{% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td title="{{ _created | date('Y-m-d H:i:s')}} " style="font-size: 10px;">
+                    {% if _have_last %}
+                        {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
+                    {% endif %}
+                </td>
+                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
+                <td style="font-size: 10px;">{{ sensor.events | length }}</td>
+                <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
+                <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
+                {#                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>#}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endapply %}

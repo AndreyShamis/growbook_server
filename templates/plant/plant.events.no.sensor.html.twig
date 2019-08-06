@@ -1,0 +1,48 @@
+<div id="divTemperatureHourly" style="width: 100%;height: 400px !important;"></div>
+<div id="divHumidityHourly" style="width: 100%;height: 350px !important;"></div>
+<div id="divSoilHydrometerHourly" style="width: 100%;height: 300px !important;"></div>
+<div id="divFeedDaily" style="width: 100%;height: 300px !important;"></div>
+<hr/>
+<h5>Events without sensor | All events count {{ plant.events | length }}</h5>
+<hr/>
+{% apply spaceless %}
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Created</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set counter = 0 %}
+        {% for event in plant.events %}
+            {% if counter > 1000 %}
+            {% else %}
+                {% if event.sensor is none %}
+                    {% set counter = counter+1 %}
+                    {% set type = event.type | parseType %}
+                    <tr>
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.createdAt | date('d M H:i:s') }}</td>
+                        <td>{% if type == "Feed"  %}
+                            <a href="{{ path('events_event_feed_show', {'id': event.id}) }}" target="_blank">
+                                {% else %}
+                                <a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">
+                                    {% endif %}_{{ event.name }}_</a></td>
+                        <td>{{ event.type | parseType }}</td>
+                        <td>{% if type == "Feed"  %}
+                                {{ event.water }}
+                            {% else %}
+                                {{ event.value }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endapply %}
