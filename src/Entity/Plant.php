@@ -63,7 +63,7 @@ class Plant implements PlantInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Sensor", mappedBy="Plant")
-     * @ORM\OrderBy({"id" = "DESC"})
+     * @ORM\OrderBy({"eventType" = "DESC"})
      */
     private $sensors;
 

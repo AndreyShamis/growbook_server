@@ -36,8 +36,8 @@
                 </span>
                 <span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span>
             </td>
-            <th style="width: 120px;">Medium</th>
-            <td style="width: 120px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
+            <th style="width: 100px;">Medium</th>
+            <td style="width: 100px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
             <th style="width: 120px;">CreatedAt</th>
             <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
         </tr>
@@ -65,7 +65,7 @@
             <th>Period</th>
             <td>{{ plant.periodName }}</td>
             <th>FinishedAt</th>
-            <td>{{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
+            <td><strong>~ {{ toFinishDays }}</strong>  {{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
         </tr>
         <tr>
             <th>Light</th>

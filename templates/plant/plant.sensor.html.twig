@@ -4,12 +4,12 @@
     <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Last Value</th>
-            <th>Value1</th>
-            <th>Value2</th>
-            <th>Value3</th>
+{#            <th>ID</th>#}
+            <th style="width: 220px;">Name</th>
+            <th style="width: 100px;">Last Value</th>
+            <th style="width: 150px;">Value1</th>
+            <th style="width: 150px;">Value2</th>
+            <th style="width: 150px;">Value3</th>
             <th>Last Time</th>
             <th>Type</th>
             <th>Count</th>
@@ -28,8 +28,8 @@
                 {% set _created = sensor.lastEvent.createdAt %}
             {% endif %}
             <tr>
-                <td style="font-size: 10px;">{{ sensor.id }}</td>
-                <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
+{#                <td style="font-size: 10px;">{{ sensor.id }}</td>#}
+                <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
                 <td>
                     {% if _have_last == true %}
                         {% set _value = sensor.lastEvent.value %}
