@@ -130,7 +130,7 @@ class PlantController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('plant_index', [
+            return $this->redirectToRoute('plant_show', [
                 'id' => $plant->getId(),
             ]);
         }
