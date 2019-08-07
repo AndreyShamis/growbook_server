@@ -70,6 +70,7 @@ class PlantController extends AbstractController
      */
     public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, int $hours=25): Response
     {
+        $days = 0;
         $this->denyAccessUnlessGranted('view', $plant);
         $events = array();
         try {
@@ -96,6 +97,9 @@ class PlantController extends AbstractController
                 }
             }
         }
+        try {
+            $days = $plant->getStartedAt()->diff(new \DateTime())->d;
+        } catch (\Throwable $ex) {}
         $prop = $plant->getProperties();
 
 //        foreach ($sensorsObj as $id => $_sensor) {
@@ -105,6 +109,7 @@ class PlantController extends AbstractController
 //        }
         return $this->render('plant/show.html.twig', [
             'plant' => $plant,
+            'days' => $days,
 //            'events' => $events,
             'sensors' => $sensors,
             'hours' => $hours,

@@ -30,15 +30,15 @@
         <tbody>
         <tr>
             <th style="width: 120px;">Temperature</th>
-            <td style="width: 180px;">
+            <td style="width: 160px;">
                 <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">
                     {{ temperature }}  &#8451;
                 </span>
                 <span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span>
             </td>
-            <th>Medium</th>
-            <td><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
-            <th>CreatedAt</th>
+            <th style="width: 120px;">Medium</th>
+            <td style="width: 120px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
+            <th style="width: 120px;">CreatedAt</th>
             <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
         </tr>
         <tr>
@@ -52,7 +52,7 @@
             <th>Pot</th>
             <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
             <th>StartedAt</th>
-            <td>{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}</td>
+            <td><strong title="{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}">{{ days }}</strong></td>
         </tr>
         <tr>
             <th>Hydrometer</th>
@@ -73,7 +73,7 @@
             <th></th>
             <td></td>
             <th>UpdatedAt</th>
-            <td>{{ plant.updatedAt ? plant.updatedAt|date('d M H:i:s') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+            <td>{{ plant.updatedAt ? plant.updatedAt|date('m-d H:i') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
         </tr>
         </tbody>
     </table>
