@@ -1,10 +1,98 @@
 
+<style>
+    textarea{
+        width: 400px !important;
+    }
+    input[type="text"] {
+        width: 400px !important;
+    }
 
+    #event_feed_createdAt_time, #event_feed_createdAt_date{
+        display:inline;
+    }
+</style>
 <table style="width: 100%">
     <tr>
         <td>
             {{ form_start(form, {'attr': {'id': 'event_feed'}}) }}
             <div class="fertilizers_dest"></div>
+
+            <br/>
+            <table class="table" style="width: 100%">
+                <tr>
+                    <td>{{ form_label(form.plant, 'Select plant') }}</td>
+                    <td style="width: 40%;">{{ form_widget(form.plant) }}</td>
+                    <td>{{ form_help(form.plant) }}</td>
+                    <td style="width: 40%;">{{ form_errors(form.plant) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.water, 'Amount of water') }}</td>
+                    <td>{{ form_widget(form.water) }}</td>
+                    <td>{{ form_help(form.water) }}</td>
+                    <td>{{ form_errors(form.water) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.ph) }}</td>
+                    <td>{{ form_widget(form.ph) }}</td>
+                    <td>{{ form_help(form.ph) }}</td>
+                    <td>{{ form_errors(form.ph) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.tds, 'TDS') }}</td>
+                    <td>{{ form_widget(form.tds) }}</td>
+                    <td>{{ form_help(form.tds) }}</td>
+                    <td>{{ form_errors(form.tds) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.ec, 'EC') }}</td>
+                    <td>{{ form_widget(form.ec) }}</td>
+                    <td>{{ form_help(form.ec) }}</td>
+                    <td>{{ form_errors(form.ec) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.temperature) }}</td>
+                    <td>{{ form_widget(form.temperature) }}</td>
+                    <td>{{ form_help(form.temperature) }}</td>
+                    <td>{{ form_errors(form.temperature) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.createdAt) }}</td>
+                    <td>{{ form_widget(form.createdAt) }}</td>
+                    <td>{{ form_help(form.createdAt) }}</td>
+                    <td>{{ form_errors(form.createdAt) }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ form_label(form.name) }}</td>
+                    <td>{{ form_widget(form.name) }}</td>
+                    <td>{{ form_help(form.name) }}</td>
+                    <td>{{ form_errors(form.name) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.note) }}</td>
+                    <td>{{ form_widget(form.note) }}</td>
+                    <td>{{ form_help(form.note) }}</td>
+                    <td>{{ form_errors(form.note) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.value1) }}</td>
+                    <td>{{ form_widget(form.value1) }}</td>
+                    <td>{{ form_help(form.value1) }}</td>
+                    <td>{{ form_errors(form.value1) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.value2) }}</td>
+                    <td>{{ form_widget(form.value2) }}</td>
+                    <td>{{ form_help(form.value2) }}</td>
+                    <td>{{ form_errors(form.value2) }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form_label(form.value3) }}</td>
+                    <td>{{ form_widget(form.value3) }}</td>
+                    <td>{{ form_help(form.value3) }}</td>
+                    <td>{{ form_errors(form.value3) }}</td>
+                </tr>
+            </table>
             {{ form_widget(form) }}
             {#{{ form_widget(form.add_fertilizer, { 'label': 'Add fertilizers' }) }}#}
             <button class="btn">{{ button_label|default('Save') }}</button>

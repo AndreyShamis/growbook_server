@@ -155,6 +155,13 @@ class EventFeedController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$eventFeed->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $fertis = $eventFeed->getFertilizers();
+            if ($fertis !== null) {
+                foreach ($fertis as $ferti) {
+                    $ferti->
+                    $entityManager->remove($ferti);
+                }
+            }
             $entityManager->remove($eventFeed);
             $entityManager->flush();
         }
