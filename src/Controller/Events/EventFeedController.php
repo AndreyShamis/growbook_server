@@ -137,6 +137,11 @@ class EventFeedController extends AbstractController
 
             $entityManager->flush();
 
+            $refer_page = $request->request->get('refer_page');
+            if ($refer_page !== '') {
+                return $this->redirect($refer_page);
+            }
+
             return $this->redirectToRoute('events_event_feed_index', [
                 'id' => $eventFeed->getId(),
             ]);

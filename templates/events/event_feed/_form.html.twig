@@ -93,6 +93,8 @@
                     <td>{{ form_errors(form.value3) }}</td>
                 </tr>
             </table>
+            {% set referer = app.request.headers.get('referer') | default('') %}
+            <input type="hidden" name="refer_page" value="{{ referer }}" />
             {{ form_widget(form) }}
             {#{{ form_widget(form.add_fertilizer, { 'label': 'Add fertilizers' }) }}#}
             <button class="btn">{{ button_label|default('Save') }}</button>
