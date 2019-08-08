@@ -24,7 +24,7 @@ class EventFeedType extends AbstractType
             ->add('tds')
             ->add('ec')
             ->add('temperature')
-            ->add('createdAt')
+            ->add('happenedAt')
 //            ->add('updatedAt')
 //            ->add('type')
 //            ->add('value')

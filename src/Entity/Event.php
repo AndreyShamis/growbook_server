@@ -55,6 +55,11 @@ class Event implements EventInterface
     protected $updatedAt;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $happenedAt;
+
+    /**
      * @ORM\Column(type="string")
      */
     protected $type = self::class;
@@ -108,10 +113,6 @@ class Event implements EventInterface
     {
         return $this->ip;
     }
-    /**
-     * @var RequestStack
-     */
-    protected $requestStack;
 
     /**
      * @param string $ip
@@ -124,6 +125,7 @@ class Event implements EventInterface
     public function __construct()
     {
         try {
+            $this->setHappenedAt(new \DateTime());
             $this->setUpdatedAt();
             $this->setCreatedAt();
         } catch (\Exception $e) {
@@ -392,5 +394,17 @@ class Event implements EventInterface
         }
         $this->addNote('TH_USED::'. $this->calculateThreshHold() . ';;DIFF::' . $td . ';;OLD_VALUE::' . $otherEvent->getValue() . ';;');
         return true;
+    }
+
+    public function getHappenedAt(): ?\DateTimeInterface
+    {
+        return $this->happenedAt;
+    }
+
+    public function setHappenedAt(\DateTimeInterface $happenedAt): self
+    {
+        $this->happenedAt = $happenedAt;
+
+        return $this;
     }
 }

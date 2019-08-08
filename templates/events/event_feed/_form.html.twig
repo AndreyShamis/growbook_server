@@ -7,7 +7,7 @@
         width: 400px !important;
     }
 
-    #event_feed_createdAt_time, #event_feed_createdAt_date{
+    #event_feed_happenedAt_time, #event_feed_happenedAt_date{
         display:inline;
     }
 </style>
@@ -56,10 +56,10 @@
                     <td>{{ form_errors(form.temperature) }}</td>
                 </tr>
                 <tr>
-                    <td>{{ form_label(form.createdAt) }}</td>
-                    <td>{{ form_widget(form.createdAt) }}</td>
-                    <td>{{ form_help(form.createdAt) }}</td>
-                    <td>{{ form_errors(form.createdAt) }}</td>
+                    <td>{{ form_label(form.happenedAt) }}</td>
+                    <td>{{ form_widget(form.happenedAt) }}</td>
+                    <td>{{ form_help(form.happenedAt) }}</td>
+                    <td>{{ form_errors(form.happenedAt) }}</td>
                 </tr>
 
                 <tr>
