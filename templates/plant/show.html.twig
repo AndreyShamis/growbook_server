@@ -136,6 +136,13 @@
             return newDate;
         }
 
+        function floorDateDaily(datetime) {
+            var newDate = new Date(datetime);
+            newDate.setHours(0);
+            newDate.setMinutes(0);
+            newDate.setSeconds(0);
+            return newDate;
+        }
         // Set chart options
         var optionsHourly = {
             'title': 'Hourly',
@@ -280,7 +287,7 @@
 
             var newData = google.visualization.data.group(data, [{
                 column: 0,
-                modifier: floorDate,
+                modifier: floorDateDaily,
                 type: 'datetime'
             }], [{
                 column: 1,
