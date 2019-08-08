@@ -51,9 +51,9 @@ class Sensor implements SensorInterface
     private $events;
 
     /**
-     * @ORM\Column(type="integer", options={"unsigned"=true, "default"="1000"})
+     * @ORM\Column(type="integer", options={"unsigned"=true, "default"="3000"})
      */
-    private $writeForceEveryXseconds = 1000;
+    private $writeForceEveryXseconds = 3000;
 
     /**
      * @ORM\Column(type="float", options={"default"="0"})
