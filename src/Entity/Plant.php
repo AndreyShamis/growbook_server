@@ -57,7 +57,7 @@ class Plant implements PlantInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="plant", orphanRemoval=true, fetch="EXTRA_LAZY")
-     * @ORM\OrderBy({"updatedAt" = "DESC"})
+     * @ORM\OrderBy({"happenedAt" = "DESC"})
      */
     private $events;
 

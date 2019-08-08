@@ -25,7 +25,7 @@
             {% set _created = '' %}
             {% if sensor.supportEvents and sensor.lastEvent is defined and sensor.lastEvent.value is defined%}
                 {% set _have_last = true %}
-                {% set _created = sensor.lastEvent.createdAt %}
+                {% set _created = sensor.lastEvent.happenedAt %}
             {% endif %}
             <tr>
 {#                <td style="font-size: 10px;">{{ sensor.id }}</td>#}
