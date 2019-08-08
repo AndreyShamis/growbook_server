@@ -163,7 +163,6 @@ class EventFeedController extends AbstractController
             $fertis = $eventFeed->getFertilizers();
             if ($fertis !== null) {
                 foreach ($fertis as $ferti) {
-                    $ferti->
                     $entityManager->remove($ferti);
                 }
             }
