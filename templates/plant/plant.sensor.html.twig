@@ -5,16 +5,18 @@
         <thead>
         <tr>
 {#            <th>ID</th>#}
+            <th style="width: 50px;"></th>
             <th style="width: 220px;">Name</th>
             <th style="width: 100px;">Last Value</th>
             <th style="width: 150px;">Value1</th>
             <th style="width: 150px;">Value2</th>
             <th style="width: 150px;">Value3</th>
             <th>Last Time</th>
-            <th>Type</th>
             <th>Count</th>
             <th>TH</th>
             <th>Force sec</th>
+            <th>Type</th>
+
             {#                <th>UniqID</th>#}
         </tr>
         </thead>
@@ -29,6 +31,18 @@
             {% endif %}
             <tr>
 {#                <td style="font-size: 10px;">{{ sensor.id }}</td>#}
+                <td>
+                    {% if type == 'Humidity' %}
+                        <i class="ace-icon fa fa-cloud grey"></i>
+                    {% elseif type == 'Temperature' %}
+                        <i class="ace-icon fa fa-asterisk blue"></i>
+                    {% elseif type == 'SoilHydrometer' %}
+                        <i class="ace-icon fa fa-inbox brown"></i>
+                    {% else %}
+                        <i class="ace-icon fa fa-circle-o"></i>
+                    {% endif %}
+
+                </td>
                 <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
                 <td>
                     {% if _have_last == true %}
@@ -83,10 +97,11 @@
                         {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
                     {% endif %}
                 </td>
-                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
                 <td style="font-size: 10px;">{{ sensor.events | length }}</td>
                 <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
                 <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
+                <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
+
                 {#                <td style="font-size: 10px;">{{ sensor.uniqId }}</td>#}
             </tr>
         {% endfor %}
