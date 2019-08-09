@@ -135,7 +135,7 @@ class PlantController extends AbstractController
             'humidity' => $fields->findForObject($plant, 'humidity'),
             'light' => $fields->findForObject($plant, 'light'),
             'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
-            'customFields' => $fields->findAllForObject($plant),
+            'customFields' => $fields->findAllForObject($plant, ['updated_at' => 'DESC']),
         ]);
     }
 

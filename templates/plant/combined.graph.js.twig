@@ -1,0 +1,124 @@
+
+var scaleType = 'linear';
+var color = Chart.helpers.color;
+
+
+window.onload = function() {
+    //var ctx = $('#myChart');
+    var graph_container = $('#graph_container');
+    //window.myLine = new Chart(ctx, config);
+    window.myLine = new Chart(graph_container, graph_config);
+
+};
+
+var graph_config = {
+    type: 'line',
+    data: {
+        datasets: [
+            {% for id, sensor in sensorsObj %}
+            {% set type = sensor.eventType | parseType %}
+            {% set color = 'window.chartColors.red' %}
+            {% if type == 'Humidity' %}{% set color = 'window.chartColors.yellow' %}{% endif %}
+            {% if type == 'Temperature' %}{% set color = 'window.chartColors.blue' %}{% endif %}
+            {% if type == 'SoilHydrometer' %}{% set color = 'window.chartColors.green' %}{% endif %}
+            {% if type == 'Event' %}{% set color = 'window.chartColors.purple' %}{% endif %}
+            {% if sensor.plant.id != plant.id %}{% set color = 'window.chartColors.grey' %}{% endif %}
+            {
+                sensorId: {{ id }},
+                sensorType: '{{ type }}',
+                sensorName: '{{ sensor.name}}',
+                label: '{{ sensor.name }}',
+                backgroundColor: color({{ color }}).alpha(0.25).rgbString(),
+                borderColor: {{ color }},
+                fill: {{ type == 'Humidity' ? 'true' : 'false' }},
+                lineTension: 0,
+                {% if sensor.plant.id != plant.id %}
+                borderWidth: 1,
+                pointRadius: 4,
+                {% else %}
+                borderWidth: 2,
+                pointRadius: 5,
+                {% endif %}
+                data:[{% for event in sensors[id] | slice(0, 10000)%}{x:'{{ event.happenedAt|date('Y-m-d H:i') }}',y:{{ event.value }},},{% endfor %}],
+                //pointStyle: 'rectRot',
+                //pointBorderColor: 'rgb(0, 0, 0)'
+            },{% endfor %}
+        ]
+    },
+    options: {
+        legend: {
+            display: true,
+            position: 'right',
+            onClick: CustomOnClickAction,
+            labels: {
+                fontColor: 'rgb(255, 99, 132)',
+                fontSize: 10,
+                fontFamily: 'Helvetica',
+                usePointStyle: true,
+                fontStyle: 'normal'
+            }
+        },
+        responsive: true,
+        title: {
+            display: true,
+            text: '{{ plant.name }} [{{ hours }} hours]'
+        },
+        scales: {
+            xAxes: [{
+                type: 'time',
+                display: true,
+                time: {
+                    unit: 'quarter',
+                    displayFormats: {
+                        quarter: 'D/M H:mm'  // https://www.chartjs.org/docs/latest/axes/cartesian/time.html
+                    }
+                },
+                distribution: 'linear',
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                },
+                ticks: {
+                    source: 'data',  // add timeprint on bottom for each points
+                    autoSkip: true,
+                    major: {
+                        fontStyle: 'bold',
+                        fontColor: '#FF0000'
+                    }
+                }
+            }],
+            yAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: 'value'
+                }
+            }]
+        },
+        tooltips: {
+            intersect: false,
+            mode: 'point',
+            callbacks: {
+                label: function(tooltipItem, myData) {
+                    var obj = myData.datasets[tooltipItem.datasetIndex];
+                    var label = obj.label || '';
+                    if (label) {
+                        label += '         ';
+                    }
+                    label += obj['sensorType'] + ':' + parseFloat(tooltipItem.value); // .toFixed(4)
+                    return label;
+                }
+            }
+        }
+    }
+};
+
+document.getElementById('toggleScale').addEventListener('click', function() {
+    scaleType = scaleType === 'linear' ? 'logarithmic' : 'linear';
+    //window.myLine.options.title.text = 'Chart.js Line Chart - ' + scaleType;
+    window.myLine.options.scales.yAxes[0] = {
+        display: true,
+        type: scaleType
+    };
+    window.myLine.update();
+});

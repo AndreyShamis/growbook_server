@@ -67,14 +67,15 @@ class CustomFieldRepository extends ServiceEntityRepository
 
     /**
      * @param object $obj
+     * @param null $orderBy
      * @return CustomField[]
      */
-    public function findAllForObject($obj): array
+    public function findAllForObject($obj, $orderBy = null): array
     {
         $ret = $this->findBy(array(
             'object_host_id' => $obj->getId(),
             'object_host_type' => get_class($obj)
-        ));
+        ), $orderBy);
         return $ret;
     }
 
