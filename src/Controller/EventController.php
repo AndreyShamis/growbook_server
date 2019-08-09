@@ -134,7 +134,7 @@ class EventController extends AbstractController
                 }
             }
         } catch (\Throwable $ex) {
-            $logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
+            //$logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
         }
         try {
             $ev_req_arr = $request->query->all();
@@ -142,7 +142,7 @@ class EventController extends AbstractController
             $event = new $ev_req_type();
             $eventReqFound = true;
         } catch (\Throwable $ex) {
-            $logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
+            //$logger->critical('ERROR in ev_req_arr :' . $ex->getMessage());
         }
         try {
             //$ev_arr = $request->request->get('event');
