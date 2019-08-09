@@ -1,0 +1,31 @@
+{% apply spaceless %}
+    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Property</th>
+            <th>Value</th>
+            <th>Type</th>
+            <th>Created</th>
+            <th>Updated</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% set counter = 0 %}
+        {% for cf in customFields %}
+            {% if counter > 1000 %}
+            {% else %}
+                {% set counter = counter+1 %}
+                <tr>
+                    <td>{{ cf.id }}</td>
+                    <td>{{ cf.property }}</td>
+                    <td>{{ cf.propertyValue }}</td>
+                    <td>{{ cf.propertyValueType }}</td>
+                    <td>{{ cf.createdAt | date('d M H:i:s') }}</td>
+                    <td>{{ cf.updatedAt | date('d M H:i:s') }}</td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+{% endapply %}
