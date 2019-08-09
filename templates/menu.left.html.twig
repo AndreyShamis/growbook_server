@@ -1,0 +1,168 @@
+<script type="text/javascript">
+    try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
+</script>
+
+{% set route = app.request.get('_route') %}
+{% set url = app.request.scheme ~'://' ~  app.request.httpHost %}
+<ul class="nav nav-list  nav-sidebar">
+    <li class="{% if route == 'default_index' %}active{% endif %}">
+        <a href="{{ url}}">
+            <i class="menu-icon fa fa-home"></i>
+            <span class="menu-text">Home</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+    {#{{asset(('user'))}}#}
+    {#<br/>#}
+    {#<br/>#}
+    {#{{(path('user_index'))}}#}
+    {#<br/>#}
+    {#<br/>#}
+    {#{{asset(path('user_index'))}}#}
+
+    {#{{absolute_url(asset(('user')))}}#}
+    {#<br/>#}
+    {#<br/>#}
+    {#{{absolute_url(path('user_index'))}}#}
+    {#<br/>#}
+    {#<br/>#}
+    {#{{absolute_url(asset(path('user_index')))}}#}
+    <li class="{% if route starts with 'plant_' %}active{% endif %}">
+        <a href="{{ asset(path('plant_index')) }}">
+            <i class="menu-icon fa fa-desktop"></i>
+            <span class="menu-text"> Plants </span>
+        </a>
+
+        <b class="arrow"></b>
+    </li>
+
+    <li class="{% if route starts with 'sensor' %}active{% endif %}">
+        <a href="{{asset(path('sensor_index'))}}" >
+            <i class="menu-icon fa fa-pencil-square-o"></i>
+            <span class="menu-text" title="Build">Sensors</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+
+    <li class="{% if route starts with 'event' %}active{% endif %}">
+        <a href="{{asset(path('events_index'))}}">
+            <i class="menu-icon fa fa-cogs"></i>
+            <span class="menu-text"> Events </span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+
+        <li class="{% if route starts with 'fertilizer' %}active{% endif %}">
+            <a href="{{asset(path('fertilizer_index'))}}">
+                <i class="menu-icon fa fa-list-alt"></i>
+                <span class="menu-text bigger-120"> Fertilizer </span>
+            </a>
+            <b class="arrow"></b>
+        </li>
+
+    <li class="{% if route starts with 'event' %}active{% endif %}">
+        <a href="{{asset(path('event_new'))}}">
+            <i class="menu-icon fa  fa-filter"></i>
+            <span class="menu-text  bigger-120">New Event</span>
+        </a>
+    <b class="arrow"></b>
+    </li>
+    {% if 1== 2 and app.user.roles is defined and 'ROLE_SUPER_ADMIN' in app.user.roles %}
+        <li class="{% if route starts with 'upload_' %}active{% endif %}">
+{#            <a href="{{asset(path('upload_new'))}}" >#}
+                <i class="menu-icon fa fa-cloud-upload"></i>
+                <span class="menu-text">Upload</span>
+{#            </a>#}
+            <b class="arrow"></b>
+        </li>
+    {% endif %}
+
+    <li class="{% if route starts with 'feed' %}active{% endif %}">
+        <a href="{{asset(path('events_event_feed_new'))}}">
+            <i class="menu-icon fa fa-file-o"></i>
+            <span class="menu-text">Feed
+            <span class="badge badge-primary">5</span>
+        </span>
+    </a>
+    <b class="arrow"></b>
+    </li>
+
+    <li class="{% if route starts with 'aasasas_' %}active{% endif %}">
+        <a href="{{ path('event_new', { type: 'App\\Entity\\Events\\EventTemperature'}) }}" >
+            <i class="menu-icon fa fa-tag"></i>
+            <span class="menu-text" title="Message/Log types">Add Temperature</span>
+        </a>
+        <b class="arrow"></b>
+    </li>
+
+    {# ################################### Controll ################################### #}
+    <li class="{% if route in ['types', 'verdict_index', 'user_index', 'msg_type_index', 'log_index'] %}active{% endif %}">
+        <a href="#" class="dropdown-toggle">
+            <i class="menu-icon fa fa-desktop"></i>
+            <span class="menu-text">Other</span>
+            <b class="arrow fa fa-angle-down"></b>
+        </a>
+        <b class="arrow"></b>
+
+        <ul class="submenu">
+            <li class="
+{% if route starts with 'verdict_' %}active{% endif %}
+{% if route starts with 'msg_type_' %}active{% endif %}
+{% if route starts with 'types_' %}active{% endif %}
+">
+                <a href="#" class="dropdown-toggle">
+                    <i class="menu-icon fa fa-caret-right"></i>Types
+                    <b class="arrow fa fa-angle-down"></b>
+                </a>
+                <b class="arrow"></b>
+                <ul class="submenu">
+                    <li class="{% if route starts with 'verdict_' %}active{% endif %}">
+{#                        <a href="{{asset(path('verdict_index'))}}">#}
+                            <i class="menu-icon fa fa-caret-right"></i>Verdicts
+{#                        </a>#}
+                        <b class="arrow"></b>
+                    </li>
+                    <li class="{% if route starts with 'msg_type_' %}active{% endif %}">
+{#                        <a href="{{asset(path('msg_type_index'))}}">#}
+                            <i class="menu-icon fa fa-caret-right"></i>Log Types
+{#                        </a>#}
+                        <b class="arrow"></b>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{% if route starts with 'user_' %}active{% endif %}">
+                <a href="{{path('user_index') }}">
+                    <i class="menu-icon fa fa-caret-right"></i>Users
+                </a>
+                <b class="arrow"></b>
+            </li>
+            {#<li class="{% if route starts with 'log_book_build_' %}active{% endif %}">#}
+            {#<a href="{{asset(path('log_book_build_index'))}}">#}
+            {#<i class="menu-icon fa fa-caret-right"></i>Builds#}
+            {#</a>#}
+            {#<b class="arrow"></b>#}
+            {#</li>#}
+
+            {% if app.user.roles is defined and 'ROLE_SUPER_ADMIN' in app.user.roles %}
+                <li class="{% if route starts with 'log_' %}active{% endif %}">
+{#                    <a href="{{asset(path('log_index'))}}">#}
+                        <i class="menu-icon fa fa-caret-right"></i>Logs
+{#                    </a>#}
+                    <b class="arrow"></b>
+                </li>
+            {% endif %}
+        </ul>
+    </li>
+
+
+
+</ul><!-- /.nav-list -->
+
+<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+    <i class="ace-icon fa fa-angle-double-left" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+</div>
+
+<script type="text/javascript">
+    try{ace.settings.check('sidebar' , 'collapsed')}catch(e){}
+</script>
