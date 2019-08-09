@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}CustomField index{% endblock %}
+
+{% block body %}
+    <h1>CustomField index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Property</th>
+                <th>PropertyValue</th>
+                <th>PropertyValueString</th>
+                <th>Object_host_id</th>
+                <th>Object_host_type</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>PropertyValueType</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for custom_field in custom_fields %}
+            <tr>
+                <td>{{ custom_field.id }}</td>
+                <td>{{ custom_field.property }}</td>
+                <td>{{ custom_field.propertyValue }}</td>
+                <td>{{ custom_field.propertyValueString }}</td>
+                <td>{{ custom_field.objectHostId }}</td>
+                <td>{{ custom_field.objectHostType }}</td>
+                <td>{{ custom_field.createdAt ? custom_field.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ custom_field.updatedAt ? custom_field.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ custom_field.propertyValueType }}</td>
+                <td>
+                    <a href="{{ path('custom_field_show', {'id': custom_field.id}) }}">show</a>
+                    <a href="{{ path('custom_field_edit', {'id': custom_field.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+{#    <a href="{{ path('custom_field_new') }}">Create new</a>#}
+{% endblock %}
