@@ -328,7 +328,7 @@ class PlantController extends AbstractController
                                 'obj' => $plant,
                                 'key' => $key . '_pc'
                             ]);
-                            $percentChange = Common::percentChange($prev_value, $val);
+                            $percentChange = Common::percentChange($val, $prev_value);
                             if ($percentChange > 0 || $percentChange < 0) {
 
                                 $percentChangeField->setPropertyValue($percentChange);
@@ -362,6 +362,26 @@ class PlantController extends AbstractController
                     'obj' => $plant,
                     'key' => $property
                 ]);
+
+                try {
+                    if ($property === 'humidity' || $property === 'temperature' || $property === 'hydrometer') {
+                        $prev_value = $field->getPropertyValue();
+                        $percentChangeField = $fieldsRepo->findOrCreate([
+                            'obj' => $plant,
+                            'key' => $property . '_pc'
+                        ]);
+                        $percentChange = Common::percentChange($value, $prev_value);
+                        if ($percentChange > 0 || $percentChange < 0) {
+
+                            $percentChangeField->setPropertyValue($percentChange);
+                            $em->persist($percentChangeField);
+                            $plant->addProperty($percentChangeField);
+                        }
+                    }
+                } catch (\Throwable $ex) {
+                    $logger->critical($ex->getMessage(), $ex->getTrace());
+                }
+
                 $field->setPropertyValue($value);
                 $plant->addProperty($field);
                 $em->persist($plant);

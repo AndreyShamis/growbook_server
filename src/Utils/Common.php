@@ -14,12 +14,12 @@ class Common
         return ((100 * $number) / $total);
     }
 
-    public static function percentChange($number1, $number2): float
+    public static function percentChange($total, $number): float
     {
         $ret = 0;
         try{
-            $total = max($number1, $number2);
-            $number = min($number1, $number2);
+//            $total = max($number1, $number2);
+//            $number = min($number1, $number2);
             $p = self::percentage($total, $number);
             if ($p > 100) {
                 $ret = -1 * ($p - 100);

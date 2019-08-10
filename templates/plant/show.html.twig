@@ -33,26 +33,22 @@
                     <div class="col-xs-9 infobox-container">
 
                         <div class="infobox infobox-blue">
-                            <div class="infobox-icon">
-                                <i class="ace-icon fa fa-asterisk blue"></i>
-                            </div>
+                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
 
-                            <div class="infobox-data">
+                            <div class="infobox-data" title="Temperature">
                                 <span class="infobox-data-number">{{ temperature }}&#8451;</span>
                                 <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>
                             </div>
-                            {% if humidity_pc.propertyValue < 0 %}
+                            {% if temperature_pc.propertyValue < 0 %}
                                 <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>
-                            {% else %}
-                                <div class="stat stat-success">{{ temperature_pc.propertyValue }}%</div>
+                            {% elseif humidity_pc.propertyValue > 0 %}
+                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>
                             {% endif %}
                         </div>
 
 
-                        <div class="infobox infobox-grey">
-                            <div class="infobox-icon">
-                                <i class="ace-icon fa fa-cloud grey"></i>
-                            </div>
+                        <div class="infobox infobox-grey" title="Humidity">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-cloud grey"></i></div>
 
                             <div class="infobox-data">
                                 <span class="infobox-data-number">{{ humidity }}%</span>
@@ -60,26 +56,24 @@
                             </div>
                             {% if humidity_pc.propertyValue < 0 %}
                                 <div class="stat stat-important">{{ humidity_pc.propertyValue }}%</div>
-                            {% else %}
+                            {% elseif humidity_pc.propertyValue > 0 %}
                                 <div class="stat stat-success">{{ humidity_pc.propertyValue }}%</div>
                             {% endif %}
                         </div>
 
 
 
-                        <div class="infobox infobox-brown">
-                            <div class="infobox-icon">
-                                <i class="ace-icon fa fa-inbox brown"></i>
-                            </div>
+                        <div class="infobox infobox-brown" title="Hydrometer">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-inbox brown"></i></div>
 
                             <div class="infobox-data">
                                 <span class="infobox-data-number">{{ hydrometer }}% </span>
                                 <div class="infobox-content">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</div>
                             </div>
-                            {% if humidity_pc.propertyValue < 0 %}
+                            {% if hydrometer_pc.propertyValue < 0 %}
                                 <div class="stat stat-important">{{ hydrometer_pc.propertyValue }}%</div>
-                            {% else %}
-                                <div class="stat stat-success">{{ hydrometer_pc.propertyValue }}%</div>
+                            {% elseif humidity_pc.propertyValue > 0 %}
+                                <div class="stat stat-success" title="{{ hydrometer_pc.propertyValue }}">{{ hydrometer_pc.propertyValueString }}%</div>
                             {% endif %}
                         </div>
                     </div><!-- /.col -->
