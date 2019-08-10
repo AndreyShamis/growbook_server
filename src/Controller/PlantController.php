@@ -137,7 +137,6 @@ class PlantController extends AbstractController
             'humidity' => $fields->findForObject($plant, 'humidity'),
             'humidity_pc' => $fields->findForObject($plant, 'humidity_pc'),
             'light' => $fields->findForObject($plant, 'light'),
-            'light_pc' => $fields->findForObject($plant, 'light_pc'),
             'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
             'hydrometer_pc' => $fields->findForObject($plant, 'hydrometer_pc'),
             'customFields' => $fields->findAllForObject($plant, ['updated_at' => 'DESC']),
@@ -323,19 +322,22 @@ class PlantController extends AbstractController
                         $logger->critical($ex->getMessage());
                     }
                     try {
-                        if ($key === 'humidity' || $key === 'temperature' || $key === 'hydrometer' || $key === 'light') {
+                        if ($key === 'humidity' || $key === 'temperature' || $key === 'hydrometer') {
                             $prev_value = $field->getPropertyValue();
                             $percentChangeField = $fieldsRepo->findOrCreate([
                                 'obj' => $plant,
                                 'key' => $key . '_pc'
                             ]);
                             $percentChange = Common::percentChange($prev_value, $val);
-                            $percentChangeField->setPropertyValue($percentChange);
-                            $em->persist($percentChangeField);
-                            $plant->addProperty($percentChangeField);
+                            if ($percentChange !== 0) {
+
+                                $percentChangeField->setPropertyValue($percentChange);
+                                $em->persist($percentChangeField);
+                                $plant->addProperty($percentChangeField);
+                            }
                         }
                     } catch (\Throwable $ex) {
-                        $logger->critical($ex->getMessage());
+                        $logger->critical($ex->getMessage(), $ex->getTrace());
                     }
 
                     $field->setPropertyValue($val);

@@ -16,8 +16,17 @@ class Common
 
     public static function percentChange($number1, $number2): float
     {
-        $total = max($number1, $number2);
-        $number = min($number1, $number2);
-        return self::percentage($total, $number);
+        $ret = 0;
+        try{
+            $total = max($number1, $number2);
+            $number = min($number1, $number2);
+            $p = self::percentage($total, $number);
+            if ($p > 100) {
+                $ret = -1 * ($p - 100);
+            } else {
+                $ret = 100 - $p;
+            }
+        } catch (\Throwable $ex) {}
+        return round($ret, 1);
     }
 }
