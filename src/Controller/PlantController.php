@@ -329,7 +329,7 @@ class PlantController extends AbstractController
                                 'key' => $key . '_pc'
                             ]);
                             $percentChange = Common::percentChange($prev_value, $val);
-                            if ($percentChange !== 0) {
+                            if ($percentChange > 0 || $percentChange < 0) {
 
                                 $percentChangeField->setPropertyValue($percentChange);
                                 $em->persist($percentChangeField);
