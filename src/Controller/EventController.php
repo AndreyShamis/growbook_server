@@ -61,7 +61,8 @@ class EventController extends AbstractController
         $eventFound = $eventReqFound = false;
         $eventRequest = $request->request->get('event');
         $all = $request->request->all();
-        if (count($all) > 1) {
+        if (count($all) > 2) {
+            // We got here if post created not from FORM. There is should be array with len > 2
             $eventRequest = $all;
             if(array_key_exists('value3', $eventRequest)) {
                 $value3 = $eventRequest['value3'];
@@ -107,20 +108,20 @@ class EventController extends AbstractController
                     'ip' => $request->getClientIp()
                 ));
                 if ($sensor !== null) {
-                    $update_palnt = false;
+                    $update_plant = false;
                     if (array_key_exists('uptime', $eventRequest) && $eventRequest['uptime'] > 1) {
                         $plant->setUptime($eventRequest['uptime']);
-                        $update_palnt = true;
+                        $update_plant = true;
                     }
                     if (array_key_exists('version', $eventRequest)) {
                         $plant->setVersion($eventRequest['version']);
-                        $update_palnt = true;
+                        $update_plant = true;
                     }
                     if (array_key_exists('rssi', $eventRequest)) {
                         $plant->setRssi($eventRequest['rssi']);
-                        $update_palnt = true;
+                        $update_plant = true;
                     }
-                    if ($update_palnt) {
+                    if ($update_plant) {
                         $entityManager->persist($plant);
                         $entityManager->flush();
                     }
@@ -215,7 +216,9 @@ class EventController extends AbstractController
             $message .= 'TYPE:' . $event->getType();
             if ($lastEvent === null) {
                 if ($automatic) {
-                    $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
+                    if ($sensor !== null) {
+                        $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
+                    }
                 } else {
                     $event->addNote('MANUAL::'.$request->getClientIp(). ';;');
                 }
@@ -226,7 +229,10 @@ class EventController extends AbstractController
                 $entityManager->persist($event);
                 $entityManager->flush();
                 $status = 301;
-                $message = 'Last event not found in last ' .  $sensor->getWriteForceEveryXseconds() . ' sec : Created ID:' . $event->getId();
+                if ($sensor !== null) {
+                    $message = 'Last event not found in last ' .  $sensor->getWriteForceEveryXseconds() . ' sec : ';
+                }
+                $message .= 'Created ID:' . $event->getId();
             } else {
                 //if ($lastEvent->getValue() !== $event->getValue()) {
                 $needUpdate = true;
