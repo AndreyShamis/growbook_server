@@ -10,6 +10,7 @@ use App\Repository\CustomFieldRepository;
 use App\Repository\EventRepository;
 use App\Repository\NodeCommandRepository;
 use App\Repository\PlantRepository;
+use App\Utils\Common;
 use App\Utils\RandomName;
 use Psr\Log\LoggerInterface;
 use SplObjectStorage;
@@ -131,10 +132,14 @@ class PlantController extends AbstractController
             'sensorsObj' => $sensorsObj,
             'uptime' => $fields->findForObject($plant, 'uptime'),
             'temperature' => $fields->findForObject($plant, 'temperature'),
+            'temperature_pc' => $fields->findForObject($plant, 'temperature_pc'),   // Percent Change
             //'temperature' => $prop->get('temperature'),
             'humidity' => $fields->findForObject($plant, 'humidity'),
+            'humidity_pc' => $fields->findForObject($plant, 'humidity_pc'),
             'light' => $fields->findForObject($plant, 'light'),
+            'light_pc' => $fields->findForObject($plant, 'light_pc'),
             'hydrometer' => $fields->findForObject($plant, 'hydrometer'),
+            'hydrometer_pc' => $fields->findForObject($plant, 'hydrometer_pc'),
             'customFields' => $fields->findAllForObject($plant, ['updated_at' => 'DESC']),
         ]);
     }
@@ -317,6 +322,22 @@ class PlantController extends AbstractController
                     } catch (\Throwable $ex) {
                         $logger->critical($ex->getMessage());
                     }
+                    try {
+                        if ($key === 'humidity' || $key === 'temperature' || $key === 'hydrometer' || $key === 'light') {
+                            $prev_value = $field->getPropertyValue();
+                            $percentChangeField = $fieldsRepo->findOrCreate([
+                                'obj' => $plant,
+                                'key' => $key . '_pc'
+                            ]);
+                            $percentChange = Common::percentChange($prev_value, $val);
+                            $percentChangeField->setPropertyValue($percentChange);
+                            $em->persist($percentChangeField);
+                            $plant->addProperty($percentChangeField);
+                        }
+                    } catch (\Throwable $ex) {
+                        $logger->critical($ex->getMessage());
+                    }
+
                     $field->setPropertyValue($val);
                     $plant->addProperty($field);
                     $em->persist($field);
