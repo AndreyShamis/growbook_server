@@ -362,6 +362,26 @@ class PlantController extends AbstractController
                     'obj' => $plant,
                     'key' => $property
                 ]);
+
+                try {
+                    if ($key === 'humidity' || $key === 'temperature' || $key === 'hydrometer') {
+                        $prev_value = $field->getPropertyValue();
+                        $percentChangeField = $fieldsRepo->findOrCreate([
+                            'obj' => $plant,
+                            'key' => $key . '_pc'
+                        ]);
+                        $percentChange = Common::percentChange($prev_value, $val);
+                        if ($percentChange > 0 || $percentChange < 0) {
+
+                            $percentChangeField->setPropertyValue($percentChange);
+                            $em->persist($percentChangeField);
+                            $plant->addProperty($percentChangeField);
+                        }
+                    }
+                } catch (\Throwable $ex) {
+                    $logger->critical($ex->getMessage(), $ex->getTrace());
+                }
+
                 $field->setPropertyValue($value);
                 $plant->addProperty($field);
                 $em->persist($plant);
