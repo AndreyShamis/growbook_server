@@ -76,10 +76,65 @@
                                 <div class="stat stat-success" title="{{ hydrometer_pc.propertyValue }}">{{ hydrometer_pc.propertyValueString }}%</div>
                             {% endif %}
                         </div>
+
+                        {% set ibox_class = plant.light? "infobox-orange" : "infobox-grey"  %}
+                        <div class="infobox  {{ ibox_class }}">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-lightbulb-o"></i></div>
+                            <div class="infobox-data">
+                                <span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span>
+                                <div class="infobox-content">Light is</div>
+                            </div>
+                        </div>
+
+                        <div class="infobox infobox-light-brown">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-globe"></i></div>
+
+                            <div class="infobox-data">
+                                <span class="infobox-data-number">{{ plant.soilMedium }}</span>
+                                <div class="infobox-content">Medium</div>
+                            </div>
+                        </div>
+
+                        <div class="infobox infobox-wood">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-inbox"></i></div>
+
+                            <div class="infobox-data">
+                                <span class="infobox-data-number">{{ plant.pot }}</span>
+                                <div class="infobox-content">Pot</div>
+                            </div>
+                        </div>
+
+                        <div class="infobox infobox-green">
+                            <div class="infobox-icon"><i class="ace-icon fa fa-calendar"></i></div>
+
+                            <div class="infobox-data">
+                                <span class="infobox-data-number">{{ plant.periodName }}</span>
+                                <div class="infobox-content">Period</div>
+                            </div>
+                        </div>
                     </div><!-- /.col -->
 
                     <div class="col-xs-3 center">
-
+                        <table class="table table-hover table-condensed tasks-table table-bordered">
+                            <tbody>
+                            <tr>
+                                <th>CreatedAt</th>
+                                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>StartedAt</th>
+                                <td><span class="badge badge-info" title="{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}">{{ days }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>FinishedAt</th>
+                                <td><strong>~ {{ toFinishDays }}</strong>  {{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>UpdatedAt</th>
+                                <td>{{ plant.updatedAt ? plant.updatedAt|date('m-d H:i') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.col -->
@@ -101,60 +156,41 @@
                                 <td style="">
                                     <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">{{ temperature }}  &#8451;</span>
                                 </td>
-                                <td style="width: 100px;"><span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span></td>
-                                <th style="width: 100px;">Medium</th>
-                                <td style="width: 100px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>
+{#                                <td style="width: 100px;"><span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span></td>#}
+{#                                <th style="width: 100px;">Medium</th>#}
+{#                                <td style="width: 100px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>#}
                             </tr>
                             <tr>
                                 <th style="text-align: right;"><i title="Humidity" class="ace-icon fa fa-cloud grey"></i></th>
                                 <td>
                                     <span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">{{ humidity }} %</span>
                                 </td>
-                                <td style="width: 100px;"><span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span></td>
-                                <th>Pot</th>
-                                <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>
+{#                                <td style="width: 100px;"><span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span></td>#}
+{#                                <th>Pot</th>#}
+{#                                <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>#}
                             </tr>
                             <tr>
                                 <th style="text-align: right;"><i title="Hydrometer" class="ace-icon fa fa-inbox brown"></i></th>
                                 <td>
                                     <span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span>
                                 </td>
-                                <td style="width: 100px;"><span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span></td>
-                                <th>Period</th>
-                                <td>{{ plant.periodName }}</td>
+{#                                <td style="width: 100px;"><span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span></td>#}
+{#                                <th>Period</th>#}
+{#                                <td>{{ plant.periodName }}</td>#}
                             </tr>
-                            <tr>
-                                <th style="text-align: right;"><i title="Light" class="ace-icon fa fa-lightbulb-o"></i></th>
-                                <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>
-                                <td></td>
-                                <th></th>
-                                <td></td>
-                            </tr>
+{#                            <tr>#}
+{#                                <th style="text-align: right;"><i title="Light" class="ace-icon fa fa-lightbulb-o"></i></th>#}
+{#                                <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>#}
+{#                                <td></td>#}
+{#                                <th></th>#}
+{#                                <td></td>#}
+{#                            </tr>#}
                             </tbody>
                         </table>
                     </div><!-- /.col -->
 
                     <div class="col-xs-4 center">
-                        <table class="table table-hover table-condensed tasks-table table-bordered">
-                            <tbody>
-                            <tr>
-                                <th>CreatedAt</th>
-                                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th>StartedAt</th>
-                                <td><span class="badge badge-info" title="{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}">{{ days }}</span></td>
-                            </tr>
-                            <tr>
-                                <th>FinishedAt</th>
-                                <td><strong>~ {{ toFinishDays }}</strong>  {{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th>UpdatedAt</th>
-                                <td>{{ plant.updatedAt ? plant.updatedAt|date('m-d H:i') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
+
                     </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.col -->
