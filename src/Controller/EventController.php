@@ -215,12 +215,8 @@ class EventController extends AbstractController
             /**  */
             $message .= 'TYPE:' . $event->getType();
             if ($lastEvent === null) {
-                if ($automatic) {
-                    if ($sensor !== null) {
-                        $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
-                    }
-                } else {
-                    $event->addNote('MANUAL::'.$request->getClientIp(). ';;');
+                if ($automatic && $sensor !== null) {
+                    $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
                 }
 
                 if ($sensor !== null) {

@@ -6,6 +6,7 @@ use App\Controller\EventController;
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventTemperature;
+use App\Model\EventInterface;
 use App\Model\TypeEvent;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
@@ -39,7 +40,7 @@ class EventType extends AbstractType
 //                'choices' => EventController::buildTypeChoices(),
 //            ]);
         $builder
-            ->add('value')
+            ->add('value', TextType::class, ['required' => false, 'empty_data' => ''])
 
             ->add('plant')
             ->add('sensor')
@@ -64,12 +65,27 @@ class EventType extends AbstractType
 //            //->add('createdAt')
 //            //->add('updatedAt')
 //        ;
-        $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $eventForm) {
             // ... adding the name field if needed
-            if ('a' === 'a' && true) {
-                $a = 1;
+            /** @var  $form */
+            $form = $eventForm->getForm();
+            /** @var EventInterface $event */
+            $event = $eventForm->getData();
+            if ($event->getType() === Event::class) {
+                $form->remove('sensor');
             }
         });
+//        $builder->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $eventForm) use ($builder) {
+//            // ... adding the name field if needed
+//            /** @var EventInterface $event */
+//            $event = $eventForm->getData();
+//            if ($event->getType() === Event::class) {
+////                $builder->remove('sensor');
+////                if (strlen($event->getName()) < 3) {
+////                    return false;
+////                }
+//            }
+//        });
     }
 
     public function configureOptions(OptionsResolver $resolver)

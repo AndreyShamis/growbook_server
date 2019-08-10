@@ -24,12 +24,14 @@
         <td>{{ form_help(form.plant) }}</td>
         <td>{{ form_errors(form.plant) }}</td>
     </tr>
+    {% if form.sensor is defined %}
     <tr>
         <td>{{ form_label(form.sensor) }}</td>
         <td>{{ form_widget(form.sensor) }}</td>
         <td>{{ form_help(form.sensor) }}</td>
         <td>{{ form_errors(form.sensor) }}</td>
     </tr>
+    {% endif %}
     <tr>
         <td>{{ form_label(form.note) }}</td>
         <td>{{ form_widget(form.note) }}</td>
