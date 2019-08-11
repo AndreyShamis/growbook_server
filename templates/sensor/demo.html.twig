@@ -13,6 +13,21 @@
                 {% endfor %}
             </td>
         </tr>
+        <tr>
+            <th>Temperature C</th>
+            <td>
+                {% for i in range(17, 36, 1) %}
+                    <div class="infobox {{ temperatureToInfoBox(i) }}">
+                        <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
+
+                        <div class="infobox-data" title="Temperature">
+                            <span class="infobox-data-number">{{ i }}&#8451;</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
+
         <tr><td class="font8">&nbsp;</td><td></td></tr>
         <tr>
             <th>Humidity 50-80%</th>
@@ -23,10 +38,39 @@
             </td>
         </tr>
         <tr>
+            <th>Humidity 50-80%</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <div class="infobox {{ humidityToInfoBox(i, 1) }}">
+                        <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
+
+                        <div class="infobox-data" title="Humidity">
+                            <span class="infobox-data-number">{{ i }}%</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            </td>
+        </tr>
+
+        <tr>
             <th>Humidity 30-50%</th>
             <td>
                 {% for i in range(0, 100, 5) %}
                     <span class="badge {{ humidityToBadge(i, 2)}}">{{ i }}  %</span>
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Humidity 30-50%</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <div class="infobox {{ humidityToInfoBox(i, 2) }}">
+                        <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
+
+                        <div class="infobox-data" title="Humidity">
+                            <span class="infobox-data-number">{{ i }}%</span>
+                        </div>
+                    </div>
                 {% endfor %}
             </td>
         </tr>
@@ -37,6 +81,19 @@
                 {% for i in range(0, 100, 5) %}
                     <span class="badge {{ hydrometerToBadge(i)}}">{{ i }}  %</span>
                 {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th>Hydrometer %</th>
+            <td>
+                {% for i in range(0, 100, 5) %}
+                    <div class="infobox {{ hydrometerToInfoBox(i) }}">
+                        <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
+
+                        <div class="infobox-data" title="Hydrometer">
+                            <span class="infobox-data-number">{{ i }}%</span>
+                        </div>
+                    </div>                {% endfor %}
             </td>
         </tr>
         <tr><td class="font8">&nbsp;</td><td></td></tr>

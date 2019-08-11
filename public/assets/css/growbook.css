@@ -14,3 +14,33 @@
 .font12{
     font-size: 12px;
 }
+
+.infobox{
+    width: 170px !important;
+    padding: 8px 3px 6px 1px !important;
+}
+
+
+.infobox>.infobox-data {
+    padding-left: 4px !important;
+    max-width: 100px !important;
+    min-width: 70px !important;
+}
+.infobox>.infobox-data>.infobox-data-number{
+    font-size: 16px !important;
+    margin: 0 0 4px !important;
+}
+/*.infobox>.infobox-icon{*/
+/*    width: 40px !important;*/
+/*}*/
+
+.infobox .infobox-content {
+    min-width: 110px !important;
+}
+
+.infobox>.stat {
+    right: 4px !important;
+}
+.infobox>.infobox-icon>.ace-icon{
+    height: 40px;
+}

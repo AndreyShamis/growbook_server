@@ -33,7 +33,10 @@ class AppExtension extends AbstractExtension
             new TwigFilter('time_ago', function ($time) { return $this->ExecutionTimeInHours(time() - $time);}),
             new TwigFilter('filter_name', [$this, 'doSomething'], ['is_safe' => ['html']]),
             new TwigFilter('humidityToBadge', [$this, 'humidityToBadge']),
+            new TwigFilter('humidityToInfoBox', [$this, 'humidityToInfoBox']),
+            new TwigFilter('hydrometerToInfoBox', [$this, 'hydrometerToInfoBox']),
             new TwigFilter('temperatureToBadge', [$this, 'temperatureToBadge']),
+            new TwigFilter('temperatureToInfoBox', [$this, 'temperatureToInfoBox']),
             new TwigFilter('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFilter('lightToBadge', [$this, 'lightToBadge']),
             new TwigFilter('SensorTypeShort', [$this, 'SensorTypeShort']),
@@ -57,7 +60,10 @@ class AppExtension extends AbstractExtension
             new TwigFunction('getPercentage', [$this, 'getPercentage']),
             new TwigFunction('inarray', array($this, 'inArray')),
             new TwigFunction('humidityToBadge', [$this, 'humidityToBadge']),
+            new TwigFunction('humidityToInfoBox', [$this, 'humidityToInfoBox']),
+            new TwigFunction('hydrometerToInfoBox', [$this, 'hydrometerToInfoBox']),
             new TwigFunction('temperatureToBadge', [$this, 'temperatureToBadge']),
+            new TwigFunction('temperatureToInfoBox', [$this, 'temperatureToInfoBox']),
             new TwigFunction('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFunction('lightToBadge', [$this, 'lightToBadge']),
             new TwigFunction('SensorTypeShort', [$this, 'SensorTypeShort']),
@@ -126,6 +132,50 @@ class AppExtension extends AbstractExtension
         return $ret;
     }
 
+
+    /**
+     * @param int $value
+     * @param int $period
+     * @return string
+     */
+    public function humidityToInfoBox(int $value=50, $period=1): string
+    {
+        $ret = '';
+        if ($value <= 0 || $value > 100) {
+            $ret = 'infobox-black';
+        } else if($value < 10 || $value > 90) {
+            $ret = 'infobox-red';
+        } else {
+            if ($period === 1) {
+                if ($value < 30) {
+                    $ret = 'infobox-red';
+                } elseif ($value < 40 || $value > 85) {
+                    $ret = 'infobox-orange';
+                } elseif ($value < 50 || $value > 80) {
+                    $ret = 'infobox-blue';
+                } elseif ($value >= 50 && $value <= 80) {
+                    $ret = 'infobox-green';
+                } else {
+                    $ret = 'infobox-red';
+                }
+            } elseif ($period === 2) {
+                if ($value > 70) {
+                    $ret = 'infobox-red';
+                } elseif ($value < 25 || $value > 65) {
+                    $ret = 'infobox-orange';
+                } elseif ($value < 30 || $value > 50) {
+                    $ret = 'infobox-blue';
+                } elseif ($value >= 30 && $value <= 50) {
+                    $ret = 'infobox-green';
+                } else {
+                    $ret = 'infobox-red';
+                }
+            }
+        }
+
+        return $ret;
+    }
+
     /**
      * @param int $value
      * @param int $period
@@ -155,6 +205,59 @@ class AppExtension extends AbstractExtension
 
     /**
      * @param int $value
+     * @param int $period
+     * @return string
+     */
+    public function temperatureToInfoBox(int $value=25, $period=1): string
+    {
+        $ret = '';
+        if ($value <= 0) {
+            $ret = 'infobox-black';
+        } else {
+            if ($value < 20 || $value > 33) {
+                $ret = 'infobox-red';
+            } elseif ($value < 22 || $value > 31) {
+                $ret = 'infobox-orange';
+            } elseif ($value < 24 || $value > 28) {
+                $ret = 'infobox-blue';
+            } elseif ($value >= 24 && $value <= 28) {
+                $ret = 'infobox-green';
+            } else {
+                $ret = 'infobox-red';
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param int $value
+     * @return string
+     */
+    public function hydrometerToInfoBox(int $value=50): string
+    {
+        $ret = '';
+        if ($value < 0) {
+            $ret = 'infobox-black';
+        } else {
+            if ($value < 7 || $value > 60) {
+                $ret = 'infobox-red';
+            } elseif ($value < 16 || $value > 55) {
+                $ret = 'infobox-orange';
+            } elseif ($value < 20 || $value > 45) {
+                $ret = 'infobox-blue';
+            } elseif ($value >= 20 && $value <= 45) {
+                $ret = 'infobox-green';
+            } else {
+                $ret = 'infobox-red';
+            }
+        }
+
+        return $ret;
+    }
+
+    /**
+     * @param int $value
      * @return string
      */
     public function hydrometerToBadge(int $value=50): string
@@ -163,7 +266,7 @@ class AppExtension extends AbstractExtension
         if ($value < 0) {
             $ret = 'badge-secondary';
         } else {
-            if ($value < 11 || $value > 60) {
+            if ($value < 7 || $value > 60) {
                 $ret = 'badge-danger';
             } elseif ($value < 16 || $value > 55) {
                 $ret = 'badge-warning';
@@ -175,10 +278,8 @@ class AppExtension extends AbstractExtension
                 $ret = 'badge-danger';
             }
         }
-
         return $ret;
     }
-
     /**
      * @param bool $value
      * @return string
