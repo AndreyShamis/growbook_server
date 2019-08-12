@@ -37,7 +37,10 @@
                 <td>{{ event.value }}</td>
                 <td>{{ event.note }}</td>
                 <td>
-                    <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+                    {% if is_granted('edit', event.plant) %}
+                        <a href="{{ path('event_edit', {'id': event.id}) }}">edit</a>
+                    {% endif %}
+
                 </td>
                 <td>{{ event.createdAt ? event.createdAt|date('Ymd H:i:s') : '' }}</td>
                 <td>{{ event.updatedAt ? event.updatedAt|date('Ymd H:i:s') : '' }}</td>

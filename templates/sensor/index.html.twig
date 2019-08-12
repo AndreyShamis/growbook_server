@@ -31,8 +31,9 @@
                 <td>{{ sensor.writeForceEveryXseconds }}</td>
                 <td>{{ sensor.uniqId }}</td>
                 <td>
-
-                    <a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a>
+                    {% if is_granted('edit', sensor.plant) %}
+                        <a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}

@@ -321,7 +321,10 @@ class EventController extends AbstractController
      */
     public function edit(Request $request, Event $event): Response
     {
-
+        $plant = $event->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
         try {
             /** Cast object to another class */
             $tmpType = $request->request->get('event')['type'];
@@ -371,6 +374,10 @@ class EventController extends AbstractController
      */
     public function show(Event $event, string $type=''): Response
     {
+        $plant = $event->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
         return $this->render('event/show.html.twig', [
             'event' => $event,
             'type' => $type
@@ -385,6 +392,11 @@ class EventController extends AbstractController
      */
     public function delete(Request $request, Event $event): Response
     {
+        $plant = $event->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
+
         if ($this->isCsrfTokenValid('delete'.$event->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($event);

@@ -68,6 +68,10 @@ class SensorController extends AbstractController
      */
     public function show(Sensor $sensor, EventRepository $eventsRepo, int $hours=25): Response
     {
+        $plant = $sensor->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
         $events = array();
         try {
             if ($hours < 0) {
@@ -86,9 +90,16 @@ class SensorController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="sensor_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Sensor $sensor
+     * @return Response
      */
     public function edit(Request $request, Sensor $sensor): Response
     {
+        $plant = $sensor->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
         $form = $this->createForm(SensorType::class, $sensor);
         $form->handleRequest($request);
 
@@ -113,16 +124,27 @@ class SensorController extends AbstractController
 
     /**
      * @Route("/{id}", name="sensor_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Sensor $sensor
+     * @return Response
      */
     public function delete(Request $request, Sensor $sensor): Response
     {
+        $plant = $sensor->getPlant();
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
         if ($this->isCsrfTokenValid('delete'.$sensor->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $hostPlant = $sensor->getPlant();
             $entityManager->remove($sensor);
             $entityManager->flush();
             $refer_page = $request->request->get('refer_page');
-            if ($refer_page !== '') {
+            if ($refer_page !== null && $refer_page !== '') {
                 return $this->redirect($refer_page);
+            }
+            if ($hostPlant !== null && $hostPlant->getId() > 0) {
+                return $this->redirectToRoute('plant_show', ['id' => $hostPlant->getId()]);
             }
         }
 
