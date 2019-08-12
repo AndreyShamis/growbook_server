@@ -18,12 +18,21 @@
         <td>{{ form_help(form.value) }}</td>
         <td>{{ form_errors(form.value) }}</td>
     </tr>
+    {% if form.plant is defined %}
     <tr>
         <td>{{ form_label(form.plant) }}</td>
         <td>{{ form_widget(form.plant) }}</td>
         <td>{{ form_help(form.plant) }}</td>
         <td>{{ form_errors(form.plant) }}</td>
     </tr>
+    {% else %}
+        <tr>
+            <td>Plant</td>
+            <td>{{ event.plant }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+    {% endif %}
     {% if form.sensor is defined %}
     <tr>
         <td>{{ form_label(form.sensor) }}</td>
@@ -31,6 +40,13 @@
         <td>{{ form_help(form.sensor) }}</td>
         <td>{{ form_errors(form.sensor) }}</td>
     </tr>
+    {% else %}
+        <tr>
+            <td>Sensor</td>
+            <td>{{ event.sensor }}</td>
+            <td></td>
+            <td></td>
+        </tr>
     {% endif %}
     <tr>
         <td>{{ form_label(form.note) }}</td>
