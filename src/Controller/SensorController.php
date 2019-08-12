@@ -118,11 +118,15 @@ class SensorController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete'.$sensor->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $hostPlant = $sensor->getPlant();
             $entityManager->remove($sensor);
             $entityManager->flush();
             $refer_page = $request->request->get('refer_page');
-            if ($refer_page !== '') {
+            if ($refer_page !== null && $refer_page !== '') {
                 return $this->redirect($refer_page);
+            }
+            if ($hostPlant !== null && $hostPlant->getId() > 0) {
+                return $this->redirectToRoute('plant_show', ['id' => $hostPlant->getId()]);
             }
         }
 

@@ -30,7 +30,7 @@
             <div class="col-sm-12">
                 <h3 class="header smaller lighter green">Plant [{{ plant.name }}]</h3>
                 <div class="row">
-                    <div class="col-xs-9 infobox-container">
+                    <div class="col-xs-8 infobox-container">
 
                         <div class="infobox {{ temperatureToInfoBox(temperature.propertyValue) }}">
                             <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
@@ -46,126 +46,6 @@
                             {% endif %}
                         </div>
 
-
-{#                        <div class="infobox infobox-black">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-green">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-green2">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-orange">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-red">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-blue">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-blue">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-blue2">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                        <div class="infobox infobox-blue3">#}
-{#                            <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>#}
-
-{#                            <div class="infobox-data" title="Temperature">#}
-{#                                <span class="infobox-data-number">{{ temperature }}&#8451;</span>#}
-{#                                <div class="infobox-content">{{ temperature ? temperature.updatedAt | time_diff }}</div>#}
-{#                            </div>#}
-{#                            {% if temperature_pc.propertyValue < 0 %}#}
-{#                                <div class="stat stat-important">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% elseif humidity_pc.propertyValue > 0 %}#}
-{#                                <div class="stat stat-success" title="{{ temperature_pc.propertyValueString }}">{{ temperature_pc.propertyValue }}%</div>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-
-
                         <div class="infobox {{ humidityToInfoBox(humidity.propertyValue) }}" title="Humidity">
                             <div class="infobox-icon"><i class="ace-icon fa fa-cloud grey"></i></div>
 
@@ -179,8 +59,6 @@
                                 <div class="stat stat-success">{{ humidity_pc.propertyValue }}%</div>
                             {% endif %}
                         </div>
-
-
 
                         <div class="infobox {{ hydrometerToInfoBox(hydrometer.propertyValue) }}" title="Hydrometer">
                             <div class="infobox-icon"><i class="ace-icon fa fa-inbox brown"></i></div>
@@ -232,9 +110,48 @@
                             </div>
                         </div>
                     </div><!-- /.col -->
-
-                    <div class="col-xs-3 center">
-                        <table class="table table-hover table-condensed tasks-table table-bordered">
+                    <div class="col-xs-2 center">
+                        <table class="table table-hover table-condensed tasks-table table-bordered" style="width: auto;">
+                            <tbody>
+                            <tr>
+                                <th style="width: 20px;text-align: right;"><i title="Temperature" class="ace-icon fa fa-asterisk blue"></i></th>
+                                <td style="">
+                                    <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">{{ temperature }}  &#8451;</span>
+                                </td>
+                                {#                                <td style="width: 100px;"><span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span></td>#}
+                                {#                                <th style="width: 100px;">Medium</th>#}
+                                {#                                <td style="width: 100px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>#}
+                            </tr>
+                            <tr>
+                                <th style="text-align: right;"><i title="Humidity" class="ace-icon fa fa-cloud grey"></i></th>
+                                <td>
+                                    <span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">{{ humidity }} %</span>
+                                </td>
+                                {#                                <td style="width: 100px;"><span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span></td>#}
+                                {#                                <th>Pot</th>#}
+                                {#                                <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>#}
+                            </tr>
+                            <tr>
+                                <th style="text-align: right;"><i title="Hydrometer" class="ace-icon fa fa-inbox brown"></i></th>
+                                <td>
+                                    <span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span>
+                                </td>
+                                {#                                <td style="width: 100px;"><span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span></td>#}
+                                {#                                <th>Period</th>#}
+                                {#                                <td>{{ plant.periodName }}</td>#}
+                            </tr>
+                            {#                            <tr>#}
+                            {#                                <th style="text-align: right;"><i title="Light" class="ace-icon fa fa-lightbulb-o"></i></th>#}
+                            {#                                <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>#}
+                            {#                                <td></td>#}
+                            {#                                <th></th>#}
+                            {#                                <td></td>#}
+                            {#                            </tr>#}
+                            </tbody>
+                        </table>
+                    </div><!-- /.col -->
+                    <div class="col-xs-2 center">
+                        <table class="table">
                             <tbody>
                             <tr>
                                 <th>CreatedAt</th>
@@ -262,62 +179,26 @@
 
     {% endapply %}
 
-    {% apply spaceless %}
+{#    {% apply spaceless %}#}
 {#        <div class="hr hr-double hr-dotted hr18"></div>#}
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-xs-8">
-                        <table class="table table-hover table-condensed tasks-table table-bordered" style="width: auto;">
-                            <tbody>
-                            <tr>
-                                <th style="width: 20px;text-align: right;"><i title="Temperature" class="ace-icon fa fa-asterisk blue"></i></th>
-                                <td style="">
-                                    <span class="badge {{ temperatureToBadge(temperature? temperature.propertyValueString | number_format : 0)}}">{{ temperature }}  &#8451;</span>
-                                </td>
-{#                                <td style="width: 100px;"><span class="font8">{{ temperature ? temperature.updatedAt | time_diff }}</span></td>#}
-{#                                <th style="width: 100px;">Medium</th>#}
-{#                                <td style="width: 100px;"><span class="badge badge-pill badge-success">{{ plant.soilMedium }}</span></td>#}
-                            </tr>
-                            <tr>
-                                <th style="text-align: right;"><i title="Humidity" class="ace-icon fa fa-cloud grey"></i></th>
-                                <td>
-                                    <span class="badge {{ humidityToBadge(humidity? humidity.propertyValueString| number_format : 0)}}">{{ humidity }} %</span>
-                                </td>
-{#                                <td style="width: 100px;"><span class="font8">{{ humidity ? humidity.updatedAt | time_diff }}</span></td>#}
-{#                                <th>Pot</th>#}
-{#                                <td><span class="badge badge-pill badge-secondary">{{ plant.pot }}</span></td>#}
-                            </tr>
-                            <tr>
-                                <th style="text-align: right;"><i title="Hydrometer" class="ace-icon fa fa-inbox brown"></i></th>
-                                <td>
-                                    <span class="badge {{ hydrometerToBadge(hydrometer.propertyValueString| number_format)}}">{{ hydrometer }} %</span>
-                                </td>
-{#                                <td style="width: 100px;"><span class="font8">{{ hydrometer ? hydrometer.updatedAt | time_diff }}</span></td>#}
-{#                                <th>Period</th>#}
-{#                                <td>{{ plant.periodName }}</td>#}
-                            </tr>
-{#                            <tr>#}
-{#                                <th style="text-align: right;"><i title="Light" class="ace-icon fa fa-lightbulb-o"></i></th>#}
-{#                                <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span> | <span class="badge ">{{ light.propertyValue() ? "On" : "Off" }} </span></td>#}
-{#                                <td></td>#}
-{#                                <th></th>#}
-{#                                <td></td>#}
-{#                            </tr>#}
-                            </tbody>
-                        </table>
-                    </div><!-- /.col -->
+{#        <div class="row">#}
+{#            <div class="col-sm-12">#}
+{#                <div class="row">#}
+{#                    <div class="col-xs-8">#}
 
-                    <div class="col-xs-4 center">
+{#                    </div><!-- /.col -->#}
 
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.col -->
-        </div>
+{#                    <div class="col-xs-4 center">#}
+
+{#                    </div><!-- /.col -->#}
+{#                </div><!-- /.row -->#}
+{#            </div><!-- /.col -->#}
+{#        </div>#}
 
 
-    {% endapply %}
+{#    {% endapply %}#}
     <hr/>
+    {% include 'plant/plant.sensor.html.twig' %}
 
     <canvas id="graph_container" style="width: 100%;height: 400px !important;"></canvas>
 
@@ -557,7 +438,6 @@
         {% include 'plant/combined.graph.js.twig' %}
     </script>
 
-    {% include 'plant/plant.sensor.html.twig' %}
     <hr/>
     {% include 'plant/plant.events.no.sensor.html.twig' %}
     {% include 'plant/plant.custom.fields.html.twig' %}
