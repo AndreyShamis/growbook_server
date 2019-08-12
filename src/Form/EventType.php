@@ -6,8 +6,11 @@ use App\Controller\EventController;
 use App\Entity\Event;
 use App\Entity\Events\EventHumidity;
 use App\Entity\Events\EventTemperature;
+use App\Entity\User;
 use App\Model\EventInterface;
 use App\Model\TypeEvent;
+use App\Repository\PlantRepository;
+use Doctrine\ORM\Query\Expr\Join;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -21,13 +24,24 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use App\Twig\AppExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Entity\Plant;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class EventType extends AbstractType
 {
+    protected $tokenStorage;
+
+    public function __construct(TokenStorageInterface $tokenStorage)
+    {
+        $this->tokenStorage = $tokenStorage;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 
-
+        $user = $this->tokenStorage->getToken()->getUser();
 //        $builder
 //            ->add('andrey_type');
 //        $builder
@@ -42,12 +56,28 @@ class EventType extends AbstractType
         $builder
             ->add('value', TextType::class, ['required' => false, 'empty_data' => ''])
 
-            ->add('plant')
+
             ->add('sensor')
             ->add('note')
             ->add('name', TextType::class, ['required' => false, 'empty_data' => ''])
 
         ;
+        if ($user !== null) {
+            $builder
+                ->add('plant', EntityType::class, array(
+                    'class' => Plant::class,
+                    'query_builder' => static function(PlantRepository $plantsRepo) use ($user) {
+                        $qb = $plantsRepo
+                            ->createQueryBuilder('p')
+                            ->join('p.owners', 'u')
+                            ->where('u.id = :user')
+                            ->setParameter('user', $user->getId());
+                        return $qb;
+                    },
+                ));
+        } else {
+            $builder->add('plant');
+        }
         $builder->add('type', ChoiceType::class , TypeEvent::buildFormType());
 
 //        if ($options['data'] !== null && $options['data']->getType() !== null) {

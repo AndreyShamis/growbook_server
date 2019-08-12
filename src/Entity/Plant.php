@@ -115,6 +115,7 @@ class Plant implements PlantInterface
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="plants")
+     * @ORM\JoinTable()
      */
     protected $owners;
 
