@@ -40,8 +40,13 @@ class EventType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var User $user */
+        $user = null;
+        try {
+            $user = $this->tokenStorage->getToken()->getUser();
+        } catch (\Throwable $ex) {
 
-        $user = $this->tokenStorage->getToken()->getUser();
+        }
 //        $builder
 //            ->add('andrey_type');
 //        $builder
@@ -55,14 +60,11 @@ class EventType extends AbstractType
 //            ]);
         $builder
             ->add('value', TextType::class, ['required' => false, 'empty_data' => ''])
-
-
-            ->add('sensor')
             ->add('note')
             ->add('name', TextType::class, ['required' => false, 'empty_data' => ''])
-
         ;
-        if ($user !== null) {
+
+        if ($user !== null && is_a($user, User::class)) {
             $builder
                 ->add('plant', EntityType::class, array(
                     'class' => Plant::class,
@@ -95,16 +97,28 @@ class EventType extends AbstractType
 //            //->add('createdAt')
 //            //->add('updatedAt')
 //        ;
-        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $eventForm) {
-            // ... adding the name field if needed
-            /** @var  $form */
-            $form = $eventForm->getForm();
-            /** @var EventInterface $event */
+        $builder->addEventListener(FormEvents::PRE_SET_DATA, static function (FormEvent $eventForm) {
             $event = $eventForm->getData();
-            if ($event->getType() === Event::class) {
-                $form->remove('sensor');
+            $form = $eventForm->getForm();
+
+            /** The main idea allow select sensor on new event creation */
+            if (!$event || null === $event->getId()) {
+                $form->add('sensor');
+            } else {
+                $form->remove('plant');
             }
+
         });
+//        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $eventForm) {
+//            // ... adding the name field if needed
+//            /** @var  $form */
+//            $form = $eventForm->getForm();
+//            /** @var EventInterface $event */
+//            $event = $eventForm->getData();
+//            if ($event->getType() === Event::class) {
+//                $form->remove('sensor');
+//            }
+//        });
 //        $builder->addEventListener(FormEvents::POST_SUBMIT, static function (FormEvent $eventForm) use ($builder) {
 //            // ... adding the name field if needed
 //            /** @var EventInterface $event */
