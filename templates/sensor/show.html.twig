@@ -203,10 +203,19 @@
             <th>ID</th>
             <th>Name</th>
             <th>Type</th>
-            <th>Value</th>
-            <th>Value 1</th>
-            <th>Value 2</th>
-            <th>Value 3</th>
+
+            {% if sensor.eventType | parseType == 'Humidity' %}
+                <th>Humidity</th>
+                <th>Absolute humidity</th>
+                <th>Temperature</th>
+                <th>Heat Index</th>
+                <th>(Humidity-Absolute humidity)</th>
+            {% else %}
+                <th>Value</th>
+                <th>Value 1</th>
+                <th>Value 2</th>
+                <th>Value 3</th>
+            {% endif %}
             <th>Note</th>
             <th>IP</th>
             <th>Created</th>
@@ -231,17 +240,57 @@
                     {% else %}
                         {{ _value }}
                     {% endif %}
-                    {% set _value3 = event.value3 %}
-                    {% if _value3 is not null %}
-                        <span class="badge badge-pill badge-dark">{{ _value3 }} </span>
-                        {% if type == 'Humidity' %}
-                            Heat index
+                </td>
+                <td class="font10">
+                    {% if sensor.lastEvent.value1 is defined %}
+                        {% set _value1 = sensor.lastEvent.value1 %}
+                        {% if _value1 is not null %}
+                            {% if type == 'Humidity' %}
+                                <span title="Absolute Humidity" class="badge badge-pill {{ humidityToBadge(_value1)}}">{{ _value1 }} %</span>
+                            {% else %}
+                                <span class="badge  badge-pill badge-dark">{{ _value1 }}</span>
+                            {% endif %}
                         {% endif %}
                     {% endif %}
                 </td>
-                <td class="font10">{{ event.value1 }}</td>
-                <td class="font10">{{ event.value2 }}</td>
-                <td class="font10">{{ event.value3 }}</td>
+                <td class="font10">
+                    {% if sensor.lastEvent.value2 is defined %}
+                        {% set _value2 = sensor.lastEvent.value2 %}
+                        {% if _value2 is not null %}
+                            {% if type == 'Humidity' %}
+                                <span title="Temperature" class="badge badge-pill {{ temperatureToBadge(_value2)}}">{{ _value2 }} &#8451;</span>
+                            {% else %}
+                                <span class="badge  badge-pill badge-dark">{{ _value2 }}</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                <td class="font10">
+                    {% if sensor.lastEvent.value3 is defined %}
+                        {% set _value3 = sensor.lastEvent.value3 %}
+                        {% if _value3 is not null %}
+                            {% if type == 'Humidity' %}
+                                <span title="Heat Index" class="badge badge-pill {{ temperatureToBadge(_value3)}}">{{ _value3 }} &#8451;</span>
+                            {% else %}
+                                <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+                {% if sensor.eventType | parseType == 'Humidity' %}
+                    <td class="font10">
+                        {% if sensor.lastEvent.value1 is defined %}
+                            {% set _value1 = sensor.lastEvent.value1 %}
+                            {% if _value1 is not null %}
+                                {% set res = _value - _value1 %}
+                                {% if type == 'Humidity' %}
+                                    <span title="Heat Index" class="badge badge-pill {{ humidityToBadge(res)}}">{{ res }} %</span>
+                                {% else %}
+                                    <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    </td>                {% endif %}
                 <td class="font9">{{ event.note }}</td>
                 <td class="font9">{{ event.ip }}</td>
                 <td class="font9">{{ event.createdAt | time_diff }}</td>

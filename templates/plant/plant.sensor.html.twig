@@ -69,30 +69,39 @@
                                         {#                        {% endif %}#}
                                     {% endif %}
                                 </td>
-                                <td style="font-size: 10px;">
+                                <td class="font10">
                                     {% if sensor.lastEvent.value1 is defined %}
                                         {% set _value1 = sensor.lastEvent.value1 %}
                                         {% if _value1 is not null %}
-                                            <span class="badge  badge-pill badge-dark">{{ _value1 }}</span>
-                                            {% if type == 'Humidity' %} AbsHunidity{% endif %}
+                                            {% if type == 'Humidity' %}
+                                                <span title="Absolute Humidity" class="badge badge-pill {{ humidityToBadge(_value1)}}">{{ _value1 }} %</span>
+                                            {% else %}
+                                                <span class="badge  badge-pill badge-dark">{{ _value1 }}</span>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </td>
-                                <td style="font-size: 10px;">
+                                <td class="font10">
                                     {% if sensor.lastEvent.value2 is defined %}
                                         {% set _value2 = sensor.lastEvent.value2 %}
                                         {% if _value2 is not null %}
-                                            <span class="badge  badge-pill badge-dark">{{ _value2 }}</span>
-                                            {% if type == 'Humidity' %} C{% endif %}
+                                            {% if type == 'Humidity' %}
+                                                <span title="Temperature" class="badge badge-pill {{ temperatureToBadge(_value2)}}">{{ _value2 }} &#8451;</span>
+                                            {% else %}
+                                                <span class="badge  badge-pill badge-dark">{{ _value2 }}</span>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </td>
-                                <td style="font-size: 10px;">
+                                <td class="font10">
                                     {% if sensor.lastEvent.value3 is defined %}
                                         {% set _value3 = sensor.lastEvent.value3 %}
                                         {% if _value3 is not null %}
-                                            <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
-                                            {% if type == 'Humidity' %}Heat index{% endif %}
+                                            {% if type == 'Humidity' %}
+                                                <span title="Heat Index" class="badge badge-pill {{ temperatureToBadge(_value3)}}">{{ _value3 }} &#8451;</span>
+                                            {% else %}
+                                                <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
+                                            {% endif %}
                                         {% endif %}
                                     {% endif %}
                                 </td>
