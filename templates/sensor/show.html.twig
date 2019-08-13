@@ -284,13 +284,14 @@
                             {% if _value1 is not null %}
                                 {% set res = _value - _value1 %}
                                 {% if type == 'Humidity' %}
-                                    <span title="Heat Index" class="badge badge-pill {{ humidityToBadge(res)}}">{{ res }} %</span>
+                                    <span title="(Humidity-Absolute humidity)" class="badge badge-pill {{ humidityToBadge(res)}}">{{ res }} %</span>
                                 {% else %}
                                     <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
                                 {% endif %}
                             {% endif %}
                         {% endif %}
-                    </td>                {% endif %}
+                    </td>
+                {% endif %}
                 <td class="font9">{{ event.note }}</td>
                 <td class="font9">{{ event.ip }}</td>
                 <td class="font9">{{ event.createdAt | time_diff }}</td>
