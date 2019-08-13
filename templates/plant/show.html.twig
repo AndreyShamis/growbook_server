@@ -3,26 +3,89 @@
 {% block title %}Plants{% endblock %}
 
 {% block body %}
-    <div class="alert alert-info" role="alert">
-        <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
-            &nbsp;&nbsp;/&nbsp;&nbsp;
-            {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            resets: {{ plant.resetCounter }}
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            RSSI: {{ plant.rssi }}
-            Version: {{ plant.version }}
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input type="button" id="reloadPage" value="&nbsp;&nbsp;&nbsp;Reload&nbsp;&nbsp;&nbsp;" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="btn btn-xs btn-danger" type="button" id="rebootNode" value="Reboot" />
-        </p>
-    </div>
+    <div class="row">
+        <div class="col-sm-12 widget-container-col ui-sortable" id="widget-container-col-10">
+            <div class="widget-box ui-sortable-handle" id="widget-box-10">
+                <div class="widget-header widget-header-small">
+                    <h5 class="widget-title smaller">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }}) -  {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %}Uptime {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}</h5>
 
+                    <div class="widget-toolbar no-border">
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active">
+                                <a data-toggle="tab" href="#home">Home</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#customFields">Custom fields</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#options">Options</a>
+                            </li>
+                            <li>
+                                <a data-toggle="tab" href="#info">Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main padding-6">
+                        <div class="tab-content">
+                            <div id="home" class="tab-pane in active">
+                                <input type="button" id="reloadPage" value="&nbsp;&nbsp;&nbsp;Reload&nbsp;&nbsp;&nbsp;" /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input class="btn btn-xs btn-link" type="button" id="addComment" value="New Comment" />
+                                Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
+                            </div>
+
+                            <div id="customFields" class="tab-pane">
+                                {% include 'plant/plant.custom.fields.html.twig' %}
+                            </div>
+
+                            <div id="options" class="tab-pane">
+                                <input class="btn btn-xs btn-danger" type="button" id="rebootNode" value="Reboot" />
+                            </div>
+
+                            <div id="info" class="tab-pane">
+                                <div class="alert alert-info" role="alert">
+                                <p class="mb-0">
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                resets: {{ plant.resetCounter }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                RSSI: {{ plant.rssi }}
+                                Version: {{ plant.version }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                    uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
+                                    &nbsp;&nbsp;/&nbsp;&nbsp;
+                                    {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
+                                </p>
+                                </div>
+                                <table class="table">
+                                    <tbody>
+                                    <tr>
+                                        <th>CreatedAt</th>
+                                        <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>StartedAt</th>
+                                        <td><span class="badge badge-info" title="{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}">{{ days }}</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>FinishedAt</th>
+                                        <td><strong>~ {{ toFinishDays }}</strong>  {{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>UpdatedAt</th>
+                                        <td>{{ plant.updatedAt ? plant.updatedAt|date('m-d H:i') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     {% apply spaceless %}
         {#        <div class="hr hr-double hr-dotted hr18"></div>#}
@@ -30,7 +93,7 @@
             <div class="col-sm-12">
                 <h3 class="header smaller lighter green">Plant [{{ plant.name }}]</h3>
                 <div class="row">
-                    <div class="col-xs-8 infobox-container">
+                    <div class="col-xs-10 infobox-container">
 
                         <div class="infobox {{ temperatureToInfoBox(temperature.propertyValue) }}">
                             <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
@@ -150,28 +213,6 @@
                             </tbody>
                         </table>
                     </div><!-- /.col -->
-                    <div class="col-xs-2 center">
-                        <table class="table">
-                            <tbody>
-                            <tr>
-                                <th>CreatedAt</th>
-                                <td>{{ plant.createdAt ? plant.createdAt|date('Y-m-d') : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th>StartedAt</th>
-                                <td><span class="badge badge-info" title="{{ plant.startedAt ? plant.startedAt|date('Y-m-d') : '' }} | {{ plant.startedAt ? plant.startedAt | time_diff }}">{{ days }}</span></td>
-                            </tr>
-                            <tr>
-                                <th>FinishedAt</th>
-                                <td><strong>~ {{ toFinishDays }}</strong>  {{ plant.finishedAt ? plant.finishedAt|date('Y-m-d') : '' }}</td>
-                            </tr>
-                            <tr>
-                                <th>UpdatedAt</th>
-                                <td>{{ plant.updatedAt ? plant.updatedAt|date('m-d H:i') : '' }} | {{ plant.updatedAt ? plant.updatedAt | time_diff }}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div><!-- /.col -->
                 </div><!-- /.row -->
             </div><!-- /.col -->
         </div>
@@ -205,7 +246,7 @@
     <table style="width: 99%">
         <tr>
             <td>
-                <button class="button btn btn-outline-warning btn-sm" type="button" id="toggleScale">Toggle Scale Type</button>
+                <button class="button btn btn-outline-warning btn-sm" type="button" id="toggleScale">Scale</button>
             </td>
             <td style="text-align: center">
                 <div id="changeTime" class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups" style="width: 100%">
@@ -440,7 +481,6 @@
 
     <hr/>
     {% include 'plant/plant.events.no.sensor.html.twig' %}
-    {% include 'plant/plant.custom.fields.html.twig' %}
 
     <hr/>
     <h5>Other</h5>
