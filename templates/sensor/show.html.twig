@@ -11,6 +11,8 @@
         }
     </style>
     <h4>Sensor {{ sensor.eventType | parseType }} [{{ sensor.id }}] </h4>
+    {% set type = sensor.eventType | parseType %}
+
     {#<a href="{{ path('sensor_index') }}">back to list</a>#}
     <table class="table">
         <tbody>
@@ -40,6 +42,7 @@
         </tbody>
     </table>
     <canvas id="graph_container" style="width: 100%;height: 400px !important;"></canvas>
+    <canvas id="graph_container_2" style="width: 100%;height: 400px !important;"></canvas>
     <table style="width: 99%">
         <tr>
             <td>
@@ -88,12 +91,15 @@
             });
             var ctx = $('#graph_container');
             window.myLine = new Chart(ctx, config);
+            {% if type == 'Humidity' %}
+            var ctx2 = $('#graph_container_2');
+            window.myLine = new Chart(ctx2, config_hum);
+            {% endif %}
         });
 
         var color = Chart.helpers.color;
         var my_color = window.chartColors.red;
         var fill_val = false;
-        {%  set type = sensor.eventType | parseType %}
         {% if type == 'Humidity' %}
             my_color = window.chartColors.yellow;
             fill_val = true;
@@ -112,13 +118,11 @@
                     backgroundColor: color(my_color).alpha(0.25).rgbString(),
                     borderColor: my_color,
                     fill: fill_val,
-                    pointRadius: 5,
+                    pointRadius: 4,
                     // lineTension: 0,
                     borderWidth: 2,
-                    data: [{% for event in events | slice(0, 2000) %}
-                        {x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value }}, z: '{{ event.name}}'},{% endfor %}],
-                }
-                ]
+                    data:[{% for event in events | slice(0, 2000) %}{x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value }}, z: '{{ event.name}}'},{% endfor %}],
+                }]
             },
             options: {
                 responsive: true,
@@ -155,6 +159,112 @@
                         scaleLabel: {
                             display: true,
                             labelString: 'value'
+                        }
+                        {% if type == 'Humidity' %},
+                        ticks: {
+                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                            suggestedMax: 100,    // minimum will be 0, unless there is a lower value.
+                            // OR //
+                            beginAtZero: true   // minimum value will be 0.
+                        }
+                        {% endif %}
+                    }]
+                },
+                tooltips: {
+                    intersect: false,
+                    mode: 'single',
+                    callbacks: {
+                        label: function(tooltipItem, myData) {
+                            var label = myData.datasets[tooltipItem.datasetIndex].label || '';
+                            if (label) {
+                                label += '  :  ';
+                            }
+                            label += parseFloat(tooltipItem.value).toFixed(2);
+                            // try {
+                            //     var eventName = myData.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].z;
+                            //     if (eventName.length > 0) {
+                            //         label = [label];
+                            //         label.push(eventName);
+                            //     }
+                            // }  catch (e) {
+                            // }
+                            return label;
+                        },
+                        afterBody: function(data, myData) {
+                            var ret = '';
+                            try{
+                                var eventName = myData.datasets[data[0].datasetIndex].data[data[0].index].z;
+                                var multistringText = [''];
+                                multistringText.push(eventName);
+                                ret =  multistringText;
+                            } catch (e) {
+
+                            }
+                            return ret;
+                        },
+                    }
+                }
+            }
+        };
+
+        {% if type == 'Humidity' %}
+        var config_hum = {
+            scaleOverride : true,
+            scaleStartValue : 0,
+            type: 'line',
+            data: {
+                datasets: [{
+                    label: '{{ sensor.name }}',
+                    backgroundColor: color(my_color).alpha(0.25).rgbString(),
+                    borderColor: my_color,
+                    fill: fill_val,
+                    pointRadius: 4,
+                    // lineTension: 0,
+                    borderWidth: 2,
+                    data:[{% for event in events | slice(0, 2000) %}{x: '{{ event.createdAt|date('Y-m-d H:i') }}', y: {{ event.value - event.value3 }}, z: '{{ event.name}}'},{% endfor %}],
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    text: '{{ type }} [{{ sensor.name }}] {{ hours }} hours'
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        display: true,
+                        time: {
+                            unit: 'quarter',
+                            displayFormats: {
+                                quarter: 'D/M H:mm'  // https://www.chartjs.org/docs/latest/axes/cartesian/time.html
+                            }
+                        },
+                        distribution: 'linear',
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'Date'
+                        },
+                        ticks: {
+                            source: 'data',  // add timeprint on bottom for each points
+                            autoSkip: true,
+                            major: {
+                                fontStyle: 'bold',
+                                fontColor: '#FF0000'
+                            }
+                        }
+                    }],
+                    yAxes: [{
+                        display: true,
+                        scaleLabel: {
+                            display: true,
+                            labelString: 'value'
+                        },
+                        ticks: {
+                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                            suggestedMax: 100,    // minimum will be 0, unless there is a lower value.
+                            // OR //
+                            beginAtZero: true   // minimum value will be 0.
                         }
                     }]
                 },
@@ -194,6 +304,7 @@
                 }
             }
         };
+        {% endif %}
     </script>
     <hr/>
     <h5>Events showed {{ events | length }} limit is 10000</h5>
