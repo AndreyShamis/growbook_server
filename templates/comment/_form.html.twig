@@ -1,0 +1,52 @@
+{{ form_start(form) }}
+<table class="table">
+    <tr>
+        <td>Plant</td>
+        <td>{{ comment.plant }}</td>
+        <td></td>
+        <td style="width: 40%;"></td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.commentName, 'Name') }}</td>
+        <td>{{ form_widget(form.commentName) }}</td>
+        <td>{{ form_help(form.commentName) }}</td>
+        <td>{{ form_errors(form.commentName) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.comment, 'Comment') }}</td>
+        <td>{{ form_widget(form.comment) }}</td>
+        <td>{{ form_help(form.comment) }}</td>
+        <td>{{ form_errors(form.comment) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.happenedAt) }}</td>
+        <td>{{ form_widget(form.happenedAt) }}</td>
+        <td>{{ form_help(form.happenedAt) }}</td>
+        <td>{{ form_errors(form.happenedAt) }}</td>
+    </tr>
+
+{#    {% if form.sensor is defined %}#}
+{#        <tr>#}
+{#            <td>{{ form_label(form.sensor) }}</td>#}
+{#            <td>{{ form_widget(form.sensor) }}</td>#}
+{#            <td>{{ form_help(form.sensor) }}</td>#}
+{#            <td>{{ form_errors(form.sensor) }}</td>#}
+{#        </tr>#}
+{#    {% else %}#}
+{#        <tr>#}
+{#            <td>Sensor</td>#}
+{#            <td>{{ event.sensor }}</td>#}
+{#            <td></td>#}
+{#            <td></td>#}
+{#        </tr>#}
+{#    {% endif %}#}
+{#    <tr>#}
+{#        <td>{{ form_label(form.note) }}</td>#}
+{#        <td>{{ form_widget(form.note) }}</td>#}
+{#        <td>{{ form_help(form.note) }}</td>#}
+{#        <td>{{ form_errors(form.note) }}</td>#}
+{#    </tr>#}
+</table>
+    {{ form_widget(form) }}
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
