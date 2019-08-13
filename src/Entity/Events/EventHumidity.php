@@ -24,10 +24,10 @@ class EventHumidity extends Event implements SensorEventInterface
 
     public function setHumidity(float $humidity): self
     {
-        if ($humidity >= 0 && $humidity <= 100) {
+        if ($humidity >= 0 && $humidity <= 200) {
             $this->humidity = $humidity;
         } else {
-            $humidity = 0.01;
+            $this->humidity = 0.01;
         }
         return $this;
     }
