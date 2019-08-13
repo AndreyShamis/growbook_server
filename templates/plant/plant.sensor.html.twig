@@ -75,6 +75,8 @@
                                         {% if _value1 is not null %}
                                             {% if type == 'Humidity' %}
                                                 <span title="Absolute Humidity" class="badge badge-pill {{ humidityToBadge(_value1)}}">{{ _value1 }} %</span>
+                                                {% set res = _value - _value1 %}
+                                                <span title="(Humidity-Absolute humidity)" class="badge badge-pill {{ humidityToBadge(res)}}">{{ res }} %</span>
                                             {% else %}
                                                 <span class="badge  badge-pill badge-dark">{{ _value1 }}</span>
                                             {% endif %}
