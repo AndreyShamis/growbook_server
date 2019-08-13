@@ -134,6 +134,11 @@ class Plant implements PlantInterface
      */
     private $version;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="plant", orphanRemoval=true)
+     */
+    private $comments;
+
     public function __construct()
     {
         try {
@@ -147,6 +152,7 @@ class Plant implements PlantInterface
         $this->properties = new ArrayCollection();
         $this->owners = new ArrayCollection();
         $this->nodeCommands = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getLightChanged(): bool
@@ -606,6 +612,37 @@ class Plant implements PlantInterface
     public function setVersion(string $version): self
     {
         $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setPlant($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getPlant() === $this) {
+                $comment->setPlant(null);
+            }
+        }
 
         return $this;
     }
