@@ -466,6 +466,9 @@
             google.setOnLoadCallback(drawSoilHydrometerHourly);
             google.setOnLoadCallback(drawFeedDaily);
 
+            $('#addComment').click(function() {
+                location.href = '{{ path('comment_new', {'id': plant.id}) }}';
+            });
             $('#reloadPage').click(function() {
                 location.reload();
             });
