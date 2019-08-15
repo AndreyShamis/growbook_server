@@ -155,6 +155,7 @@ class Plant implements PlantInterface
         $this->owners = new ArrayCollection();
         $this->nodeCommands = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->setVersion(0);
     }
 
     /**

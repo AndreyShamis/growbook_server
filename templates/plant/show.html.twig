@@ -95,7 +95,7 @@
                 <div class="row">
                     <div class="col-xs-10 infobox-container">
 
-                        <div class="infobox {{ temperatureToInfoBox(temperature.propertyValue) }}">
+                        <div class="infobox {{ temperature.propertyValue ? temperatureToInfoBox(temperature.propertyValue) }}">
                             <div class="infobox-icon"><i class="ace-icon fa fa-asterisk blue"></i></div>
 
                             <div class="infobox-data" title="Temperature">
@@ -109,7 +109,7 @@
                             {% endif %}
                         </div>
 
-                        <div class="infobox {{ humidityToInfoBox(humidity.propertyValue) }}" title="Humidity">
+                        <div class="infobox {{ humidity.propertyValue ? humidityToInfoBox(humidity.propertyValue) }}" title="Humidity">
                             <div class="infobox-icon"><i class="ace-icon fa fa-cloud grey"></i></div>
 
                             <div class="infobox-data">
@@ -123,7 +123,7 @@
                             {% endif %}
                         </div>
 
-                        <div class="infobox {{ hydrometerToInfoBox(hydrometer.propertyValue) }}" title="Hydrometer">
+                        <div class="infobox {{ hydrometer.propertyValue ? hydrometerToInfoBox(hydrometer.propertyValue) }}" title="Hydrometer">
                             <div class="infobox-icon"><i class="ace-icon fa fa-inbox brown"></i></div>
 
                             <div class="infobox-data">
