@@ -142,7 +142,7 @@
                             <div class="infobox-icon"><i class="ace-icon fa fa-lightbulb-o"></i></div>
                             <div class="infobox-data">
                                 <span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span>
-                                <div class="infobox-content">Light is</div>
+                                <div class="infobox-content" title="{{ light? light.updatedAt | time_diff }}">Light is {{ light ? hoursInRelativeTime(light.updatedAt, date())  }} h</div>
                             </div>
                         </div>
 

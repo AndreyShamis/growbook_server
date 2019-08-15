@@ -1,26 +1,13 @@
-{#<!DOCTYPE html>#}
-{#<html lang="en">#}
-{#<head>#}
-    {#<meta charset="UTF-8">#}
-    {#<title>Title</title>#}
-{#</head>#}
-{#<body>#}
-{# templates/emails/registration.html.twig #}
 <h3>Light is {{ plant.isLight ? "ON" : "off" }} on {{ plant.name }} at {{ printTime | date('Y-m-d H:i') }}</h3>
-
-Hi
-<br/>
 <p>
     The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.lightStatus }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
 </p>
-{# example, assuming you have a route named "login" #}
-Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
-
-<div class="alert alert-success" role="alert">
-    <h5>Plant [{{ plant.name }}]</h5>
-</div>
-<div class="alert alert-info" role="alert">
-    <p class="mb-0">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
+<div style="background-color: #7ed6e3;border: 1px solid #1B6AAA;width: 800px;font-size: 18px;">
+    Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
+    <br/>
+    Previous light period is <strong>{{ lightPeriod }} </strong>seconds
+    <br/>
+    <p style="font-size: 14px;">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
         &nbsp;&nbsp;/&nbsp;&nbsp;
@@ -31,9 +18,9 @@ Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
         resets: {{ plant.resetCounter }}
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         RSSI: {{ plant.rssi }}
-        &nbsp;&nbsp;</p>
+    &nbsp;&nbsp;</p>
 </div>
-<table class="table table-hover table-condensed tasks-table table-bordered">
+<table class="table table-hover table-condensed tasks-table table-bordered" style="border: 1px solid #1B6AAA;width: 800px;">
     <tbody>
     <tr>
         <th style="width: 120px;">Temperature</th>

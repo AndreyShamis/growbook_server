@@ -40,6 +40,8 @@ class AppExtension extends AbstractExtension
             new TwigFilter('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFilter('lightToBadge', [$this, 'lightToBadge']),
             new TwigFilter('SensorTypeShort', [$this, 'SensorTypeShort']),
+            new TwigFilter('relativeTime', [$this, 'relativeTime']),
+            new TwigFilter('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
         );
     }
 
@@ -67,6 +69,8 @@ class AppExtension extends AbstractExtension
             new TwigFunction('hydrometerToBadge', [$this, 'hydrometerToBadge']),
             new TwigFunction('lightToBadge', [$this, 'lightToBadge']),
             new TwigFunction('SensorTypeShort', [$this, 'SensorTypeShort']),
+            new TwigFunction('relativeTime', [$this, 'relativeTime']),
+            new TwigFunction('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
         ];
     }
 
@@ -444,6 +448,14 @@ class AppExtension extends AbstractExtension
     {
         $diff = abs($timeStart->getTimestamp() - $current->getTimestamp());
         return $this->executionTimeGenericShort($diff);
+    }
+
+
+    public function hoursInRelativeTime(\DateTime $timeStart, \DateTime $current): string
+    {
+        $time = abs($timeStart->getTimestamp() - $current->getTimestamp());
+        $hours = number_format (round($time/60/60, 1), 1);
+        return $hours;
     }
 
     /**

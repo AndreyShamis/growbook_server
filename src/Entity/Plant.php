@@ -139,6 +139,8 @@ class Plant implements PlantInterface
      */
     private $comments;
 
+    protected $light_period = 0;
+
     public function __construct()
     {
         try {
@@ -153,6 +155,29 @@ class Plant implements PlantInterface
         $this->owners = new ArrayCollection();
         $this->nodeCommands = new ArrayCollection();
         $this->comments = new ArrayCollection();
+    }
+
+    /**
+     * @param int $updatedAt
+     * @return int
+     */
+    public function getLightPeriod(int $updatedAt): int
+    {
+        try {
+            $now = new \DateTime();
+            $my_diff = $now->getTimestamp() - $updatedAt;
+            $this->setLightPeriod($my_diff);
+        } catch (\Throwable $ex) {
+        }
+        return $this->light_period;
+    }
+
+    /**
+     * @param int $light_period
+     */
+    public function setLightPeriod(int $light_period): void
+    {
+        $this->light_period = $light_period;
     }
 
     public function getLightChanged(): bool
