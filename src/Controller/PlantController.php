@@ -271,6 +271,7 @@ class PlantController extends AbstractController
         $status = 200;
         $alertFound = false;
         $alertMessage = '';
+        $updateAt = 0;
         try {
             //$domain = $this->getParameter('DOMAIN');
             $em = $this->getDoctrine()->getManager();
@@ -282,6 +283,7 @@ class PlantController extends AbstractController
             if ($plant === null) {
                 throw new \Exception('Plant not found', 404);
             }
+            $updateAt = $plant->getUpdatedAt()->getTimestamp();
             $input = $request->request->all();
             if (array_key_exists('key', $input) && array_key_exists('value', $input)) {
                 $property = $input['key'];
@@ -294,6 +296,12 @@ class PlantController extends AbstractController
                         'obj' => $plant,
                         'key' => $key
                     ]);
+                    try {
+                        if ($key === 'light') {
+                            $updateAt = $field->getUpdatedAt()->getTimestamp();
+                        }
+                    } catch (\Throwable $ex) { }
+
                     try {
                         if ($key === 'humidity') {
                             $prev_value = $field->getPropertyValue();
@@ -336,6 +344,7 @@ class PlantController extends AbstractController
                                 $plant->addProperty($percentChangeField);
                             }
                         }
+
                     } catch (\Throwable $ex) {
                         $logger->critical($ex->getMessage(), $ex->getTrace());
                     }
@@ -362,7 +371,11 @@ class PlantController extends AbstractController
                     'obj' => $plant,
                     'key' => $property
                 ]);
-
+                try {
+                    if ($key === 'light') {
+                        $updateAt = $field->getUpdatedAt()->getTimestamp();
+                    }
+                } catch (\Throwable $ex) { }
                 try {
                     if ($property === 'humidity' || $property === 'temperature' || $property === 'hydrometer') {
                         $prev_value = $field->getPropertyValue();
@@ -465,6 +478,7 @@ class PlantController extends AbstractController
                                 'plant' => $plant,
                                 'printTime' => $_time,
                                 'domain' => $domain,
+                                'lightPeriod' => $plant->getLightPeriod($updateAt),
                                 'uptime' => $customFields->findForObject($plant, 'uptime'),
                                 'temperature' => $customFields->findForObject($plant, 'temperature'),
                                 //'temperature' => $prop->get('temperature'),
