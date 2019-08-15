@@ -1,4 +1,41 @@
 {{ form_start(form) }}
+<table class="table">
+    <tr>
+        <td>{{ form_label(form.cmd_key, 'cmd_key') }}</td>
+        <td>{{ form_widget(form.cmd_key) }}</td>
+        <td>{{ form_help(form.cmd_key) }}</td>
+        <td style="width: 40%;">{{ form_errors(form.cmd_key) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.cmd_value, 'cmd_value') }}</td>
+        <td>{{ form_widget(form.cmd_value) }}</td>
+        <td>{{ form_help(form.cmd_value) }}</td>
+        <td>{{ form_errors(form.cmd_value) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.published) }}</td>
+        <td>{{ form_widget(form.published) }}</td>
+        <td>{{ form_help(form.published) }}</td>
+        <td>{{ form_errors(form.published) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.received) }}</td>
+        <td>{{ form_widget(form.received) }}</td>
+        <td>{{ form_help(form.received) }}</td>
+        <td>{{ form_errors(form.received) }}</td>
+    </tr>
+    <tr>
+        <td>{{ form_label(form.plant) }}</td>
+        <td>{{ form_widget(form.plant) }}</td>
+        <td>{{ form_help(form.plant) }}</td>
+        <td>{{ form_errors(form.plant) }}</td>
+    </tr>
+</table>
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
 {{ form_end(form) }}
+<style>
+    input[type="text"] {
+        width: 600px !important;
+    }
+</style>
