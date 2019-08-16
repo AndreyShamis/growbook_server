@@ -279,6 +279,7 @@ class PlantController extends AbstractController
             $plant = $plants->findOrCreate([
                 'name' => RandomName::getRandomTerm() . '__' . $plant_uniq_id,
                 'uniqId' => $plant_uniq_id,
+                'finishedAt' => null,
             ]);
             if ($plant === null) {
                 throw new \Exception('Plant not found', 404);
