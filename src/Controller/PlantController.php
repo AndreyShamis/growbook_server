@@ -401,7 +401,7 @@ class PlantController extends AbstractController
                     }
                 } else {
                     $message .= 'Method for property:[' . $property . '] not found.';
-                    $status = 405;
+                    //$status = 405;
                 }
             }
             $message = $plant_uniq_id . ' : ' . $message;
