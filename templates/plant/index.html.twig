@@ -15,6 +15,7 @@
                 <th>StartedAt</th>
                 <th>FinishedAt</th>
                 <th>Uptime</th>
+                <th>Firmware</th>
                 <th>Resets</th>
                 <th>Rssi</th>
                 <th>actions</th>
@@ -30,6 +31,7 @@
                 <td title="{{ plant.createdAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.startedAt ? plant.startedAt|time_diff : '' }}</td>
                 <td title="{{ plant.createdAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.finishedAt ? plant.finishedAt|time_diff : '' }}</td>
                 <td title="">{{ plant.uptime }}</td>
+                <td title="">{{ plant.version }}</td>
                 <td title="">{{ plant.resetCounter }}</td>
                 <td title="">{{ plant.Rssi }}</td>
                 <td>
