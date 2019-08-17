@@ -286,6 +286,9 @@ class PlantController extends AbstractController
                         }
                     } catch (\Throwable $ex) { }
 
+                    if ($key === 'version') {
+                        $plant->setVersion($val);
+                    }
                     try {
                         if ($key === 'humidity') {
                             $prev_value = $field->getPropertyValue();

@@ -675,7 +675,9 @@ class Plant implements PlantInterface
 
     public function setVersion(string $version): self
     {
-        $this->version = $version;
+        try {
+            $this->version = $version;
+        } catch (\Throwable $ex) {}
 
         return $this;
     }
