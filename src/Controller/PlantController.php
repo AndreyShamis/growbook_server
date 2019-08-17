@@ -71,8 +71,6 @@ class PlantController extends AbstractController
      */
     public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, int $hours=25): Response
     {
-        $days = 0;
-        $toFinishDays = 0;
         $this->denyAccessUnlessGranted('view', $plant);
         $events = array();
         try {
@@ -99,23 +97,9 @@ class PlantController extends AbstractController
                 }
             }
         }
-        try {
 
-            $measureStartDate = $plant->getStartedAt();
-            if ($measureStartDate !== null) {
-                $measureEndDate = $plant->getFinishedAt();
-                if ($measureEndDate === null) {
-                    $measureEndDate = new \DateTime();
-                }
-                $days = $measureStartDate->diff($measureEndDate)->d;
-                $toFinishDays = (-1 * (80 - $days));
-                if ($toFinishDays > 0 && $measureEndDate !== null) {
-                    $toFinishDays = '';
-                }
-            }
-
-        } catch (\Throwable $ex) {}
-
+        $days = $plant->getDays();
+        $toFinishDays = $plant->getToFinishDays();
 
 //        foreach ($sensorsObj as $id => $_sensor) {
 //            /** @var Sensor $s */
@@ -284,7 +268,6 @@ class PlantController extends AbstractController
             if ($plant === null) {
                 throw new \Exception('Plant not found', 404);
             }
-            $updateAt = $plant->getUpdatedAt()->getTimestamp();
             $input = $request->request->all();
             if (array_key_exists('key', $input) && array_key_exists('value', $input)) {
                 $property = $input['key'];
@@ -373,7 +356,7 @@ class PlantController extends AbstractController
                     'key' => $property
                 ]);
                 try {
-                    if ($key === 'light') {
+                    if ($property === 'light') {
                         $updateAt = $field->getUpdatedAt()->getTimestamp();
                     }
                 } catch (\Throwable $ex) { }
@@ -466,12 +449,18 @@ class PlantController extends AbstractController
         }
         if ($plant !== null && $plant->getLightChanged()) {
             try {
+                $plant->calculateLightPeriod($updateAt);
                 $domain = $_ENV['DOMAIN'];
                 $_time = new \DateTime();
-                $message = (new \Swift_Message('[' . $domain. '] Light changed to ['.$plant->lightStatus().'] on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s')))
-                    ->setFrom('hicam.golda@gmail.com')
-                    ->setTo('lolnik@gmail.com')
-                    ->setBody(
+                $message = (new \Swift_Message('Light is ['.$plant->lightStatus().'] on [' . $plant->getName() . '] at ' . $_time->format('Y-m-d H:i:s') . '[Day ' . $plant->getDays() . ']'))
+                    ->setFrom('hicam.golda@gmail.com', 'LightDetector['. $domain . ']')
+                    ->setTo('lolnik+debug@gmail.com');
+                try {
+                    foreach ($plant->getOwners() as $owner) {
+                        $message->addTo($owner->getEmail(), $owner->getUserFullName());
+                    }
+                } catch (\Throwable $ex) {}
+                $message->setBody(
                         $this->renderView(
                             'emails/light.changed.html.twig',
                             [
@@ -479,7 +468,7 @@ class PlantController extends AbstractController
                                 'plant' => $plant,
                                 'printTime' => $_time,
                                 'domain' => $domain,
-                                'lightPeriod' => $plant->getLightPeriod($updateAt),
+                                'lightPeriod' => $plant->getLightPeriod(),
                                 'uptime' => $customFields->findForObject($plant, 'uptime'),
                                 'temperature' => $customFields->findForObject($plant, 'temperature'),
                                 //'temperature' => $prop->get('temperature'),

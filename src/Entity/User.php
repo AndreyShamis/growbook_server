@@ -157,11 +157,19 @@ class User implements UserInterface, \Serializable
     /**
      * @return string
      */
-    public function getFullName(): ?string
+    public function getFullName(): string
     {
         return $this->fullName;
     }
 
+    public function getUserFullName(): string
+    {
+        $fn = $this->getFullName();
+        if (strlen($fn) < 1) {
+            return $this->getFirstName() . ' ' . $this->getFirstName();
+        }
+        return $fn;
+    }
     /**
      * @param string $fullName
      */

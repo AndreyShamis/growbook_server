@@ -1,23 +1,19 @@
-<h3>Light is {{ plant.isLight ? "ON" : "off" }} on {{ plant.name }} at {{ printTime | date('Y-m-d H:i') }}</h3>
-<p>
+<h3>Light is {{ plant.isLight ? "ON" : "off" }} on <strong>[{{ plant.name }}]</strong></h3>
+
+<div style="background-color:{{ plant.lightStatus ? "#fffc8a" : "#080808" }};border:1px solid #1B6AAA;width:800px;font-size: 18px; color:{{ plant.lightStatus ? "#0223a7" : "#f9771c" }};">
     The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.lightStatus }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
-</p>
-<div style="background-color: #7ed6e3;border: 1px solid #1B6AAA;width: 800px;font-size: 18px;">
+    <br/>
     Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
     <br/>
-    Previous light period is <strong>{{ lightPeriod }} </strong>seconds
+    Previous light period is <strong>{{ executionTimeGenericShort(lightPeriod, 0) }} </strong> ({{ lightPeriod }} secs)
     <br/>
-    <p style="font-size: 14px;">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }})
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        uptime: {{ plant.uptime }} | {{ plant.uptime | ExecutionTimeWithDays }}
-        &nbsp;&nbsp;/&nbsp;&nbsp;
-        {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        resets: {{ plant.resetCounter }}
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        RSSI: {{ plant.rssi }}
+    <p style="font-size: 14px;">
+        ID:{{ plant.id }}
+        | Hostname:({{ plant.uniqId }})
+        | Uptime: {{ plant.uptime | ExecutionTimeWithDays }}/ {{ uptime }} | {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %} {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}
+        | Updated {{ plant.updatedAt ? plant.updatedAt | time_diff }}
+        | Resets: {{ plant.resetCounter }}
+        | RSSI: {{ plant.rssi }}
     &nbsp;&nbsp;</p>
 </div>
 <table class="table table-hover table-condensed tasks-table table-bordered" style="border: 1px solid #1B6AAA;width: 800px;">

@@ -442,12 +442,13 @@ class AppExtension extends AbstractExtension
      * Print time diff for two datetimes
      * @param \DateTime $timeStart
      * @param \DateTime $current
+     * @param bool $includeSeconds
      * @return string
      */
-    public function relativeTime(\DateTime $timeStart, \DateTime $current): string
+    public function relativeTime(\DateTime $timeStart, \DateTime $current, bool $includeSeconds=true): string
     {
         $diff = abs($timeStart->getTimestamp() - $current->getTimestamp());
-        return $this->executionTimeGenericShort($diff);
+        return $this->executionTimeGenericShort($diff, $includeSeconds);
     }
 
 
@@ -459,10 +460,11 @@ class AppExtension extends AbstractExtension
     }
 
     /**
-     * @param $time
+     * @param int $time
+     * @param bool $includeSeconds
      * @return string
      */
-    public function executionTimeGenericShort(int $time): string
+    public function executionTimeGenericShort(int $time, bool $includeSeconds=true): string
     {
         $seconds = $time%60;
         $minutes = ($time/60)%60;
@@ -470,11 +472,16 @@ class AppExtension extends AbstractExtension
         $hour_print = sprintf('%d',$hours);
         $min_print = sprintf('%02d',$minutes);
         $sec_print = sprintf('%02d',$seconds);
-        if ($hours > 0) {
-            $ret = sprintf('%s:%s:%s', $hour_print, $min_print, $sec_print);
+        if ($includeSeconds) {
+            if ($hours > 0) {
+                $ret = sprintf('%s:%s:%s', $hour_print, $min_print, $sec_print);
+            } else {
+                $ret = sprintf('%s:%s', $min_print, $sec_print);
+            }
         } else {
-            $ret = sprintf('%s:%s', $min_print, $sec_print);
+            $ret = sprintf('%s:%s', $hour_print, $min_print);
         }
+
         return $ret;
     }
 

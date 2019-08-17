@@ -8,8 +8,8 @@
             <th>Type</th>
             <th>ObjectHostId</th>
             <th>ObjectHostType</th>
-            <th>Created</th>
             <th>Updated</th>
+            <th>Created</th>
         </tr>
         </thead>
         <tbody>
@@ -25,8 +25,8 @@
                     <td>{{ cf.propertyValueType }}</td>
                     <td>{{ cf.objectHostId }}</td>
                     <td>{{ cf.objectHostType }}</td>
-                    <td>{{ cf.createdAt | date('d M H:i:s') }}</td>
-                    <td>{{ cf.updatedAt | date('d M H:i:s') }}</td>
+                    <td>{{ cf.updatedAt | date('d/m H:i:s') }}</td>
+                    <td>{{ cf.createdAt | date('d/m H:i') }}</td>
                 </tr>
             {% endif %}
         {% endfor %}

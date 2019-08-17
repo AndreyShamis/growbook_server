@@ -158,18 +158,20 @@ class Plant implements PlantInterface
         $this->setVersion(0);
     }
 
-    /**
-     * @param int $updatedAt
-     * @return int
-     */
-    public function getLightPeriod(int $updatedAt): int
+    public function calculateLightPeriod(int $updatedAt): void
     {
         try {
             $now = new \DateTime();
-            $my_diff = $now->getTimestamp() - $updatedAt;
+            $my_diff = ((int)$now->getTimestamp() - $updatedAt);
             $this->setLightPeriod($my_diff);
-        } catch (\Throwable $ex) {
-        }
+        } catch (\Throwable $ex) {}
+    }
+
+    /**
+     * @return int
+     */
+    public function getLightPeriod(): int
+    {
         return $this->light_period;
     }
 
@@ -333,6 +335,42 @@ class Plant implements PlantInterface
     public function setUpdatedAt(): void
     {
         $this->updatedAt = new \DateTime();
+    }
+
+    public function getDays(): int
+    {
+        $days = 0;
+        try {
+            $measureStartDate = $this->getStartedAt();
+            if ($measureStartDate !== null) {
+                $measureEndDate = $this->getFinishedAt();
+                if ($measureEndDate === null) {
+                    $measureEndDate = new \DateTime();
+                }
+                $days = $measureStartDate->diff($measureEndDate)->days;
+            }
+        } catch (\Throwable $ex) {}
+        return $days;
+    }
+
+    public function getToFinishDays(): int
+    {
+        $toFinishDays = 0;
+        try {
+            $measureStartDate = $this->getStartedAt();
+            if ($measureStartDate !== null) {
+                $measureEndDate = $this->getFinishedAt();
+                if ($measureEndDate === null) {
+                    $measureEndDate = new \DateTime();
+                }
+                $days = $measureStartDate->diff($measureEndDate)->days;
+                $toFinishDays = (-1 * (80 - $days));
+                if ($toFinishDays > 0 && $measureEndDate !== null) {
+                    $toFinishDays = 0;
+                }
+            }
+        } catch (\Throwable $ex) {}
+        return $toFinishDays;
     }
 
     public function getStartedAt(): ?\DateTimeInterface
