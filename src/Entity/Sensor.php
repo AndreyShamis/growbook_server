@@ -41,6 +41,7 @@ class Sensor implements SensorInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Plant", inversedBy="sensors")
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $Plant;
 
