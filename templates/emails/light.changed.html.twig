@@ -1,6 +1,6 @@
 <h3>Light is {{ plant.isLight ? "ON" : "off" }} on <strong>[{{ plant.name }}]</strong></h3>
 
-<div style="background-color:{{ plant.lightStatus ? "#fffc8a" : "#080808" }};border:1px solid #1B6AAA;width:800px;font-size: 18px; color:{{ plant.lightStatus ? "#0223a7" : "#f9771c" }};">
+<div style="background-color:{{ plant.lightStatus == true ? "#fffc8a" : "#080808" }};border:1px solid #1B6AAA;width:800px;font-size: 18px; color:{{ plant.lightStatus == true ? "#0223a7" : "#f9771c" }};">
     The <strong>{{ plant.name }}</strong> light value is changed to <strong>{{ plant.lightStatus }}</strong> | {{ printTime | date('Y-m-d H:i:s') }}
     <br/>
     Link to object: <a href="{{ plantBaseUrl }}{{ plant.id }}">{{ plant.name }}</a>.
