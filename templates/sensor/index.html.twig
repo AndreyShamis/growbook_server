@@ -24,7 +24,7 @@
             <tr>
                 <td>{{ sensor.id }}</td>
                 <td><a href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
-                <td>{% if sensor.plant is defined %}<a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}}</a>{% endif %}</td>
+                <td>{% if sensor.plant.id is defined %}<a href="{{ path('plant_show', {'id': sensor.plant.id}) }}">{{ sensor.plant.name }}</a>{% endif %}</td>
                 <td>{{ sensor.eventType | parseType }}</td>
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.diffThreshold }}</td>
