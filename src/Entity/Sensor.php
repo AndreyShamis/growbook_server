@@ -86,6 +86,11 @@ class Sensor implements SensorInterface
      */
     private $lastEvent;
 
+    /**
+     * @ORM\Column(type="boolean", options={"default"="1"})
+     */
+    private $enabled = true;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -280,6 +285,18 @@ class Sensor implements SensorInterface
     public function setLastEvent(?Event $lastEvent): SensorInterface
     {
         $this->lastEvent = $lastEvent;
+
+        return $this;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }
