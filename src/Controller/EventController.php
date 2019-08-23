@@ -108,7 +108,7 @@ class EventController extends AbstractController
                     'eventType' => $eventRequest['type'],
                     'ip' => $request->getClientIp()
                 ));
-                if ($sensor !== null) {
+                if ($sensor !== null && $sensor->getEnabled() === true) {
                     $update_plant = false;
                     if (array_key_exists('uptime', $eventRequest) && $eventRequest['uptime'] > 1) {
                         $plant->setUptime($eventRequest['uptime']);
@@ -133,6 +133,9 @@ class EventController extends AbstractController
                     if ($sensor->getPlant()->getId() !== $plant->getId()) {
                         $sensor->setPlant($plant);
                     }
+                }
+                if ($sensor !== null && $sensor->getEnabled() !== true) {
+                    return new Response('Sensor disabled', 301);
                 }
             }
         } catch (\Throwable $ex) {

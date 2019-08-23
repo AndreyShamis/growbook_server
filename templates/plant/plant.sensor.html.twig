@@ -33,7 +33,12 @@
                                 {% set _have_last = true %}
                                 {% set _created = sensor.lastEvent.happenedAt %}
                             {% endif %}
-                            <tr>
+                            {% if sensor.enabled %}
+                                {% set color = 'inherit' %}
+                            {% else %}
+                                {% set color = 'darkgray' %}
+                            {% endif %}
+                            <tr style="background-color: {{ color }};">
                                 {#                <td style="font-size: 10px;">{{ sensor.id }}</td>#}
                                 <td>
                                     {% if type == 'Humidity' %}

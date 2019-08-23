@@ -17,6 +17,7 @@ class SensorType extends AbstractType
             ->add('Plant')
             ->add('diffThreshold')
             ->add('writeForceEveryXseconds')
+            ->add('enabled')
         ;
     }
 
