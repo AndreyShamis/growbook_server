@@ -26,7 +26,7 @@ class PlantRepository extends ServiceEntityRepository
         if (array_key_exists('id', $criteria)) {
             $entity = $this->find($criteria['id']);
         } else if (array_key_exists('uniqId', $criteria)) {
-            $entity = $this->findOneBy(['uniqId' => $criteria['uniqId']]);
+            $entity = $this->findOneBy(['uniqId' => $criteria['uniqId'], 'finishedAt' => null]);
         } else {
             $entity = $this->findOneBy($criteria);
         }

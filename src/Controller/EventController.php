@@ -93,6 +93,7 @@ class EventController extends AbstractController
                     $plant = $plants->findOrCreate([
                         'name' => RandomName::getRandomTerm() . '__' . $plantUniqId,
                         'uniqId' => $plantUniqId,
+                        'finishedAt' => null,
                     ]);
 
                     if ($plant !== null) {

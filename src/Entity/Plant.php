@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\Index;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PlantRepository")
- * @ORM\Table(name="plants", uniqueConstraints={@ORM\UniqueConstraint(name="unique_uniqId", columns={"uniq_id"})},
+ * @ORM\Table(name="plants", uniqueConstraints={@ORM\UniqueConstraint(name="unique_uniqId", columns={"uniq_id", "finished_at"})},
  *     indexes={
  *     @Index(name="index_name", columns={"name"}),
  *     @Index(name="fulltext_name", columns={"name"}, flags={"fulltext"}),
