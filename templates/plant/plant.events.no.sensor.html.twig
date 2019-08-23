@@ -9,11 +9,11 @@
     <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
         <tr>
-            <th>ID</th>
-            <th>Time</th>
             <th>Name</th>
-            <th>Type</th>
             <th>Value</th>
+            <th>Time</th>
+            <th>Time</th>
+            <th>Type</th>
         </tr>
         </thead>
         <tbody>
@@ -25,20 +25,21 @@
                     {% set counter = counter+1 %}
                     {% set type = event.type | parseType %}
                     <tr>
-                        <td>{{ event.id }}</td>
-                        <td>{{ event.happenedAt | date('d M H:i:s') }}</td>
-                        <td>{% if type == "Feed"  %}
+
+                        <td title="{{ event.note }}">{% if type == "Feed"  %}
                             <a href="{{ path('events_event_feed_show', {'id': event.id}) }}" target="_blank">
                                 {% else %}
                                 <a href="{{ path('event_show', {'id': event.id}) }}" target="_blank">
                                     {% endif %}_{{ event.name }}_</a></td>
-                        <td>{{ event.type | parseType }}</td>
                         <td>{% if type == "Feed"  %}
-                                {{ event.water }}
+                                {{ event.water }} | Ph: {{ event.ph }} | TDS/EC: {{ event.tds }}/{{ event.ec }}
                             {% else %}
                                 {{ event.value }}
                             {% endif %}
                         </td>
+                        <td>{{ event.happenedAt | time_diff }}</td>
+                        <td title="{{ event.happenedAt | date('Y/m/d H:i:s') }}">{{ event.happenedAt | date('d H:i') }}</td>
+                        <td>{{ event.type | parseType }}</td>
                     </tr>
                 {% endif %}
             {% endif %}
