@@ -33,8 +33,16 @@
                                 {% set _have_last = true %}
                                 {% set _created = sensor.lastEvent.happenedAt %}
                             {% endif %}
+
+                            {{ date(sensor.lastEvent.happenedAt)  | date('Y-m-d H:i:s')  }}
+                            {{ date('-24 hours')  | date('Y-m-d H:i:s') }}
                             {% if sensor.enabled %}
                                 {% set color = 'inherit' %}
+                                {% if _have_last and  date(sensor.lastEvent.happenedAt) < date('-24 hours') %}
+                                    {% set color = 'lightsalmon' %}
+                                {% elseif _have_last and  date(sensor.lastEvent.happenedAt) < date('-6 hours') %}
+                                    {% set color = 'rosybrown' %}
+                                {% endif %}
                             {% else %}
                                 {% set color = 'darkgray' %}
                             {% endif %}
@@ -52,7 +60,7 @@
                                     {% endif %}
 
                                 </td>
-                                <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
+                                <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_for_plant_show', {'id': sensor.id, 'plant' : plant.id}) }}">{{ sensor.name }}</a></td>
                                 <td>
                                     {% if _have_last == true %}
                                         {% set _value = sensor.lastEvent.value %}

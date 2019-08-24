@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Plant;
 use App\Entity\Sensor;
 use App\Form\SensorType;
 use App\Repository\EventRepository;
@@ -88,6 +89,35 @@ class SensorController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/{id}/plant/{plant}", name="sensor_for_plant_show", methods={"GET"})
+     * @Route("/{id}/plant/{plant}/hours/{hours}", name="sensor_for_plant_show_hours", methods={"GET"})
+     * @param Sensor $sensor
+     * @param Plant $plant
+     * @param EventRepository $eventsRepo
+     * @param int $hours
+     * @return Response
+     */
+    public function showForPlant(Sensor $sensor, Plant $plant, EventRepository $eventsRepo, int $hours=25): Response
+    {
+        if ($plant !== null) {
+            $this->denyAccessUnlessGranted('view', $plant);
+        }
+        $events = array();
+        try {
+            if ($hours < 0) {
+                $hours = 25;
+            }
+            $events = $eventsRepo->findAllBySensorAndPlant($sensor, $plant, $hours);
+        } catch (\Throwable $ex) {
+
+        }
+        return $this->render('sensor/show.html.twig', [
+            'sensor' => $sensor,
+            'events' => $events,
+            'hours' => $hours,
+        ]);
+    }
     /**
      * @Route("/{id}/edit", name="sensor_edit", methods={"GET","POST"})
      * @param Request $request

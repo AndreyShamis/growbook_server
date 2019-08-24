@@ -21,6 +21,7 @@ class PlantType extends AbstractType
             ->add('soilMedium')
             ->add('photoPeriod',null, ['required' => false, 'empty_data' => '0', 'help' => Plant::getPhotoPeriodListAsHelp()])
             ->add('owners')
+            ->add('resetCounter')
         ;
     }
 
