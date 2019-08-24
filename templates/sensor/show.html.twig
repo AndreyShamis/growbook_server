@@ -3,6 +3,7 @@
 {% block title %}Sensor{% endblock %}
 
 {% block body %}
+    {% set self_path = app.request.get('_route') %}
     <style>
         canvas {
             -moz-user-select: none;
@@ -82,36 +83,48 @@
             </td>
         </tr>
     </table>
+    {% if self_path == 'sensor_for_plant_show' and plant is defined and plant.id is not null %}
+        {% set sensor_url = path('sensor_show', {'id': sensor.id, 'plant': plant.id})  %}
+    {% else %}
+        {% set sensor_url = path('sensor_show', {'id': sensor.id}) %}
+    {% endif %}
     <script>
-        $( document ).ready(function() {
+
+        $(document).ready(function() {
+
+
             $('#changeTime').on('click','button', function (evt) {
-                // //-- do stuff
-                // console.log(evt);
-                // console.log(this);
-                // console.log(this.value);
-                window.location = '{{ path('sensor_show', {'id': sensor.id}) }}/hours/' + this.value;
+                let targetUrl = '{{ sensor_url }}';
+                let hours = this.value;
+                window.location = targetUrl + '/hours/' + hours;
             });
-            var ctx = $('#graph_container');
+
+            let ctx = $('#graph_container');
             window.myLine = new Chart(ctx, config);
+
             {% if type == 'Humidity' %}
-            var ctx2 = $('#graph_container_2');
-            window.myLine = new Chart(ctx2, config_hum);
+                let ctx2 = $('#graph_container_2');
+                window.myLine = new Chart(ctx2, config_hum);
             {% endif %}
         });
 
         var color = Chart.helpers.color;
         var my_color = window.chartColors.red;
         var fill_val = false;
+
         {% if type == 'Humidity' %}
             my_color = window.chartColors.yellow;
             fill_val = true;
         {% endif %}
+
         {% if type == 'Temperature' %}
             my_color = window.chartColors.blue;
         {% endif %}
+
         {% if type == 'SoilHydrometer' %}
-        my_color = window.chartColors.green;
+            my_color = window.chartColors.green;
         {% endif %}
+
         var config = {
             type: 'line',
             data: {

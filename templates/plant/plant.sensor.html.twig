@@ -52,7 +52,7 @@
                                     {% endif %}
 
                                 </td>
-                                <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_show', {'id': sensor.id}) }}">{{ sensor.name }}</a></td>
+                                <td><a title="{{ sensor.id }}" style="font-size: 12px;" href="{{ path('sensor_for_plant_show', {'id': sensor.id, 'plant' : plant.id}) }}">{{ sensor.name }}</a></td>
                                 <td>
                                     {% if _have_last == true %}
                                         {% set _value = sensor.lastEvent.value %}
