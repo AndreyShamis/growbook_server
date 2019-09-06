@@ -43,9 +43,6 @@
         </tbody>
     </table>
     <canvas id="graph_container" style="width: 100%;height: 400px !important;"></canvas>
-    {% if type == 'Humidity' %}
-    <canvas id="graph_container_2" style="width: 100%;height: 400px !important;"></canvas>
-    {% endif %}
     <table style="width: 99%">
         <tr>
             <td>
@@ -102,10 +99,6 @@
             let ctx = $('#graph_container');
             window.myLine = new Chart(ctx, config);
 
-            {% if type == 'Humidity' %}
-                let ctx2 = $('#graph_container_2');
-                window.myLine = new Chart(ctx2, config_hum);
-            {% endif %}
         });
 
         var color = Chart.helpers.color;
@@ -335,7 +328,6 @@
                 <th>Absolute humidity</th>
                 <th>Temperature</th>
                 <th>Heat Index</th>
-                <th>(Humidity-Absolute humidity)</th>
             {% else %}
                 <th>Value</th>
                 <th>Value 1</th>
@@ -403,21 +395,6 @@
                         {% endif %}
                     {% endif %}
                 </td>
-                {% if sensor.eventType | parseType == 'Humidity' %}
-                    <td class="font10">
-                        {% if event.value1 is defined %}
-                            {% set _value1 = event.value1 %}
-                            {% if _value1 is not null %}
-                                {% set res = _value - _value1 %}
-                                {% if type == 'Humidity' %}
-                                    <span title="(Humidity-Absolute humidity)" class="badge badge-pill {{ humidityToBadge(res)}}">{{ res }} %</span>
-                                {% else %}
-                                    <span class="badge  badge-pill badge-dark">{{ _value3 }}</span>
-                                {% endif %}
-                            {% endif %}
-                        {% endif %}
-                    </td>
-                {% endif %}
                 <td class="font9">{{ event.note }}</td>
                 <td class="font9">{{ event.ip }}</td>
                 <td class="font9">{{ event.createdAt | time_diff }}</td>
