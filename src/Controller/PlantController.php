@@ -236,6 +236,7 @@ class PlantController extends AbstractController
 
         return new Response($message, $status);
     }
+
     /**
      * @Route("/cli/{plant_uniq_id}", name="cli_post", methods={"POST", "GET"})
      * @Route("/cli/{plant_uniq_id}/{property}/{value}", name="cli", methods={"GET","POST"})
@@ -249,6 +250,8 @@ class PlantController extends AbstractController
      * @param string $property
      * @param string $value
      * @return Response
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function cli(Request $request, PlantRepository $plants, string $plant_uniq_id, CustomFieldRepository $fieldsRepo, LoggerInterface $logger, \Swift_Mailer $mailer, CustomFieldRepository $customFields, string $property=null, string $value=null): Response
     {
