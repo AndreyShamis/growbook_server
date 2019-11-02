@@ -16,7 +16,7 @@
                             <th style="width: 150px;">Value2</th>
                             <th style="width: 150px;">Value3</th>
                             <th>Last Time</th>
-                            <th title="Events count">Count</th>
+{#                            <th title="Events count">Count</th>#}
                             <th title="Threshold">TH</th>
                             <th title="Force update every(seconds)">Force</th>
                             <th>Type</th>
@@ -121,7 +121,7 @@
                                         {{ _created | time_diff}} ({{ sensor.lastEvent.ip }})
                                     {% endif %}
                                 </td>
-                                <td style="font-size: 10px;">{{ sensor.events | length }}</td>
+{#                                <td style="font-size: 10px;">{{ sensor.events | length }}</td>#}
                                 <td style="font-size: 10px;">{{ sensor.diffThreshold }}</td>
                                 <td style="font-size: 10px;">{{ sensor.writeForceEveryXseconds }}</td>
                                 <td><span title="{{ type }}" style="font-size: 10px;">{{ type | SensorTypeShort }}</span></td>
