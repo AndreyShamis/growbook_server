@@ -136,6 +136,7 @@ class Plant implements PlantInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="plant", orphanRemoval=true)
+     * @ORM\OrderBy({"happenedAt" = "DESC"})
      */
     private $comments;
 
