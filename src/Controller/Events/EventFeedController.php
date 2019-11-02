@@ -27,7 +27,7 @@ class EventFeedController extends AbstractController
     public function index(EventFeedRepository $eventRepository): Response
     {
         return $this->render('events/event_feed/index.html.twig', [
-            'event_feeds' => $eventRepository->findAll(),
+            'event_feeds' => $eventRepository->findBy([], ['happenedAt' => 'DESC']),
         ]);
     }
 
