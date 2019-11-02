@@ -31,7 +31,7 @@
                 <td><a href="{{ path('plant_show', {'id': plant.id}) }}">{{ plant.name }}</a></td>
                 <td>{{ plant.days }}</td>
                 <td>{{ plant.periodName }}</td>
-                <td>{{ plant.light }}</td>
+                <td><span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span></td>
                 <td title="{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}">{{ plant.createdAt ? plant.createdAt|time_diff : '' }}</td>
                 <td title="{{ plant.createdAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.updatedAt ? plant.updatedAt|time_diff : '' }}</td>
                 <td title="{{ plant.createdAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.startedAt ? plant.startedAt|time_diff : '' }}</td>
