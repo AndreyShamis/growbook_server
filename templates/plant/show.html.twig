@@ -471,6 +471,40 @@
 
     {% include 'plant/plant.events.no.sensor.html.twig' %}
 
+
+    <h5>All comments count {{ plant.comments | length }}</h5>
+    <hr/>
+    {% apply spaceless %}
+        <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Comment</th>
+                <th>Time</th>
+                <th>Time</th>
+                <th>User</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set counter = 0 %}
+            {% for comment in plant.comments %}
+                {% if counter > 1000 %}
+                {% else %}
+                    {% set counter = counter+1 %}
+                    <tr>
+                        <td title="{{ comment.id }}"><a href="{{ path('comment_show', {'id': comment.id}) }}">{{ comment.commentName }}</a></td>
+                        <td>{{ comment.comment }}
+                        <td>{{ comment.happenedAt | time_diff }}</td>
+                        <td title="{{ comment.happenedAt | date('Y/m/d H:i:s') }}">{{ comment.happenedAt | date('Y-m-d H:i') }}</td>
+                        <td>{{ comment.user }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endapply %}
+
+
     <hr/>
     <h5>Other</h5>
     <hr/>
