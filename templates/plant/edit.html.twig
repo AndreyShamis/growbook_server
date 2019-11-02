@@ -4,10 +4,21 @@
 
 {% block body %}
     <h1>Edit Plant</h1>
-
-    {{ include('plant/_form.html.twig', {'button_label': 'Update'}) }}
-
-    <a href="{{ path('plant_index') }}">back to list</a>
-
+    {% if mode == 'edit' %}
+        {{ include('plant/_form.html.twig', {'button_label': 'Update'}) }}
+    {% elseif mode == 'close' %}
+        {{ include('plant/_form.html.twig', {'button_label': 'Close'}) }}
+    {% endif %}
+    <br/>
+    <a href="{{ path('plant_index') }}" style="font-size: 22px;">back to list</a>
+    {% if mode == 'edit' and plant.photoPeriod < 8 %}
+        {% if is_granted('edit', plant) %}
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="{{ path('plant_close', {'id': plant.id}) }}" style="font-size: 22px;">!!! Close Plant !!!</a>
+        {% endif %}
+    {% endif %}
+    <br/><br/><br/>
     {{ include('plant/_delete_form.html.twig') }}
+    <br/><br/>
+    <br/><br/>
 {% endblock %}

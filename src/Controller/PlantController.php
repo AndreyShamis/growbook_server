@@ -128,6 +128,32 @@ class PlantController extends AbstractController
     }
 
     /**
+     * @Route("/{id}/close", name="plant_close", methods={"GET","POST"})
+     */
+    public function close(Request $request, Plant $plant): Response
+    {
+        $this->denyAccessUnlessGranted('edit', $plant);
+        $plant->setFinishedAt(new \DateTime());
+        $plant->setPhotoPeriod(8);
+        $form = $this->createForm(PlantType::class, $plant);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('plant_show', [
+                'id' => $plant->getId(),
+            ]);
+        }
+
+        return $this->render('plant/edit.html.twig', [
+            'plant' => $plant,
+            'form' => $form->createView(),
+            'mode' => 'close',
+        ]);
+    }
+
+    /**
      * @Route("/{id}/edit", name="plant_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Plant $plant): Response
@@ -147,6 +173,7 @@ class PlantController extends AbstractController
         return $this->render('plant/edit.html.twig', [
             'plant' => $plant,
             'form' => $form->createView(),
+            'mode' => 'edit',
         ]);
     }
 
