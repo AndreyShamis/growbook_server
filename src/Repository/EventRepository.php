@@ -7,7 +7,7 @@ use App\Entity\Plant;
 use App\Entity\Sensor;
 use App\Model\SensorInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use App\Model\PlantInterface;
 
 /**
@@ -18,7 +18,7 @@ use App\Model\PlantInterface;
  */
 class EventRepository extends ServiceEntityRepository
 {
-    public function __construct(RegistryInterface $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Event::class);
     }
