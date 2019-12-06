@@ -133,8 +133,7 @@ class PlantController extends AbstractController
     public function close(Request $request, Plant $plant): Response
     {
         $this->denyAccessUnlessGranted('edit', $plant);
-        $plant->setFinishedAt(new \DateTime());
-        $plant->setPhotoPeriod(8);
+        $plant->closePlant();
         $form = $this->createForm(PlantType::class, $plant);
         $form->handleRequest($request);
 

@@ -403,10 +403,19 @@ class Plant implements PlantInterface
         return $this->finishedAt;
     }
 
-    public function setFinishedAt(?\DateTimeInterface $finishedAt): PlantInterface
+    /**
+     * @param \DateTimeInterface|null $finishedAt
+     * @param bool $autoFinishPeriodUpdate
+     * @return PlantInterface
+     */
+    public function setFinishedAt(?\DateTimeInterface $finishedAt, bool $autoFinishPeriodUpdate = true): PlantInterface
     {
         $this->finishedAt = $finishedAt;
-
+        try {
+            if ($autoFinishPeriodUpdate && $finishedAt !== null) {
+                $this->setPhotoPeriod(8, false);
+            }
+        } catch (\Throwable $ex) {}
         return $this;
     }
 
@@ -589,13 +598,27 @@ class Plant implements PlantInterface
 
     /**
      * @param int $photoPeriod
+     * @param bool $autoFinishTimeUpdate
      * @return Plant
      */
-    public function setPhotoPeriod(int $photoPeriod): self
+    public function setPhotoPeriod(int $photoPeriod = 0, bool $autoFinishTimeUpdate = true): self
     {
         $this->photoPeriod = $photoPeriod;
-
+        if ($autoFinishTimeUpdate && $photoPeriod === 8) {
+            if ($this->getFinishedAt() === null){
+                try {
+                    $now = new \DateTime();
+                    $this->setFinishedAt($now, false);
+                } catch (\Throwable $ex) {}
+            }
+        }
         return $this;
+    }
+
+    public function closePlant(): void
+    {
+        $this->setPhotoPeriod(8, false);
+        $this->setFinishedAt(new \DateTime(), false);
     }
 
     public static function getPhotoPeriodList(): array
