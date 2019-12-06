@@ -44,3 +44,8 @@
 .infobox>.infobox-icon>.ace-icon{
     height: 40px;
 }
+
+.finishedPlant{
+    background-color: #94a5b5 !important;
+    font-style: italic !important;
+}

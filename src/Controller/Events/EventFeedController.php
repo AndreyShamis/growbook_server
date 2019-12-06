@@ -2,14 +2,16 @@
 
 namespace App\Controller\Events;
 
-use App\Entity\Event;
 use App\Entity\Events\EventFeed;
 use App\Entity\FeedFertilizer;
 use App\Form\Events\EventFeedType;
 use App\Repository\Events\EventFeedRepository;
 use App\Repository\FeedFertilizerRepository;
 use App\Repository\FertilizerRepository;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,7 +36,7 @@ class EventFeedController extends AbstractController
     /**
      * @Route("/clone/{feed}", name="clone_feed_event", methods={"GET","POST"})
      * @param EventFeed $feed
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function cloneFeed(EventFeed $feed)
     {
@@ -49,6 +51,7 @@ class EventFeedController extends AbstractController
     /**
      * @Route("/new", name="events_event_feed_new", methods={"GET","POST"})
      * @param Request $request
+     * @param FertilizerRepository $fertiRepo
      * @return Response
      */
     public function new(Request $request, FertilizerRepository $fertiRepo): Response
@@ -79,8 +82,9 @@ class EventFeedController extends AbstractController
 
             $entityManager->persist($eventFeed);
             $entityManager->flush();
-
-            return $this->redirectToRoute('events_event_feed_index');
+            return $this->redirectToRoute('plant_show', [
+                'id' => $eventFeed->getPlant()->getId(),
+            ]);
         }
 
         return $this->render('events/event_feed/new.html.twig', [
@@ -103,6 +107,13 @@ class EventFeedController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="events_event_feed_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param EventFeed $eventFeed
+     * @param FertilizerRepository $fertiRepo
+     * @param FeedFertilizerRepository $ffRepo
+     * @return Response
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function edit(Request $request, EventFeed $eventFeed, FertilizerRepository $fertiRepo, FeedFertilizerRepository $ffRepo): Response
     {
@@ -155,6 +166,9 @@ class EventFeedController extends AbstractController
 
     /**
      * @Route("/{id}", name="events_event_feed_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param EventFeed $eventFeed
+     * @return Response
      */
     public function delete(Request $request, EventFeed $eventFeed): Response
     {

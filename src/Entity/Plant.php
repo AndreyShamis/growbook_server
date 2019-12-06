@@ -159,6 +159,18 @@ class Plant implements PlantInterface
         $this->setVersion(0);
     }
 
+    /**
+     * Return True of plant finished
+     * @return bool
+     */
+    public function isFinished(): bool
+    {
+        if ($this->getPhotoPeriod() === 8) {
+            return true;
+        }
+        return false;
+    }
+
     public function calculateLightPeriod(int $updatedAt): void
     {
         try {

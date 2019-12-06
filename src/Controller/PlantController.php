@@ -32,7 +32,7 @@ class PlantController extends AbstractController
     public function index(PlantRepository $plantRepository): Response
     {
         return $this->render('plant/index.html.twig', [
-            'plants' => $plantRepository->findBy([], ['updatedAt' => 'DESC']),
+            'plants' => $plantRepository->findBy([], ['photoPeriod' => 'ASC', 'updatedAt' => 'DESC']),
         ]);
     }
 

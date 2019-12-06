@@ -143,7 +143,8 @@
         var str_id = "FertilizerDiv_" + counter;
         var str_type = "FertilizerType[]";// + counter;
         var str_value = "FertilizerAmount[]";// + counter;
-        new_obj.attr('name', str_type)
+        new_obj.attr('name', str_type);
+
         $(".fertilizers_dest").append('<div class="' + str_id + '">'+
             counter +
             '</div>');
@@ -153,17 +154,44 @@
             '<input type="text" name="' + str_value + '" id="val' + counter + '" value="1" />' +
             '<input type="button" class="deleteFertilizer" id="deleteFertilizer' + counter + '" value="Delete" onclick="removeFertilizerDiv(\'' + str_id + '\')"/>'
         );
+        try{
+            $('#type' + counter + ' option[value=1]').removeAttr("selected");
 
+        } catch (e) {
+
+        }
+        try{
+            let tmp_counter = 1;
+            let _opt = '1';
+            $("#"+new_obj.attr('id') +" option").each(function()
+            {
+                if (tmp_counter == counterSummary + 1) {
+                    _opt = $(this).val();
+                    return false;
+                }
+                tmp_counter++;
+            });
+            $('#type' + counter + ' option[value='+ _opt +']').attr('selected', 'selected');
+        } catch (e) {}
         counter++;
         counterSummary++;
     }
 
+    function UpdateEC(obj){
+        try {
+            let tdsValue = $(obj).val();
+            let ecValue = $('#event_feed_ec').val();
+            if (tdsValue * 2 !== ecValue) {
+                $('#event_feed_ec').val(tdsValue * 2);
+            }
+        } catch (e) { }
+    }
+
     $(document).ready(function () {
         $("#event_feed_fertilizers").hide();
-        $("#addFertilizer").click(function () {
-            addFertilizer();
+        $("#addFertilizer").click(function () { addFertilizer(); });
+        $("#event_feed_tds").on("change paste keyup", function () { UpdateEC(this); });
 
-        });
         var selectObjectKey, str_atr, str_val_atr;
         {% set counter = 0 %}
         {% for ferti in event_feed.fertilizers %}
