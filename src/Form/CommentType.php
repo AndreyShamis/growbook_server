@@ -31,7 +31,7 @@ class CommentType extends AbstractType
 //            ->add('createdAt')
 //            ->add('updatedAt')
             ->add('happenedAt')
-            ->add('commentName')
+            ->add('commentName', null, ['required' => false, 'empty_data' => '', 'help' => '[Provide comment Name]'])
             ->add('comment')
 //            ->add('enabled')
 //            ->add('user')

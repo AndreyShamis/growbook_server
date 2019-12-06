@@ -40,7 +40,7 @@ class Comment
     /**
      * @ORM\Column(type="string", length=255, options={"default"=""})
      */
-    private $commentName = '';
+    private $commentName;
 
     /**
      * @ORM\Column(type="text", length=16383, options={"default"=""})
@@ -60,10 +60,12 @@ class Comment
 
     public function __construct()
     {
-        $this->setCreatedAt(new \DateTime());
-        $this->setUpdatedAt(new \DateTime());
-        $this->setHappenedAt(new \DateTime());
+        $now = new \DateTime();
+        $this->setCreatedAt($now);
+        $this->setUpdatedAt($now);
+        $this->setHappenedAt($now);
         $this->setEnabled(true);
+        $this->setCommentName($now->format('Y-m-d H:i:s'));
     }
 
     public function getId(): ?int

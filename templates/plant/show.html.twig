@@ -492,7 +492,7 @@
                 {% else %}
                     {% set counter = counter+1 %}
                     <tr>
-                        <td title="{{ comment.id }}"><a href="{{ path('comment_show', {'id': comment.id}) }}">{{ comment.commentName }}</a></td>
+                        <td title="{{ comment.id }}"><a href="{{ path('comment_show', {'id': comment.id}) }}">{{ comment.commentName| length > 0 ? comment.commentName : comment.id}}</a></td>
                         <td>{{ comment.comment }}
                         <td>{{ comment.happenedAt | time_diff }}</td>
                         <td title="{{ comment.happenedAt | date('Y/m/d H:i:s') }}">{{ comment.happenedAt | date('Y-m-d H:i') }}</td>

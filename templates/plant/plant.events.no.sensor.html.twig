@@ -22,7 +22,7 @@
                     <tr>
                         {% if type == "Feed"  %}{% set _url = path('events_event_feed_show', {'id': event.id}) %}
                         {% else %}{% set _url = path('event_show', {'id': event.id}) %}{% endif %}
-                        <td title="{{ event.note }}"><a href="{{ _url }}">_{{ event.name }}_</a></td>
+                        <td title="{{ event.note }}"><a href="{{ _url }}">{{ event.name | length > 0 ? event.name : event.id}}</a></td>
                         <td>{% if type == "Feed"  %}
                                 {{ event.water }} | Ph: {{ event.ph }} | TDS/EC: {{ event.tds }}/{{ event.ec }}
                             {% else %}

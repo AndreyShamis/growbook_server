@@ -18,27 +18,27 @@ class EventFeed extends Event
     /**
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
-    protected $water = 0;
+    protected $water = 0.13;
 
     /**
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
-    protected $ph = 0;
+    protected $ph = 5.8;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned"=true})
      */
-    protected $tds = 0;
+    protected $tds = 600;
 
     /**
      * @ORM\Column(type="smallint", nullable=true, options={"unsigned"=true})
      */
-    protected $ec = 0;
+    protected $ec = 1200;
 
     /**
      * @ORM\Column(type="float", nullable=true, options={"unsigned"=true})
      */
-    protected $temperature = 24.0;
+    protected $temperature = 22.0;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\FeedFertilizer", mappedBy="event", cascade={"persist"})
