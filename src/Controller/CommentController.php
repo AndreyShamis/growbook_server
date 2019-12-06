@@ -74,8 +74,9 @@ class CommentController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('comment_index', [
-                'id' => $comment->getId(),
+
+            return $this->redirectToRoute('plant_show', [
+                'id' => $comment->getPlant()->getId(),
             ]);
         }
 
