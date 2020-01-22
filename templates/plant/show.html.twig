@@ -7,26 +7,22 @@
         <div class="col-sm-12 widget-container-col ui-sortable" id="widget-container-col-10">
             <div class="widget-box ui-sortable-handle" id="widget-box-10">
                 <div class="widget-header widget-header-small">
-                    <h5 class="widget-title smaller">ID:{{ plant.id }} / Hostname:({{ plant.uniqId }}) -  {%  if uptime.propertyValue is defined and uptime.propertyValue is not null %}Uptime {{  uptime.propertyValue  | ExecutionTimeWithDays }} {% endif %}</h5>
-
+                    <h5 class="widget-title smaller">DAY: {{ plant.days }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        ID:{{ plant.id }} / Hostname:({{ plant.uniqId }}) -
+                        {% if uptime.propertyValue is defined and uptime.propertyValue is not null %}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            Uptime {{  uptime.propertyValue  | ExecutionTimeWithDays }}
+                        {% endif %}
+                    </h5>
                     <div class="widget-toolbar no-border">
                         <ul class="nav nav-tabs" id="myTab">
-                            <li class="active">
-                                <a data-toggle="tab" href="#home">Home</a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" href="#customFields">Custom fields</a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" href="#options">Options</a>
-                            </li>
-                            <li>
-                                <a data-toggle="tab" href="#info">Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-                            </li>
+                            <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                            <li><a data-toggle="tab" href="#customFields">Custom fields</a></li>
+                            <li><a data-toggle="tab" href="#options">Options</a></li>
+                            <li><a data-toggle="tab" href="#info">Info&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a></li>
                         </ul>
                     </div>
                 </div>
-
                 <div class="widget-body">
                     <div class="widget-main padding-6">
                         <div class="tab-content">
@@ -145,23 +141,23 @@
                         </div>
                     </div>
 
-                    <div class="infobox infobox-light-brown">
-                        <div class="infobox-icon"><i class="ace-icon fa fa-globe"></i></div>
+{#                    <div class="infobox infobox-light-brown">#}
+{#                        <div class="infobox-icon"><i class="ace-icon fa fa-globe"></i></div>#}
 
-                        <div class="infobox-data">
-                            <span class="infobox-data-number">{{ plant.soilMedium }}</span>
-                            <div class="infobox-content">Medium</div>
-                        </div>
-                    </div>
+{#                        <div class="infobox-data">#}
+{#                            <span class="infobox-data-number">{{ plant.soilMedium }}</span>#}
+{#                            <div class="infobox-content">Medium</div>#}
+{#                        </div>#}
+{#                    </div>#}
 
-                    <div class="infobox infobox-wood">
-                        <div class="infobox-icon"><i class="ace-icon fa fa-inbox"></i></div>
+{#                    <div class="infobox infobox-wood">#}
+{#                        <div class="infobox-icon"><i class="ace-icon fa fa-inbox"></i></div>#}
 
-                        <div class="infobox-data">
-                            <span class="infobox-data-number">{{ plant.pot }}</span>
-                            <div class="infobox-content">Pot</div>
-                        </div>
-                    </div>
+{#                        <div class="infobox-data">#}
+{#                            <span class="infobox-data-number">{{ plant.pot }}</span>#}
+{#                            <div class="infobox-content">Pot</div>#}
+{#                        </div>#}
+{#                    </div>#}
 
                     <div class="infobox infobox-green">
                         <div class="infobox-icon"><i class="ace-icon fa fa-calendar"></i></div>

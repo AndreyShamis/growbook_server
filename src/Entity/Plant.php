@@ -165,7 +165,7 @@ class Plant implements PlantInterface
      */
     public function isFinished(): bool
     {
-        if ($this->getPhotoPeriod() === 8) {
+        if ($this->getPhotoPeriod() === 8 || $this->getFinishedAt() !== null) {
             return true;
         }
         return false;
