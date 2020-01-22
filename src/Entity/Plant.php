@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Events\EventSoilHydrometer;
 use App\Model\EventInterface;
 use App\Model\PlantInterface;
 use App\Model\SensorInterface;
@@ -157,6 +158,37 @@ class Plant implements PlantInterface
         $this->nodeCommands = new ArrayCollection();
         $this->comments = new ArrayCollection();
         $this->setVersion(0);
+    }
+
+    public function getLastHydrometerPeak(): \DateTime
+    {
+        /** @var ArrayCollection[EventInterface] $events */
+        $events = $this->getEvents();
+        /** @var ArrayCollection[EventSoilHydrometer] $good_events */
+        $good_events = new ArrayCollection();
+        $max_value = 0;
+        $looper = 0;
+        $ret = new \DateTime('-5 minutes');
+        foreach ($events as $event) {
+
+            if ($event->getType() === EventSoilHydrometer::class && $event->getHappenedAt() >= new \DateTime('-6 hours')) {
+            //if ($event->getType() === EventSoilHydrometer::class && $event->getHappenedAt() >= new \DateTime('-6 hours')) {
+                $good_events->add($event);
+                if ($event->getHydrometer() > $max_value){
+                    $ret = $event->getHappenedAt();
+                }
+                $max_value = max($event->getHydrometer(), $max_value);
+
+            }
+            if( count($good_events) > 100 || ($looper > 10000 && count($good_events) > 0) ){
+                break;
+            }
+            if ($event->getHappenedAt() < new \DateTime('-6 hours')) {
+                break; // on first we found happened more than 6 hours we exit
+            }
+            $looper++;
+        }
+        return $ret;
     }
 
     /**

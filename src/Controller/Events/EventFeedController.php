@@ -4,7 +4,9 @@ namespace App\Controller\Events;
 
 use App\Entity\Events\EventFeed;
 use App\Entity\FeedFertilizer;
+use App\Entity\Plant;
 use App\Form\Events\EventFeedType;
+use App\Model\PlantInterface;
 use App\Repository\Events\EventFeedRepository;
 use App\Repository\FeedFertilizerRepository;
 use App\Repository\FertilizerRepository;
@@ -50,13 +52,19 @@ class EventFeedController extends AbstractController
 
     /**
      * @Route("/new", name="events_event_feed_new", methods={"GET","POST"})
+     * @Route("/new/{plant}", name="events_event_feed_new_with_plant", methods={"GET","POST"})
      * @param Request $request
      * @param FertilizerRepository $fertiRepo
+     * @param Plant $plant
      * @return Response
      */
-    public function new(Request $request, FertilizerRepository $fertiRepo): Response
+    public function new(Request $request, FertilizerRepository $fertiRepo, Plant $plant = null): Response
     {
         $eventFeed = new EventFeed();
+        if ( $plant !== null) {
+            $eventFeed->setPlant($plant);
+            $eventFeed->setHappenedAt($plant->getLastHydrometerPeak());
+        }
         $r = $request->request->all();
         $eventFeed->setType(EventFeed::class);
         $form = $this->createForm(EventFeedType::class, $eventFeed);

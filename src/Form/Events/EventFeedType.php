@@ -72,6 +72,7 @@ class EventFeedType extends AbstractType
                                 ->join('p.owners', 'u')
                                 ->where('u.id = :user')
                                 ->andWhere('p.photoPeriod < :photoPeriod')
+                                ->andWhere('p.finishedAt is NULL')
                                 ->setParameter('photoPeriod', '8')
                                 ->setParameter('user', $user->getId())
                                 ->orderBy('p.updatedAt', 'DESC')
