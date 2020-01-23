@@ -220,7 +220,7 @@ class EventController extends AbstractController
             $message .= 'TYPE:' . $event->getType();
             if ($lastEvent === null) {
                 if ($automatic && $sensor !== null) {
-                    $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds() . 'sec;;');
+                    $event->addNote('LAST_EVENT_NOT_FOUND::'.$sensor->getWriteForceEveryXseconds(true) . 'sec;;');
                 }
 
                 if ($sensor !== null) {
@@ -230,7 +230,7 @@ class EventController extends AbstractController
                 $entityManager->flush();
                 $status = 301;
                 if ($sensor !== null) {
-                    $message = 'Last event not found in last ' .  $sensor->getWriteForceEveryXseconds() . ' sec : ';
+                    $message = 'Last event not found in last ' .  $sensor->getWriteForceEveryXseconds(true) . ' sec : ';
                 }
                 $message .= 'Created ID:' . $event->getId();
             } else {

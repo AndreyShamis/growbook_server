@@ -35,7 +35,7 @@
                 <td>{{ sensor.updatedAt | time_diff}}</td>
                 <td><a href="{{ path('sensor_edit', {'id': sensor.id}) }}">edit</a></td>
                 <td>{{ sensor.diffThreshold }}</td>
-                <td>{{ sensor.writeForceEveryXseconds }} / {{ sensor.writeForceEveryXsecondsNight }}</td>
+                <td>{{ sensor.writeForceEveryXseconds(false) }} / {{ sensor.writeForceEveryXsecondsNight }}</td>
                 <td>{{ sensor.eventType }}</td>
                 <td>{{ sensor.uniqId }}</td>
 
