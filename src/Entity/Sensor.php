@@ -57,6 +57,11 @@ class Sensor implements SensorInterface
     private $writeForceEveryXseconds = 3000;
 
     /**
+     * @ORM\Column(name="write_force_every_xseconds_night", type="integer", options={"unsigned"=true, "default"="3000"})
+     */
+    private $writeForceEveryXseconds_night = 3000;
+
+    /**
      * @ORM\Column(type="float", options={"default"="0"})
      */
     private $diffThreshold = 0;
@@ -192,6 +197,18 @@ class Sensor implements SensorInterface
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getWriteForceEveryXsecondsNight(): ?int
+    {
+        return $this->writeForceEveryXseconds_night;
+    }
+
+    public function setWriteForceEveryXsecondsNight(int $writeForceEveryXsecondsNight): SensorInterface
+    {
+        $this->writeForceEveryXseconds_night = $writeForceEveryXsecondsNight;
+
+        return $this;
     }
 
     public function getWriteForceEveryXseconds(): ?int

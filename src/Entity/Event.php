@@ -107,6 +107,12 @@ class Event implements EventInterface
     protected $ip = '';
 
     /**
+     * @ORM\Column(type="boolean", options={"default"="0"})
+     */
+    private $light = 0;
+    
+
+    /**
      * @return string
      */
     public function getIp(): string
@@ -256,6 +262,9 @@ class Event implements EventInterface
     public function setPlant(PlantInterface $plant): EventInterface
     {
         $this->plant = $plant;
+        if ( $this->plant !== null ) {
+            $this->setLight($this->plant->isLight());
+        }
 
         return $this;
     }
@@ -404,6 +413,18 @@ class Event implements EventInterface
     public function setHappenedAt(\DateTimeInterface $happenedAt): self
     {
         $this->happenedAt = $happenedAt;
+
+        return $this;
+    }
+
+    public function getLight(): bool
+    {
+        return $this->light;
+    }
+
+    public function setLight(bool $light): self
+    {
+        $this->light = $light;
 
         return $this;
     }
