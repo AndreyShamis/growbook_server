@@ -213,7 +213,11 @@ class Sensor implements SensorInterface
 
     public function getWriteForceEveryXseconds(): ?int
     {
-        return $this->writeForceEveryXseconds;
+        if ( $this->getPlant()->isLight()) {
+            return $this->writeForceEveryXseconds;
+        } else {
+            return $this->writeForceEveryXseconds_night;
+        }
     }
 
     public function setWriteForceEveryXseconds(int $writeForceEveryXseconds): SensorInterface

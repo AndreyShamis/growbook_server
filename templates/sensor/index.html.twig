@@ -28,7 +28,7 @@
                 <td>{{ sensor.eventType | parseType }}</td>
                 <td>{{ sensor.events | length }}</td>
                 <td>{{ sensor.diffThreshold }}</td>
-                <td>{{ sensor.writeForceEveryXseconds }}</td>
+                <td>{{ sensor.writeForceEveryXseconds }} / {{ sensor.writeForceEveryXsecondsNight }}</td>
                 <td>{{ sensor.uniqId }}</td>
                 <td>
                     {% if is_granted('edit', sensor.plant) %}
