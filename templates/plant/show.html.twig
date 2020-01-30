@@ -397,9 +397,8 @@
             var data = new google.visualization.DataTable();
             data.addColumn('datetime', 'Time');
             data.addColumn('number', 'Feed');
-            data.addRows([
-                {% set counter = 0 %}
-                {% for event in plant.events %}
+            {% set counter = 0 %}
+            data.addRows([{% for event in plant.events %}
                     {% set type = event.type | parseType %}
                     {% if event.sensor is none %}{% if type == 'Feed' %}{% set counter = counter + 1 %}[new Date({{ event.happenedAt|date('Y, m, d, H, i') }}),{{ event.water }}],{% endif %}{% endif %}
                 {% endfor %}
