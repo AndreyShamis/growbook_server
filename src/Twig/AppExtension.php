@@ -2,6 +2,7 @@
 
 namespace App\Twig;
 
+use DateTime;
 use ReflectionClass;
 use ReflectionException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -41,6 +42,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('lightToBadge', [$this, 'lightToBadge']),
             new TwigFilter('SensorTypeShort', [$this, 'SensorTypeShort']),
             new TwigFilter('relativeTime', [$this, 'relativeTime']),
+            new TwigFilter('toJsDate', [$this, 'toJsDate']),
             new TwigFilter('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
         );
     }
@@ -70,6 +72,7 @@ class AppExtension extends AbstractExtension
             new TwigFunction('lightToBadge', [$this, 'lightToBadge']),
             new TwigFunction('SensorTypeShort', [$this, 'SensorTypeShort']),
             new TwigFunction('relativeTime', [$this, 'relativeTime']),
+            new TwigFunction('toJsDate', [$this, 'toJsDate']),
             new TwigFunction('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
         ];
     }
@@ -136,6 +139,15 @@ class AppExtension extends AbstractExtension
         return $ret;
     }
 
+
+    public function toJsDate(\DateTime $dateTime = null): string
+    {
+        if (!$dateTime){
+            return '';
+        }
+        // WA for Fix issue https://github.com/google/google-visualization-issues/issues/1058
+        return $dateTime->format('Y') . ',' . ((int)$dateTime->format('m') - 1) . ',' . $dateTime->format('d') . ',' . $dateTime->format('H');
+    }
 
     /**
      * @param int $value

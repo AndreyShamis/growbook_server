@@ -4,7 +4,6 @@
 
 {% block body %}
     <h4>Plants</h4>
-
     <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
         <thead>
             <tr>
@@ -36,7 +35,7 @@
                 <td>{{ plant.days }}</td>
                 <td>{{ plant.periodName }}</td>
                 <td>{% if not plant.finished %}<span class="badge {{ lightToBadge(plant.light) }}">{{ plant.light? "On" : "Off" }} </span>{% endif %}</td>
-                <td title="{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}">{{ plant.createdAt ? plant.createdAt|time_diff : '' }}</td>
+                <td title="{{ plant.createdAt ? plant.createdAt|date('Y-m-d H:i:s') : '' }}">{{ plant.createdAt ? plant.createdAt|time_diff : '' }} --- {{ plant.createdAt|date('Y-m-d H:i:s')  }} - {{ plant.createdAt| toJsDate }}</td>
                 <td title="{{ plant.createdAt ? plant.updatedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.updatedAt ? plant.updatedAt|time_diff : '' }}</td>
                 <td title="{{ plant.createdAt ? plant.startedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.startedAt ? plant.startedAt|time_diff : '' }}</td>
                 <td title="{{ plant.createdAt ? plant.finishedAt|date('Y-m-d H:i:s') : '' }}">{{ plant.finishedAt ? plant.finishedAt|time_diff : '' }}</td>
