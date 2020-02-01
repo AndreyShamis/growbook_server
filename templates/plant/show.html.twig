@@ -293,7 +293,7 @@
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
                 {% if type == 'Humidity' %}
-                {% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.happenedAt|date('Y, m, d, H, i, s') }}),{{ event.value }}],{% endfor %}{% endif %}
+                {% for event in sensors[id] | slice(0, 10000) %}[new Date(Date.UTC({{ event.happenedAt|toJsDate }})),{{ event.value }}],{% endfor %}{% endif %}
                 {% endfor %}
             ]);
 
@@ -327,7 +327,7 @@
             data.addRows([
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
-                {% if type == 'Temperature' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.happenedAt|date('Y, m, d, H, i, s') }}),{{ event.value }}],{% endfor %}{% endif %}
+                {% if type == 'Temperature' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date(Date.UTC({{ event.happenedAt|toJsDate }})),{{ event.value }}],{% endfor %}{% endif %}
                 {% endfor %}
             ]);
 
@@ -365,7 +365,7 @@
             data.addRows([
                 {% for id, sensor in sensorsObj %}
                 {% set type = sensor.eventType | parseType %}
-                {% if type == 'SoilHydrometer' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date({{ event.happenedAt|date('Y, m, d, H, i, s') }}),{{ event.value }}],{% endfor %}{% endif %}{% endfor %}
+                {% if type == 'SoilHydrometer' %}{% for event in sensors[id] | slice(0, 10000) %}[new Date(Date.UTC({{ event.happenedAt|toJsDate }})),{{ event.value }}],{% endfor %}{% endif %}{% endfor %}
             ]);
 
             var newData = google.visualization.data.group(data, [{
