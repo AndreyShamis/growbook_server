@@ -146,8 +146,8 @@ class AppExtension extends AbstractExtension
             return '';
         }
         // WA for Fix issue https://github.com/google/google-visualization-issues/issues/1058
-        $mon = ((int)$dateTime->format('m') - 1);
-        $day = ((int)$dateTime->format('d') - 1);
+        $mon = ((int)$dateTime->format('n') - 1);
+        $day = ((int)$dateTime->format('j') - 1);
         return $dateTime->format('Y') . ',' . $mon . ',' . $day . ',' . $dateTime->format('H');
     }
 
