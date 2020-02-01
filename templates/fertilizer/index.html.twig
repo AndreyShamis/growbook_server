@@ -29,11 +29,11 @@
         {% for fertilizer in fertilizers %}
             <tr>
                 <td><a href="{{ path('fertilizer_show', {'id': fertilizer.id}) }}">{{ fertilizer.id }}</a></td>
-                <td>{{ fertilizer.name }}</td>
+                <td><a href="{{ path('fertilizer_show', {'id': fertilizer.id}) }}">{{ fertilizer.name }}</a></td>
                 <td style="text-align: right;"><strong>{{ fertilizer.N }}</strong></td>
                 <td style="text-align: right;"><strong>{{ fertilizer.P }}</strong></td>
                 <td style="text-align: right;"><strong>{{ fertilizer.K }}</strong></td>
-                <td class="font12">{{ fertilizer.additionalElements }}</td>
+                <td class="font12">{{ fertilizer.additionalElements | nl2br }}</td>
                 <td class="font10">{{ fertilizer.company }}</td>
                 <td class="font10">{{ fertilizer.dose }}</td>
                 <td class="font10">{{ fertilizer.content }}</td>
