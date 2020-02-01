@@ -9,12 +9,13 @@ function floorDate(datetime) {
 }
 
 function floorDateDaily(datetime) {
+    return datetime;
     var newDate = new Date(datetime);
-    newDate.setMonth(newDate.getMonth() -1);    // Fix issue https://github.com/google/google-visualization-issues/issues/1058
-    newDate.setHours(0);
-    newDate.setMinutes(0);
-    newDate.setSeconds(0);
-    return newDate;
+    // newDate.setMonth(newDate.getMonth() -1);    // Fix issue https://github.com/google/google-visualization-issues/issues/1058
+    // newDate.setHours(0);
+    // newDate.setMinutes(0);
+    // newDate.setSeconds(0);
+    // return newDate;
 }
 
 function CustomOnClickAction(e, legendItem) {
