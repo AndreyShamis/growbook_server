@@ -146,7 +146,7 @@ class AppExtension extends AbstractExtension
             return '';
         }
         // WA for Fix issue https://github.com/google/google-visualization-issues/issues/1058
-        return $dateTime->format('Y') . ',' . ((int)$dateTime->format('m') - 1) . ',' . $dateTime->format('d') . ',' . $dateTime->format('H');
+        return $dateTime->format('Y') . ',' . $dateTime->format('m') . ',' . $dateTime->format('d') . ',' . $dateTime->format('H');
     }
 
     /**
