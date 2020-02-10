@@ -436,26 +436,39 @@
             $('#changeTime').on('click','button', function (evt) {
                 window.location = '{{ path('plant_show', {'id': plant.id}) }}/hours/' + this.value;
             });
-            // Load graphs
-            google.load('visualization', '1.1', {'packages': ['corechart']});
-            google.setOnLoadCallback(drawHumidityHourly);
-            google.setOnLoadCallback(drawTemperatureHourly);
-            google.setOnLoadCallback(drawSoilHydrometerHourly);
-            google.setOnLoadCallback(drawFeedDaily);
 
-            $('#addComment').click(function() {
-                location.href = '{{ path('comment_new', {'id': plant.id}) }}';
-            });
-            $('#feedPlant').click(function() {
-                location.href = '{{ path('events_event_feed_new_with_plant', {'plant': plant.id}) }}';
-            });
+            try {
+                // Load graphs
+                google.charts.load('current', {'packages': ['corechart']});
+                google.charts.setOnLoadCallback(drawHumidityHourly);
+                google.charts.setOnLoadCallback(drawTemperatureHourly);
+                google.charts.setOnLoadCallback(drawSoilHydrometerHourly);
+                google.charts.setOnLoadCallback(drawFeedDaily);
+            } catch (e) {
+                console.log('Failed to load google graphs');
+                console.log(e);
+            }
 
-            $('#reloadPage').click(function() {
-                location.reload();
-            });
-            $('#rebootNode').click(function() {
-                location.href = '{{ path('reboot_node', {'plant': plant.id}) }}'
-            });
+            try {
+
+                $('#addComment').click(function() {
+                    location.href = '{{ path('comment_new', {'id': plant.id}) }}';
+                });
+                $('#feedPlant').click(function() {
+                    location.href = '{{ path('events_event_feed_new_with_plant', {'plant': plant.id}) }}';
+                });
+
+                $('#reloadPage').click(function() {
+                    location.reload();
+                });
+                $('#rebootNode').click(function() {
+                    location.href = '{{ path('reboot_node', {'plant': plant.id}) }}'
+                });
+            } catch (e) {
+                console.log(e);
+            }
+
+
 
 
         });
