@@ -4,89 +4,101 @@
 
 {% block body %}
     <h4>Feed</h4>
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 80%;">
 
-    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
-        <tbody>
-            <tr>
-                <th>Name</th>
-                <td>{{ event_feed.id }} - [{{ event_feed.name }}]</td>
-            </tr>
-            <tr>
-                <th>Plant</th>
-                <td><a href="{{ path('plant_show', {'id': event_feed.plant.id }) }}">{{ event_feed.plant.name }} - [{{ event_feed.plant.id }}]</a></td>
-            </tr>
-            <tr>
-                <th>Amount of water</th>
-                <td>{{ event_feed.water }}</td>
-            </tr>
-            <tr>
-                <th>Ph</th>
-                <td>{{ event_feed.ph }}</td>
-            </tr>
-            <tr>
-                <th>TDS / EC</th>
-                <td>{{ event_feed.tds }} / {{ event_feed.ec }}</td>
-            </tr>
-            <tr>
-                <th>Temperature</th>
-                <td>{{ event_feed.temperature }}</td>
-            </tr>
-            <tr>
-                <th>Fertilizers</th>
-                <td>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Amount</th>
-                            <th>Ferti</th>
-                            <th>N</th>
-                            <th>P</th>
-                            <th>K</th>
-                            <th>Company</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                    {% for ferti in event_feed.fertilizers %}
-                        <tr>
-                            <td>{{ ferti.amount }}</td>
-                            <td>{{ ferti.fertilizer.name }}</td>
-                            <td>{{ ferti.fertilizer.n }}</td>
-                            <td>{{ ferti.fertilizer.p }}</td>
-                            <td>{{ ferti.fertilizer.k }}</td>
-                            <td>{{ ferti.fertilizer.company }}</td>
-                        </tr>
-                    {% endfor %}
-                        </tbody>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <th>Created / Updated</th>
-                <td>{{ event_feed.createdAt ? event_feed.createdAt|date('Y-m-d H:i:s') : '' }} / {{ event_feed.updatedAt ? event_feed.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ event_feed.type }}</td>
-            </tr>
-            <tr>
-                <th>Value</th>
-                <td>{{ event_feed.value }}</td>
-            </tr>
-            <tr>
-                <th>Note</th>
-                <td>{{ event_feed.note }}</td>
-            </tr>
-            <tr>
-                <th>Value1 / Value2 / Value3</th>
-                <td>[{{ event_feed.value1 }}] / [{{ event_feed.value2 }}] / [{{ event_feed.value3 }}]</td>
-            </tr>
-            <tr>
-                <th>Ip</th>
-                <td>{{ event_feed.ip }}</td>
-            </tr>
+                <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{ event_feed.id }} - [{{ event_feed.name }}]</td>
+                    </tr>
+                    <tr>
+                        <th>Plant</th>
+                        <td><a href="{{ path('plant_show', {'id': event_feed.plant.id }) }}">{{ event_feed.plant.name }} - [{{ event_feed.plant.id }}]</a></td>
+                    </tr>
+                    <tr>
+                        <th>Amount of water</th>
+                        <td>{{ event_feed.water }}</td>
+                    </tr>
+                    <tr>
+                        <th>Ph</th>
+                        <td>{{ event_feed.ph }}</td>
+                    </tr>
+                    <tr>
+                        <th>TDS / EC</th>
+                        <td>{{ event_feed.tds }} / {{ event_feed.ec }}</td>
+                    </tr>
+                    <tr>
+                        <th>Temperature</th>
+                        <td>{{ event_feed.temperature }}</td>
+                    </tr>
+                    <tr>
+                        <th>Fertilizers</th>
+                        <td>
+                            <table>
+                                <thead>
+                                <tr>
+                                    <th>Amount</th>
+                                    <th>Ferti</th>
+                                    <th>N</th>
+                                    <th>P</th>
+                                    <th>K</th>
+                                    <th>Company</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for ferti in event_feed.fertilizers %}
+                                    <tr>
+                                        <td>{{ ferti.amount }}</td>
+                                        <td>{{ ferti.fertilizer.name }}</td>
+                                        <td>{{ ferti.fertilizer.n }}</td>
+                                        <td>{{ ferti.fertilizer.p }}</td>
+                                        <td>{{ ferti.fertilizer.k }}</td>
+                                        <td>{{ ferti.fertilizer.company }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Created / Updated</th>
+                        <td>{{ event_feed.createdAt ? event_feed.createdAt|date('Y-m-d H:i:s') : '' }} / {{ event_feed.updatedAt ? event_feed.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                    </tr>
+                    <tr>
+                        <th>Type</th>
+                        <td>{{ event_feed.type }}</td>
+                    </tr>
+                    <tr>
+                        <th>Value</th>
+                        <td>{{ event_feed.value }}</td>
+                    </tr>
+                    <tr>
+                        <th>Note</th>
+                        <td>{{ event_feed.note }}</td>
+                    </tr>
+                    <tr>
+                        <th>Value1 / Value2 / Value3</th>
+                        <td>[{{ event_feed.value1 }}] / [{{ event_feed.value2 }}] / [{{ event_feed.value3 }}]</td>
+                    </tr>
+                    <tr>
+                        <th>Ip</th>
+                        <td>{{ event_feed.ip }}</td>
+                    </tr>
 
-        </tbody>
+                    </tbody>
+                </table>
+
+            </td>
+            <td>
+                <div id="feedChart" style="width: 900px; height: 500px;"></div>
+
+            </td>
+        </tr>
     </table>
+
 
     <a href="{{ path('events_event_feed_index') }}">back to list</a> &nbsp;&nbsp;&nbsp;
 
@@ -94,4 +106,23 @@
 
     {{ include('events/event_feed/_delete_form.html.twig') }}
     {{ include('events/event_feed/_clone.html.twig') }}
+
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Fertilizer', 'Water'],
+                {% for ferti in event_feed.fertilizers %}['[{{ ferti.fertilizer.company }}]{{ ferti.fertilizer.name }}[{{ ferti.fertilizer.n }}/{{ ferti.fertilizer.p }}/{{ ferti.fertilizer.k }}]',{{ ferti.amount }}],{% endfor %}
+            ]);
+
+            var options = {
+                title: 'Feed/Fertilizers',
+                pieHole: 0.6,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('feedChart'));
+            chart.draw(data, options);
+        }
+    </script>
 {% endblock %}
