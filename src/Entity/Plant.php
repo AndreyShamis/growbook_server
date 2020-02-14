@@ -143,6 +143,16 @@ class Plant implements PlantInterface
 
     protected $light_period = 0;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $prefloweredAt;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $floweredAt;
+
     public function __construct()
     {
         try {
@@ -777,6 +787,30 @@ class Plant implements PlantInterface
                 $comment->setPlant(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPrefloweredAt(): ?\DateTimeInterface
+    {
+        return $this->prefloweredAt;
+    }
+
+    public function setPrefloweredAt(?\DateTimeInterface $prefloweredAt): self
+    {
+        $this->prefloweredAt = $prefloweredAt;
+
+        return $this;
+    }
+
+    public function getFloweredAt(): ?\DateTimeInterface
+    {
+        return $this->floweredAt;
+    }
+
+    public function setFloweredAt(?\DateTimeInterface $floweredAt): self
+    {
+        $this->floweredAt = $floweredAt;
 
         return $this;
     }
