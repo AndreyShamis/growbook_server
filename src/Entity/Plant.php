@@ -233,6 +233,14 @@ class Plant implements PlantInterface
         return $my_diff;
 
     }
+
+    public function getFloweringWeek(): int
+    {
+        $days = $this->getFloweringDays();
+        return floor($days/7);
+
+    }
+
     /**
      * @return int
      */

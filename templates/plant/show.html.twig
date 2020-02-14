@@ -7,7 +7,7 @@
         <div class="col-sm-12 widget-container-col ui-sortable" id="widget-container-col-10">
             <div class="widget-box ui-sortable-handle" id="widget-box-10">
                 <div class="widget-header widget-header-small">
-                    <h5 class="widget-title smaller">DAY: {{ plant.days }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/ {{ plant.floweringDays }}
+                    <h5 class="widget-title smaller">DAY: {{ plant.days }} &nbsp;&nbsp;&nbsp;&nbsp; {{ plant.floweringDays }} [Week {{ plant.floweringWeek }}]&nbsp;&nbsp;&nbsp;&nbsp;/
                         ID:{{ plant.id }} / Hostname:({{ plant.uniqId }}) -
                         {% if uptime.propertyValue is defined and uptime.propertyValue is not null %}
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
