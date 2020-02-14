@@ -237,7 +237,7 @@ class Plant implements PlantInterface
     public function getFloweringWeek(): int
     {
         $days = $this->getFloweringDays();
-        return floor($days/7);
+        return ceil($days/7);
 
     }
 
