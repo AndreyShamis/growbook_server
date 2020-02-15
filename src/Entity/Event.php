@@ -410,7 +410,7 @@ class Event implements EventInterface
         return $this->happenedAt;
     }
 
-    public function setHappenedAt(\DateTimeInterface $happenedAt): self
+    public function setHappenedAt(\DateTimeInterface $happenedAt): EventInterface
     {
         $this->happenedAt = $happenedAt;
 
@@ -427,5 +427,78 @@ class Event implements EventInterface
         $this->light = $light;
 
         return $this;
+    }
+
+    public static function getCommonDayInFlower(EventInterface $event, PlantInterface $plant=null): int
+    {
+        $my_diff = 0;
+        if ($plant === null) {
+            $plant = $event->getPlant();
+        }
+        $floweredAt = $plant->getFloweredAt();
+        $staredAt = $plant->getStartedAt();
+        $happenedAt = $event->getHappenedAt();
+
+        if ($floweredAt !== null && $happenedAt !== null) {
+            if ($happenedAt < $floweredAt) {
+                $floweredAt = $staredAt;
+            }
+            $my_diff = $happenedAt->diff($floweredAt)->days;
+        }
+        return $my_diff;
+    }
+
+    public function getDayInFlower(PlantInterface $plant=null): int
+    {
+        return self::getCommonDayInFlower($this, $plant);
+    }
+
+
+    public function getWeekInFlower(PlantInterface $plant=null): int
+    {
+        return ceil($this->getDayInFlower($plant)/7);
+    }
+
+
+    public static function getCommonDay(EventInterface $event, PlantInterface $plant=null): int
+    {
+        $my_diff = 0;
+        if ($plant === null) {
+            $plant = $event->getPlant();
+        }
+        $staredAt = $plant->getStartedAt();
+        $happenedAt = $event->getHappenedAt();
+        if ($staredAt !== null && $happenedAt !== null) {
+            $my_diff = $happenedAt->diff($staredAt)->days;
+        }
+        return $my_diff;
+    }
+
+    public function getDay(PlantInterface $plant=null): int
+    {
+        return self::getCommonDay($this, $plant);
+    }
+
+
+    public function getWeek(PlantInterface $plant=null): int
+    {
+        return ceil($this->getDay($plant)/7);
+    }
+
+    public function inFlower(PlantInterface $plant=null): bool
+    {
+        if ($plant === null) {
+            $plant = $this->getPlant();
+        }
+        $floweredAt = $plant->getFloweredAt();
+        $staredAt = $plant->getStartedAt();
+        $happenedAt = $this->getHappenedAt();
+
+        if ($floweredAt !== null && $happenedAt !== null) {
+            if ($happenedAt < $floweredAt) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -39,4 +39,14 @@ interface EventInterface
     public function diff(EventInterface $otherEvent, bool $abs);
     public function calculateThreshHold(float $diffThreshHold, int $round): float;
     public function needUpdate(EventInterface $otherEvent): bool;
+
+    public function getHappenedAt(): ?\DateTimeInterface;
+    public function setHappenedAt(\DateTimeInterface $happenedAt): self;
+    public function getDayInFlower(PlantInterface $plant=null): int;
+    public function getWeekInFlower(PlantInterface $plant=null): int;
+    public function inFlower(PlantInterface $plant=null): bool;
+
+
+    public static function getCommonDayInFlower(EventInterface $event, PlantInterface $plant=null): int;
+
 }

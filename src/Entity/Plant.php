@@ -661,6 +661,7 @@ class Plant implements PlantInterface
      * @param int $photoPeriod
      * @param bool $autoFinishTimeUpdate
      * @return Plant
+     * @throws \Exception
      */
     public function setPhotoPeriod(int $photoPeriod = 0, bool $autoFinishTimeUpdate = true): self
     {

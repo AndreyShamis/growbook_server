@@ -93,7 +93,7 @@
 
             </td>
             <td>
-                <div id="feedChart" style="width: 900px; height: 500px;"></div>
+                <div id="feedChart" style="width: 600px; height: 300px;"></div>
 
             </td>
         </tr>
@@ -113,12 +113,24 @@
         function drawChart() {
             var data = google.visualization.arrayToDataTable([
                 ['Fertilizer', 'Water'],
-                {% for ferti in event_feed.fertilizers %}['[{{ ferti.fertilizer.company }}]{{ ferti.fertilizer.name }}[{{ ferti.fertilizer.n }}/{{ ferti.fertilizer.p }}/{{ ferti.fertilizer.k }}]',{{ ferti.amount }}],{% endfor %}
+                {% for ferti in event_feed.fertilizers %}['{{ ferti.amount }}ml [{{ ferti.fertilizer.company }}] {{ ferti.fertilizer.name }} [{{ ferti.fertilizer.n }}/{{ ferti.fertilizer.p }}/{{ ferti.fertilizer.k }}]',{{ ferti.amount }}],{% endfor %}
             ]);
 
             var options = {
                 title: 'Feed/Fertilizers',
-                pieHole: 0.6,
+                pieHole: 0.2,
+                pieSliceText: 'value-and-percentage',
+                // pieSliceTextStyle: {
+                //     color: 'black',
+                // },
+                chartArea: {width: '100%'},
+                legend: {
+                    position: 'right',
+                    textStyle: {
+                        fontSize: 10
+                    }
+                },
+                colors: ['#4DAE71', '#E08B11', '#7C9161', '#5B77B1', '#31d79d', '#DAF0D6','#0bc9ff', '#e0e1ff'],
             };
 
             var chart = new google.visualization.PieChart(document.getElementById('feedChart'));

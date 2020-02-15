@@ -157,11 +157,20 @@ class PlantController extends AbstractController
      */
     public function edit(Request $request, Plant $plant): Response
     {
+
         $this->denyAccessUnlessGranted('edit', $plant);
+        $prevPhotoPeriod = $plant->getPhotoPeriod();
         $form = $this->createForm(PlantType::class, $plant);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $newPhotoPeriod = $plant->getPhotoPeriod();
+            if ($newPhotoPeriod === 2 && $prevPhotoPeriod !== 2) {
+                $plant->setPrefloweredAt(new \DateTime());
+            }
+            if ($newPhotoPeriod === 3 && $prevPhotoPeriod!== 3) {
+                $plant->setFloweredAt(new \DateTime());
+            }
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('plant_show', [

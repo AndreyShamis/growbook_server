@@ -1,14 +1,29 @@
 <h5>Events without sensor | All events count {{ plant.events | length }}</h5>
 <hr/>
 {% apply spaceless %}
-    <table class="table table-hover table-striped table-condensed tasks-table table-bordered">
+<div class="table-responsive-lg">
+    <table id="feedEventTable" class="table table-hover table-striped table-condensed tasks-table table-bordered " data-classes="table table-no-bordered"
+               id="cycleTestsTable" data-pagination="true" data-search="true" data-toggle="table"
+               data-page-size="2000" data-page-list="[10, 15, 20, 50, 100, 500, 1000, 2000, 5000, 10000, 50000, 'ALL']" data-sort-order="desc"
+               data-toolbar="#cycleShowToolbar"
+               data-show-refresh="true"
+            {#data-show-toggle="true"#}
+               data-show-footer="true"
+               data-show-export="true"
+               data-show-columns="true"
+               data-advanced-search="true"
+               data-id-table="advancedTable">
         <thead>
         <tr>
+            <th>ID</th>
+            <th>Day</th>
+            <th>Week</th>
+            <th>Flower</th>
             <th>Name</th>
             <th>Note</th>
             <th>Value</th>
-            <th>Time</th>
-            <th>Time</th>
+            <th>Time 1</th>
+            <th>Time 2</th>
             <th>Type</th>
         </tr>
         </thead>
@@ -23,6 +38,10 @@
                     <tr>
                         {% if type == "Feed"  %}{% set _url = path('events_event_feed_show', {'id': event.id}) %}
                         {% else %}{% set _url = path('event_show', {'id': event.id}) %}{% endif %}
+                        <td>{{ event.id }}</td>
+                        <td>{{ event.day(plant) }}</td>
+                        <td>{{ event.week(plant) }}</td>
+                        <td>{% if event.inFlower %} {{ event.dayInFlower(plant) }} / {{ event.weekInFlower(plant) }} {% endif %}</td>
                         <td><a href="{{ _url }}">{{ event.name | length > 0 ? event.name : event.id}}</a></td>
                         <td>{{ event.note }}</td>
                         <td>{% if type == "Feed"  %}
@@ -40,4 +59,28 @@
         {% endfor %}
         </tbody>
     </table>
+</div>
 {% endapply %}
+
+
+<script>
+    $(document).ready(function() {
+        $('#feedEventTable').DataTable( {
+            order: [[0, 'desc']],
+            rowGroup: {
+                endRender: function ( rows, group ) {
+                    var avg = rows
+                        .data()
+                        .pluck(2)
+                        .reduce( function (a, b) {
+                            console.log(a + ' - ' + b);
+                            return a + b;
+                        }, 0) / rows.count();
+                    return 'Week ['+group+'] '+
+                        $.fn.dataTable.render.number(',', '.', 0, '$').display( avg );
+                },
+                dataSrc: 2
+            }
+        } );
+    } );
+</script>
