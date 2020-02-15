@@ -44,6 +44,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('relativeTime', [$this, 'relativeTime']),
             new TwigFilter('toJsDate', [$this, 'toJsDate']),
             new TwigFilter('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
+            new TwigFilter('phToFontColor', [$this, 'phToFontColor']),
         );
     }
 
@@ -74,9 +75,39 @@ class AppExtension extends AbstractExtension
             new TwigFunction('relativeTime', [$this, 'relativeTime']),
             new TwigFunction('toJsDate', [$this, 'toJsDate']),
             new TwigFunction('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
+            new TwigFunction('phToFontColor', [$this, 'phToFontColor']),
         ];
     }
 
+    public function phToFontColor($ph=null): string
+    {
+        $ret = 'red';
+        if ($ph !== null) {
+            if ($ph >= 5.5 && $ph <= 6.5) {
+                if ($ph > 6) {
+                    $ret = '#488231';
+                } else {
+                    $ret = '#4fb327';
+                }
+
+            } else {
+                if ($ph >= 5 && $ph <= 7.5) {
+                    if ($ph > 6) {
+                        $ret = '#0d2e6d';
+                    } else {
+                        $ret = '#478FCA';
+                    }
+                } else {
+                    $ret = '#d04242';
+                }
+            }
+
+            if ((int)$ph === 0) {
+                $ret = 'black';
+            }
+        }
+        return $ret;
+    }
     /**
      * @param null $input
      * @return string

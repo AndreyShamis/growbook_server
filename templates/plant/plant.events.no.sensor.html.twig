@@ -9,15 +9,16 @@
             <th>Day</th>
             <th>Week</th>
             <th>Flower</th>
-            <th>Name</th>
-            <th>Note</th>
             <th>Water</th>
             <th>TDS</th>
+            <th>EC</th>
+            <th>PH</th>
             <th>Value</th>
+            <th>Name</th>
+            <th>Note</th>
             <th>Time 1</th>
             <th>Time 2</th>
-            <th>Type</th>
-            <th>PH</th>
+            <th style="width: 0%;">Type</th>
         </tr>
         </thead>
         <tbody>
@@ -29,33 +30,25 @@
                     {% set counter = counter+1 %}
                     {% set type = event.type | parseType %}
                     <tr>
-                        {% if type == "Feed"  %}{% set _url = path('events_event_feed_show', {'id': event.id}) %}
-                        {% else %}{% set _url = path('event_show', {'id': event.id}) %}{% endif %}
-                        <td style="font-size: 9px;">{{ event.id }}</td>
-                        <td>{{ event.day(plant) }}</td>
-                        <td>{{ event.week(plant) }}</td>
-                        <td>{% if event.inFlower %} {{ event.dayInFlower(plant) }} / {{ event.weekInFlower(plant) }} {% endif %}</td>
+                        {% if type == "Feed"  %}{% set _url = path('events_event_feed_show', {'id': event.id}) %}{% else %}{% set _url = path('event_show', {'id': event.id}) %}{% endif %}
+                        <td style="font-size: 9px;"><a href="{{ _url }}">{{ event.id }}</a></td>
+                        <td class="bolder">{{ event.day(plant) }}</td>
+                        <td {% if event.inFlower %} class="brown bolder" title="Flowering week {{ event.weekInFlower(plant) }}" {% else %}  style="background-color: #dff0d8;"  {% endif %}>{{ event.week(plant) }}</td>
+                        <td>{% if event.inFlower %} {{ event.dayInFlower(plant) }} / {{ event.weekInFlower(plant) }}{% else %}  - / -{% endif %}</td>
+                        <td>{% if type == "Feed"  %}<span class="blue bolder">{{ event.water }}</span>{% endif %}
+                        </td>
+                        <td>{% if type == "Feed"  %}<span class="blue">{{ event.tds }}</span>{% endif %}
+                        </td>
+                        <td>{% if type == "Feed"  %}<span class="grey">{{ event.ec }}</span>{% endif %}
+                        <td>{% if type == "Feed"  %}<span style="color: {{ phToFontColor(event.ph) }}">{{ event.ph }}</span>{% endif %}
+
+                        <td>{% if type == "Feed"  %} {% else %}{{ event.value }}{% endif %}
+                        </td>
                         <td><a href="{{ _url }}">{{ event.name | length > 0 ? event.name : event.id}}</a></td>
                         <td>{{ event.note }}</td>
-                        <td>{% if type == "Feed"  %}
-                            <span class="blue">{{ event.water }}</span>
-                            {% endif %}
-                        </td>
-                        <td>{% if type == "Feed"  %}
-                                <span class="blue">{{ event.tds }}</span>
-                            {% endif %}
-                        </td>
-                        <td>{% if type == "Feed"  %}
-                                Ph: {{ event.ph }} | EC:{{ event.ec }}
-                            {% else %}
-                                {{ event.value }}
-                            {% endif %}
-                        </td>
                         <td>{{ event.happenedAt | time_diff }}</td>
                         <td title="{{ event.happenedAt | date('Y/m/d H:i:s') }}">{{ event.happenedAt | date('d H:i') }}</td>
                         <td>{{ event.type | parseType }}</td>
-                        <td>{% if type == "Feed"  %}<span class="blue">{{ event.ph }}</span>{% endif %}
-                        </td>
                     </tr>
                 {% endif %}
             {% endif %}
@@ -69,14 +62,24 @@
 <script>
     $(document).ready(function() {
         $('#feedEventTable').DataTable( {
-            "columnDefs": [
+            columnDefs: [
                 {
-                    "targets": [ 9, 10 ],
-                    "searchable": false
+                    targets: [ 0 ],
+                    searchable: false,
+                    width: 20
                 },
                 {
-                    "targets": [ 11 , 12],
-                    "visible": false
+                    targets: [ 1, 2, 3, 4, 5, 6, 7, 8],
+                    width: 50
+                },
+                {
+                    targets: [ 11, 12 ],
+                    searchable: false,
+                    width: 50
+                },
+                {
+                    targets: [ 13],
+                    visible: false
                 }
             ],
             "pageLength": 25,
@@ -87,18 +90,16 @@
                     var PhRatio = 0;
                     rows.data().each(
                         function ( group, i ) {
-                            console.log(group);
-                            console.log(group);
-                            var water = $(group[6]).text();
-                            var tds = $(group[7]).text();
-                            var ph = $(group[12]).text();
+                            var water = $(group[4]).text();
+                            var tds = $(group[5]).text();
+                            var ph = $(group[7]).text();
                             TdsRatio += water * tds;
                             PhRatio += water * ph;
                         }
                     );
                     var amountOfWater = rows
                         .data()
-                        .pluck(6)
+                        .pluck(4)
                         .reduce( function (a, b) {
                             return a + $(b).text().replace(/[^\d|\.]/g, '')*1;
                         }, 0);
