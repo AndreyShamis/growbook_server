@@ -51,9 +51,10 @@
                                 {% set totalml = 0 %}
                                 {% for ferti in event.fertilizers %}
                                     {% set totalml = totalml + ferti.amount %}
-                                    {% set n = n + ferti.fertilizer.n*ferti.amount*event.water  %}
-                                    {% set p = p + ferti.fertilizer.p*ferti.amount*event.water  %}
-                                    {% set k = k + ferti.fertilizer.k*ferti.amount*event.water  %}
+                                    {% set am = ferti.amount %}
+                                    {% set n = n + ferti.fertilizer.n*am*event.water  %}
+                                    {% set p = p + ferti.fertilizer.p*am*event.water  %}
+                                    {% set k = k + ferti.fertilizer.k*am*event.water  %}
                                     <span class="badge {{ getFretiBadge(ferti.fertilizer.name) }}" title="{{ ferti.fertilizer.name }} - {{ ferti.amount }} ml [NPK:{{ ferti.fertilizer.n }}/{{ ferti.fertilizer.p }}/{{ ferti.fertilizer.k }}] [{{  ferti.fertilizer.company}}]">
                                 {{ ferti.amount }}
                             </span>
