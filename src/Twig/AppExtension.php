@@ -45,6 +45,7 @@ class AppExtension extends AbstractExtension
             new TwigFilter('toJsDate', [$this, 'toJsDate']),
             new TwigFilter('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
             new TwigFilter('phToFontColor', [$this, 'phToFontColor']),
+            new TwigFilter('getFretiBadge', [$this, 'getFretiBadge']),
         );
     }
 
@@ -76,7 +77,29 @@ class AppExtension extends AbstractExtension
             new TwigFunction('toJsDate', [$this, 'toJsDate']),
             new TwigFunction('hoursInRelativeTime', [$this, 'hoursInRelativeTime']),
             new TwigFunction('phToFontColor', [$this, 'phToFontColor']),
+            new TwigFunction('getFretiBadge', [$this, 'getFretiBadge']),
         ];
+    }
+
+    public function getFretiBadge($input):string
+    {
+        $index = 0;
+        $number = 0;
+        $array = str_split($input);
+        foreach ($array as $digit) {
+            $number += ord($digit);
+        }
+        $data = [
+            'badge-grey',
+            'badge-success',
+            'badge-warning',
+            'badge-info',
+            'badge-purple',
+            'badge-inverse',
+            'badge-pink',
+            'badge-yellow',
+        ];
+        return $data[$number%count($data)];
     }
 
     public function phToFontColor($ph=null): string

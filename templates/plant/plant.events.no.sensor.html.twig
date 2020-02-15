@@ -13,16 +13,19 @@
             <th>TDS</th>
             <th>EC</th>
             <th>PH</th>
+            <th>Freti</th>
             <th>Value</th>
             <th>Name</th>
             <th>Note</th>
             <th>Time 1</th>
             <th>Time 2</th>
             <th style="width: 0%;">Type</th>
+            <th style="width: 0%;">NPK</th>
         </tr>
         </thead>
         <tbody>
         {% set counter = 0 %}
+
         {% for event in plant.events %}
             {% if counter > 1000 %}
             {% else %}
@@ -41,7 +44,22 @@
                         </td>
                         <td>{% if type == "Feed"  %}<span class="grey">{{ event.ec }}</span>{% endif %}
                         <td>{% if type == "Feed"  %}<span style="color: {{ phToFontColor(event.ph) }}">{{ event.ph }}</span>{% endif %}
-
+                        <td>{% if type == "Feed"  %}
+                                {% set n = 0 %}
+                                {% set p = 0 %}
+                                {% set k = 0 %}
+                                {% set totalml = 0 %}
+                                {% for ferti in event.fertilizers %}
+                                    {% set totalml = totalml + ferti.amount %}
+                                    {% set n = n + ferti.fertilizer.n*ferti.amount*event.water  %}
+                                    {% set p = p + ferti.fertilizer.p*ferti.amount*event.water  %}
+                                    {% set k = k + ferti.fertilizer.k*ferti.amount*event.water  %}
+                                    <span class="badge {{ getFretiBadge(ferti.fertilizer.name) }}" title="{{ ferti.fertilizer.name }} - {{ ferti.amount }} ml [NPK:{{ ferti.fertilizer.n }}/{{ ferti.fertilizer.p }}/{{ ferti.fertilizer.k }}] [{{  ferti.fertilizer.company}}]">
+                                {{ ferti.amount }}
+                            </span>
+                                {% endfor %}
+                            {% endif %}
+                        </td>
                         <td>{% if type == "Feed"  %} {% else %}{{ event.value }}{% endif %}
                         </td>
                         <td><a href="{{ _url }}">{{ event.name | length > 0 ? event.name : event.id}}</a></td>
@@ -49,6 +67,7 @@
                         <td>{{ event.happenedAt | time_diff }}</td>
                         <td title="{{ event.happenedAt | date('Y/m/d H:i:s') }}">{{ event.happenedAt | date('d H:i') }}</td>
                         <td>{{ event.type | parseType }}</td>
+                        <td>{{ n }}:{{ p }}:{{ k }}::{{ totalml }}</td>
                     </tr>
                 {% endif %}
             {% endif %}
@@ -69,16 +88,16 @@
                     width: 20
                 },
                 {
-                    targets: [ 1, 2, 3, 4, 5, 6, 7, 8],
+                    targets: [ 1, 2, 3, 4, 5, 6, 7, 8, 9],
                     width: 50
                 },
                 {
-                    targets: [ 11, 12 ],
+                    targets: [ 12, 13, 15 ],
                     searchable: false,
                     width: 50
                 },
                 {
-                    targets: [ 13],
+                    targets: [ 14],
                     visible: false
                 }
             ],
