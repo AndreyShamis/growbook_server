@@ -21,6 +21,8 @@
             <th>Flower</th>
             <th>Name</th>
             <th>Note</th>
+            <th>Water</th>
+            <th>TDS</th>
             <th>Value</th>
             <th>Time 1</th>
             <th>Time 2</th>
@@ -45,7 +47,15 @@
                         <td><a href="{{ _url }}">{{ event.name | length > 0 ? event.name : event.id}}</a></td>
                         <td>{{ event.note }}</td>
                         <td>{% if type == "Feed"  %}
-                                {{ event.water }} | Ph: {{ event.ph }} | TDS/EC: {{ event.tds }}/{{ event.ec }}
+                                {{ event.water }}
+                            {% endif %}
+                        </td>
+                        <td>{% if type == "Feed"  %}
+                                {{ event.tds }}
+                            {% endif %}
+                        </td>
+                        <td>{% if type == "Feed"  %}
+                                Ph: {{ event.ph }} | EC:{{ event.ec }}
                             {% else %}
                                 {{ event.value }}
                             {% endif %}
@@ -66,18 +76,34 @@
 <script>
     $(document).ready(function() {
         $('#feedEventTable').DataTable( {
+            "columnDefs": [
+                {
+                    "targets": [ 9, 10 ],
+                    "searchable": false
+                },
+                {
+                    "targets": [ 11 ],
+                    "visible": false
+                }
+            ],
             order: [[0, 'desc']],
             rowGroup: {
                 endRender: function ( rows, group ) {
-                    var avg = rows
+                    var ratio = 0;
+                    rows.data().each(
+                        function ( group, i ) {
+                            var water = group[6];
+                            var tds = group[7];
+                            ratio += water * tds;
+                        }
+                    );
+                    var amountOfWater = rows
                         .data()
-                        .pluck(2)
+                        .pluck(6)
                         .reduce( function (a, b) {
-                            console.log(a + ' - ' + b);
-                            return a + b;
-                        }, 0) / rows.count();
-                    return 'Week ['+group+'] '+
-                        $.fn.dataTable.render.number(',', '.', 0, '$').display( avg );
+                            return a + b.replace(/[^\d|\.]/g, '')*1;
+                        }, 0);
+                    return 'Week ['+group+'] '+  $.fn.dataTable.render.number(',', '.', 1, 'L').display(amountOfWater) + ' - '  + $.fn.dataTable.render.number(',', '.', 0, ' TDS ').display(ratio);
                 },
                 dataSrc: 2
             }
