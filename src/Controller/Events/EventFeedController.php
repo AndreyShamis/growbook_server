@@ -12,6 +12,7 @@ use App\Repository\FeedFertilizerRepository;
 use App\Repository\FertilizerRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,9 +39,10 @@ class EventFeedController extends AbstractController
     /**
      * @Route("/clone/{feed}", name="clone_feed_event", methods={"GET","POST"})
      * @param EventFeed $feed
+     * @param LoggerInterface $logger
      * @return RedirectResponse
      */
-    public function cloneFeed(EventFeed $feed)
+    public function cloneFeed(EventFeed $feed, LoggerInterface $logger)
     {
         $eventFeed = new EventFeed();
         $eventFeed->cloneSelf($feed);
@@ -50,7 +52,7 @@ class EventFeedController extends AbstractController
                 $eventFeed->setHappenedAt($plant->getLastHydrometerPeak());
             }
         } catch (\Throwable $ex) {
-
+            $logger->critical($ex->getMessage());
         }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($eventFeed);
@@ -127,11 +129,12 @@ class EventFeedController extends AbstractController
      * @param EventFeed $eventFeed
      * @param FertilizerRepository $fertiRepo
      * @param FeedFertilizerRepository $ffRepo
+     * @param LoggerInterface $logger
      * @return Response
      * @throws ORMException
      * @throws OptimisticLockException
      */
-    public function edit(Request $request, EventFeed $eventFeed, FertilizerRepository $fertiRepo, FeedFertilizerRepository $ffRepo): Response
+    public function edit(Request $request, EventFeed $eventFeed, FertilizerRepository $fertiRepo, FeedFertilizerRepository $ffRepo, LoggerInterface $logger): Response
     {
         $form = $this->createForm(EventFeedType::class, $eventFeed);
         $form->handleRequest($request);
@@ -161,6 +164,19 @@ class EventFeedController extends AbstractController
 
                 }
             }
+
+            try {
+                $fertis = $eventFeed->getFertilizers();
+                foreach ($fertis as $ferti) {
+                    if ($ferti->getAmount() < 0.000001) {
+                        $eventFeed->removeFertilizer($ferti);
+                        $entityManager->remove($ferti);
+                    }
+                }
+            } catch (\Throwable $ex) {
+                $logger->critical($ex->getMessage());
+            }
+
 
             $entityManager->flush();
 

@@ -7,6 +7,7 @@ use App\Entity\Fertilizer;
 use App\Entity\User;
 use App\Repository\PlantRepository;
 use Doctrine\ORM\EntityRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +31,6 @@ class EventFeedType extends AbstractType
         try {
             $user = $this->tokenStorage->getToken()->getUser();
         } catch (\Throwable $ex) {
-
         }
         $builder
 //            ->add('plant','entity', array(

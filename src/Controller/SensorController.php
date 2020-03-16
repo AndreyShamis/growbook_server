@@ -7,6 +7,7 @@ use App\Entity\Sensor;
 use App\Form\SensorType;
 use App\Repository\EventRepository;
 use App\Repository\SensorRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,7 +68,7 @@ class SensorController extends AbstractController
      * @param int $hours
      * @return Response
      */
-    public function show(Sensor $sensor, EventRepository $eventsRepo, int $hours=25): Response
+    public function show(Sensor $sensor, EventRepository $eventsRepo, LoggerInterface $logger, int $hours=25): Response
     {
         $plant = $sensor->getPlant();
         if ($plant !== null) {
@@ -80,7 +81,7 @@ class SensorController extends AbstractController
             }
             $events = $eventsRepo->findAllBySensor($sensor, $hours);
         } catch (\Throwable $ex) {
-
+            $logger->critical($ex);
         }
         return $this->render('sensor/show.html.twig', [
             'sensor' => $sensor,
@@ -96,9 +97,10 @@ class SensorController extends AbstractController
      * @param Plant $plant
      * @param EventRepository $eventsRepo
      * @param int $hours
+     * @param LoggerInterface|null $logger
      * @return Response
      */
-    public function showForPlant(Sensor $sensor, Plant $plant, EventRepository $eventsRepo, int $hours=25): Response
+    public function showForPlant(Sensor $sensor, Plant $plant, EventRepository $eventsRepo, LoggerInterface $logger, int $hours=25): Response
     {
         if ($plant !== null) {
             $this->denyAccessUnlessGranted('view', $plant);
@@ -110,7 +112,7 @@ class SensorController extends AbstractController
             }
             $events = $eventsRepo->findAllBySensorAndPlant($sensor, $plant, $hours);
         } catch (\Throwable $ex) {
-
+            $logger->critical($ex);
         }
         return $this->render('sensor/show.html.twig', [
             'sensor' => $sensor,

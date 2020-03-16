@@ -69,7 +69,7 @@ class PlantController extends AbstractController
      * @param int $hours
      * @return Response
      */
-    public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, int $hours=25): Response
+    public function show(Plant $plant, EventRepository $eventsRepo, CustomFieldRepository $fields, LoggerInterface $logger, int $hours=25): Response
     {
         $this->denyAccessUnlessGranted('view', $plant);
         $events = array();
@@ -79,7 +79,7 @@ class PlantController extends AbstractController
             }
             $events = $eventsRepo->findAllByPlant($plant, $hours);
         } catch (\Throwable $ex) {
-
+            $logger->critical($ex);
         }
         $sensors = array();
         $sensorsObj = array();
