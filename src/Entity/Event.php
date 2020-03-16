@@ -262,7 +262,7 @@ class Event implements EventInterface
     public function setPlant(PlantInterface $plant): EventInterface
     {
         $this->plant = $plant;
-        if ( $this->plant !== null ) {
+        if ($this->plant !== null) {
             $this->setLight($this->plant->isLight());
         }
 

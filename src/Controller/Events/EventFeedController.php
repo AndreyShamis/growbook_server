@@ -44,6 +44,14 @@ class EventFeedController extends AbstractController
     {
         $eventFeed = new EventFeed();
         $eventFeed->cloneSelf($feed);
+        try {
+            $plant = $eventFeed->getPlant();
+            if ($plant !== null) {
+                $eventFeed->setHappenedAt($plant->getLastHydrometerPeak());
+            }
+        } catch (\Throwable $ex) {
+
+        }
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($eventFeed);
         $entityManager->flush();
@@ -61,7 +69,7 @@ class EventFeedController extends AbstractController
     public function new(Request $request, FertilizerRepository $fertiRepo, Plant $plant = null): Response
     {
         $eventFeed = new EventFeed();
-        if ( $plant !== null) {
+        if ($plant !== null) {
             $eventFeed->setPlant($plant);
             $eventFeed->setHappenedAt($plant->getLastHydrometerPeak());
         }
