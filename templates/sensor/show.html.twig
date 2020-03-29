@@ -320,7 +320,8 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>Name</th>
+{#            <th>Name</th>#}
+            <th>Light</th>
             <th>Type</th>
 
             {% if sensor.eventType | parseType == 'Humidity' %}
@@ -347,7 +348,8 @@
             {% set type = event.type| parseType  %}
             <tr>
                 <td><a href="{{ path('event_show', {'id': event.id}) }}">{{ event.id }}</td>
-                <td>{{ event.name }}</td>
+{#                <td>{{ event.name }}</td>#}
+                <td>{{ event.light ? "On" : "Off"}}</td>
                 <td>{{ type }}</td>
                 <td>
                     {% set _value = event.value %}
