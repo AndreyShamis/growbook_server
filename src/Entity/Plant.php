@@ -241,6 +241,13 @@ class Plant implements PlantInterface
 
     }
 
+    public function getFloweringWeekDay(): int
+    {
+        $days = $this->getFloweringDays();
+        return ($days % 7);
+
+    }
+
     /**
      * @return int
      */
